@@ -1,5 +1,6 @@
 from tkinter import *
 import tkinter.font as tkFont
+import simp
 
 def page1():
     global menu
@@ -73,10 +74,14 @@ def page2():
 def reset():
     global menu
     global jeu
+    global label_r1
+    global label_r2
+    global label_r3
+    global label_r4
+    global label_r5
     
     menu.destroy()
     jeu.destroy()
-
     menu = Canvas(fenetre,width=longueur, height=largeur)
     jeu = Canvas(fenetre, width=longueur, height=largeur)
 
@@ -85,12 +90,13 @@ def reset():
     reponse_entree3.set('')
     reponse_entree4.set('')
     reponse_entree5.set('')
-    nb_reponse_juste.set(0)
+    var_reponse.set('')
     question2.set('')
     question3.set('')
     question4.set('')
     question5.set('')
-    var_reponse.set('') 
+    nb_reponse_juste.set(0)
+    
 
 def quitter():   #fermer la fenetre
     fenetre.destroy()
@@ -102,7 +108,10 @@ def recherche():
     print(str(var_entree.get()))
 
 def test_reponse():
-    if str(var_reponse.get()) in eval('reponse'+str(nb_reponse_juste.get()+1)) :
+
+    reponse_simp=simp.simp(var_reponse.get())
+    
+    if str(reponse_simp) in eval('reponse'+str(nb_reponse_juste.get()+1)) :
 
         nb_reponse_juste.set(nb_reponse_juste.get()+1)
 
@@ -141,7 +150,9 @@ def test_reponse():
             LabelEntry.place(x=1050,y=600,width=200, height=70)
             
         var_reponse.set('')
-            
+
+def retour(key):
+    page1()
 
 
 
@@ -157,18 +168,19 @@ menu = Canvas(fenetre, width=longueur, height=largeur)
 jeu = Canvas(fenetre, width=longueur, height=largeur)
 
 fenetre.bind('<KeyPress>', callback)
+fenetre.bind('<Escape>', retour)
 
 
-reponse1=['Algérie','Allemagne','France','Norvège','Royaume-Uni']
-reponse2=['Allemagne','France','Norvège','Royaume-Uni']
-reponse3=['Allemagne','France','Norvège']
-reponse4=['France','Norvège']
-reponse5=['France']
+reponse1=['algerie','allemagne','france','norvege','royaume uni']
+reponse2=['allemagne','france','norvege','royaume uni']
+reponse3=['allemagne','france','norvege']
+reponse4=['france','norvege']
+reponse5=['france']
 
 var_reponse = StringVar()
 nb_reponse_juste = IntVar(0)
-
 reponse_entree1=StringVar()
+
 reponse_entree2=StringVar()
 reponse_entree3=StringVar()
 reponse_entree4=StringVar()
@@ -181,6 +193,8 @@ question4=StringVar()
 question5=StringVar()
 
 question1.set('Pays avec un drapeau à 3 couleurs')
+
+print(simp.simp("moééMMLt"))
 
 page1()
 menu.mainloop()
