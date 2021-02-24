@@ -20,53 +20,65 @@ def deconnexion(sqliteConnection):
             sqliteConnection.close()
             print("The SQLite connection is closed")
 
-def AffichezDB(commande):
+TROUVE=False
 
+def AffichezDB(commande):
+    global TROUVE,question
     sqliteConnection = connexion()
     cursor = sqliteConnection.cursor()
     #ecriture de la requéte, on récupére le contenu de la listeDeroulante avec la fonction .get()
     sqlite_select_Query = commande
     #execution de la requéte
-    print (commande)
+    print ("\n\n\n\n\n\n\n\ncommande = " +commande+ "\n\n\n\n\n\n\n\n\n\n")
     cursor.execute(sqlite_select_Query)
     #on place tout les enregistrements dans une variable record
     record = cursor.fetchall()
-    #print(record)
+    print("LES PAYS SONT : ")
+    print(record)
+    print("solution = "+str(len(record))+ " question ="+str(question))
+    if len(record)==1 and question == 5:
+        print("gtrouvez")
+        TROUVE=True
     return record
 
-commande = "select nom from pays WHERE "
+commande = "select * from pays WHERE "
 n=0
 
 def test_question(condition):
-    global question,n,commande
+    global question,n,commande,listeQ
+    print("\n\n\n\n\n\n\n\n\n\n\n\ncondition = "+str(condition)+"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
     listeQ.pop(n)
     commande_backup=commande
+    print("commande backup = "+str(commande_backup))
     if type(condition)==list:
-        commande=commande.replace(" from pays WHERE","")
-        cutcondition = condition[0].split(" ", 2);
-        commande += (","+str(cutcondition[0]))
-        commande += (" from pays WHERE")
-        for i in range(len(condition)):
-            cutcondition = condition[i].split(" ", 2);
-            commande += (" or "+str(condition[i]))
-        commande.replace("WHERE or","WHERE")
+        commande += (" and (")
+        for i in range(len(condition)-1):
+            commande += (str(condition[i])+" or ")
+            dernier=i
+        commande += (str(condition[dernier+1])+")")
     else:
-        cutcondition = condition.split(" ", 2);
-        commande=commande.replace(" from pays WHERE","")
-        commande += (","+str(cutcondition[0])+" from pays WHERE "+str(condition))
+        commande += (" and "+str(condition))
+    commande=commande.replace("WHERE  and","WHERE")
+    commande=commande.replace("or  and","and")
     record=AffichezDB(commande)
   
     if (question==1 and len(record)<50) or (question==2 and len(record)<25) or (question==3 and len(record)<12) or (question==4 and len(record)<5) or (question==5 and len(record)!=1):
+            print("CA MARCHE PAS")
+            print(len(listeQ)-1)
+            if (len(listeQ)-1)==(-1):
+                listeQ=backup()
+                print("jai backup")
+                print(len(listeQ)-1)
             n=randint(0,len(listeQ)-1)
             commande=commande_backup
             test_question(listeQ[n])
 
-def random(colonne):
+def random():
     chiffre=randint(1,199)
     sqliteConnection = connexion()
     cursor = sqliteConnection.cursor()
     #ecriture de la requéte, on récupére le contenu de la listeDeroulante avec la fonction .get()
-    sqlite_select_Query = ("select nom,"+str(colonne)+" from pays where idPays="+str(chiffre))
+    sqlite_select_Query = ("select nom from pays where idPays="+str(chiffre))
     #execution de la requéte
     cursor.execute(sqlite_select_Query)
     #on place tout les enregistrements dans une variable record
@@ -74,27 +86,38 @@ def random(colonne):
     record= record[0][0]
     return record
 
+def backup():
+    listeQbackup=["nom LIKE '"+str(listealpha[randint(0,25)])+"%'",listeecartpays,"nom LIKE '"+str(listealpha[randint(ecart,ecart*3)])+"%'","nom LIKE '%"+str(listealpha[randint(0,25)])+"'",\
+"capitale LIKE '"+str(listealpha[randint(0,25)])+"%'",listeecartcap,"capitale LIKE '"+str(listealpha[randint(0,25)])+"%'"]
+    return listeQbackup
+
+#"nom LIKE '%"+str(listealpha[randint(0,25)])+"%'",
+#"capitale LIKE '%"+str(listealpha[randint(0,25)])+"%'",
 ecart=randint(2,4)
 
 listealpha=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
-listealphaMAX=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
 
 listeecartcap=[]
-bloc1=randint(ecart,len(listealpha)-1-ecart)
+bloc1=randint(0,(25-ecart*2))
 for i in range (bloc1,bloc1+ecart*2):
-    listeecartcap.append("capitale LIKE '"+str(listealphaMAX[i])+"%'")
+    listeecartcap.append("capitale LIKE '"+str(listealpha[i])+"%'")
     
 listeecartpays=[]
-bloc1=randint(ecart,len(listealpha)-ecart)
+bloc1=randint(0,(25-ecart*2))
 for i in range (bloc1,bloc1+ecart*2):
-    listeecartpays.append("pays LIKE '"+str(listealphaMAX[i])+"%'")
-listeQ=["frontieres LIKE '"+str(random("nom"))+"'","nom LIKE '"+str(listealphaMAX[randint(0,25)])+"%'",listeecartpays,"nom LIKE '"+str(listealphaMAX[randint(ecart,ecart*3)])+"%'","nom LIKE '%"+str(listealpha[randint(0,25)])+"%'","nom LIKE '%"+str(listealpha[randint(0,25)])+"'",\
-"capitale LIKE '"+str(listealphaMAX[randint(0,25)])+"%'",listeecartcap,"capitale LIKE '%"+str(listealpha[randint(0,25)])+"%'","capitale LIKE '"+str(listealpha[randint(0,25)])+"%'"]
+    listeecartpays.append("nom LIKE '"+str(listealpha[i])+"%'")
 
+listeQ=["nom LIKE '"+str(listealpha[randint(0,25)])+"%'",listeecartpays,"nom LIKE '"+str(listealpha[randint(ecart,ecart*3)])+"%'","nom LIKE '%"+str(listealpha[randint(0,25)])+"'",\
+"capitale LIKE '"+str(listealpha[randint(0,25)])+"%'",listeecartcap,"capitale LIKE '"+str(listealpha[randint(0,25)])+"%'"]
 #---------------------------------------------------------------------------------------------
+#"frontieres LIKE '"+str(random())+"'",
 
-
-for i in range(3):
+while TROUVE==False:
+    print("LISTEQ EGALE "+str(listeQ))
+    if (len(listeQ))==0:
+        listeQ=backup()
+        print("jai backup")
     n=randint(0,len(listeQ)-1)
     test_question(listeQ[n])
-    print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+    question+=1
+    print("\n\n\n\n\n\n\n\n\n\n_____________________________________________________________________________________\n\n\n\n\n\n\n\n\n\n\n")
