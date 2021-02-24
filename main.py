@@ -1,6 +1,7 @@
 from tkinter import *
 import tkinter.font as tkFont
 import simp
+import time
 
 def page1():
     global menu
@@ -24,9 +25,12 @@ def page2():
     global label_r3
     global label_r4
     global label_r5
+    global t0
     
     reset()
     jeu.place(x=0, y=0)
+
+    t0 = time.time()
 
     bouton_retour = StringVar()
     bouton_retour=Button(jeu, text='Retour', command=page1, font=police1)
@@ -69,11 +73,25 @@ def page2():
     label_r5.place(x=950,y=500,width=400, height=70)
 
 
+def page3():
+    global gagne
+    global t0
+    global t1
 
+    t1 = time.time()
+    temps=t1-t0
+
+    
+    
+    reset()
+    gagne.place(x=0, y=0)
+    label_q1 = Label(gagne, text='Bien-joué bg tu as mis : '+str(round(temps))+'s', font=police1 , background = 'grey', anchor='center')
+    label_q1.place(x=100,y=100,width=800, height=70)
 
 def reset():
     global menu
     global jeu
+    global gagne
     global label_r1
     global label_r2
     global label_r3
@@ -82,8 +100,10 @@ def reset():
     
     menu.destroy()
     jeu.destroy()
+    gagne.destroy()
     menu = Canvas(fenetre,width=longueur, height=largeur)
     jeu = Canvas(fenetre, width=longueur, height=largeur)
+    gagne = Canvas(fenetre, width=longueur, height=largeur)
 
     reponse_entree1.set('')
     reponse_entree2.set('')
@@ -148,6 +168,7 @@ def test_reponse():
             label_r5.configure(textvariable=reponse_entree5)
             LabelEntry = Label(jeu, text='Gagné!!!', width=40, font=police1, bg = 'yellow')
             LabelEntry.place(x=1050,y=600,width=200, height=70)
+            page3()
             
         var_reponse.set('')
 
@@ -166,6 +187,8 @@ police1=tkFont.Font(family="MV Boli",size=20)
 
 menu = Canvas(fenetre, width=longueur, height=largeur)
 jeu = Canvas(fenetre, width=longueur, height=largeur)
+gagne = Canvas(fenetre, width=longueur, height=largeur)
+
 
 fenetre.bind('<KeyPress>', callback)
 fenetre.bind('<Escape>', retour)
@@ -194,7 +217,6 @@ question5=StringVar()
 
 question1.set('Pays avec un drapeau à 3 couleurs')
 
-print(simp.simp("moééMMLt"))
 
 page1()
 menu.mainloop()

@@ -6,4 +6,6 @@ def simp(mot):
     mot = mot.replace("ç","c")
     mot = mot.replace("ê","e")
     mot = mot.replace("ë","e")
+    mot = mot.replace("dz","algerie")
+    mot = mot.replace("baguette","france")
     return(mot)
