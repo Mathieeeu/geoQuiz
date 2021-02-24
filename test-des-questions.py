@@ -68,7 +68,7 @@ def random(colonne):
     sqliteConnection = connexion()
     cursor = sqliteConnection.cursor()
     #ecriture de la requéte, on récupére le contenu de la listeDeroulante avec la fonction .get()
-    sqlite_select_Query = ("select nom,"+str(colonne)"+ from pays where "+str(colonne)+"="+str(chiffre))
+    sqlite_select_Query = ("select nom,"+str(colonne)+" from pays where "+str(colonne)+"="+str(chiffre))
     #execution de la requéte
     cursor.execute(sqlite_select_Query)
     #on place tout les enregistrements dans une variable record
