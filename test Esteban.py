@@ -26,7 +26,7 @@ def AffichezDB(commande):
     #ecriture de la requéte, on récupére le contenu de la listeDeroulante avec la fonction .get()
     sqlite_select_Query = commande
     #execution de la requéte
-    print (commande)
+    #print (commande)
     cursor.execute(sqlite_select_Query)
     #on place tout les enregistrements dans une variable record
     record = cursor.fetchall()
@@ -44,14 +44,23 @@ commande="SELECT * FROM pays WHERE idPays='"+str(r)+"'"
 
 rec=AffichezDB(commande)
 print(rec)
+print()
 
 #Questions
-question=["Le pays commence par une lettre entre "]
+memory=[]
+def NewQuest(memory):
+    questions=["Le pays commence par une lettre entre "]
+    numéro=randint(0,len(questions)-1)
+    if memory.index(numéro):
+        memory.append(numéro)
+        return questions[numéro]
+        return memory
+    else :
+        print("fail")
+        
 
 print(rec[0][1])
-#letpays=randint(0,len(rec[0][1])-1)
 
-#z=rec[0][1][letpays]
 z=rec[0][1][0]
 z=z.lower()
 mean=alpha.index(z)
@@ -65,24 +74,18 @@ maxi=mean+maxi
 maximum=alpha[maxi]
 
 
-print(str(question[0])+str(minimum)+" et "+str(maximum))
+print(str(questions[numéro])+str(minimum)+" et "+str(maximum))
 print()
 print()
-
-print(mini)
+final=[]
 for i in range(mini,maxi+1):
-    print()
-    print()
-    print()
+
     other="SELECT nom FROM pays WHERE nom LIKE '"+str(alpha[i])+"%'"
-    print(other)
-    print()
-    final=AffichezDB(other)
-    print(final)
 
-
-
-
+    fin=AffichezDB(other)
+    for j in range(0,len(fin)-1):
+        final.append(fin[j][0])
+print(final)
 
 
 
