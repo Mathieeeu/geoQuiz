@@ -73,16 +73,24 @@ def page2():
 def reset():
     global menu
     global jeu
-    global label_r1
-    global label_r2
-    global label_r3
-    global label_r4
-    global label_r5
     
     menu.destroy()
     jeu.destroy()
+
     menu = Canvas(fenetre,width=longueur, height=largeur)
     jeu = Canvas(fenetre, width=longueur, height=largeur)
+
+    reponse_entree1.set('')
+    reponse_entree2.set('')
+    reponse_entree3.set('')
+    reponse_entree4.set('')
+    reponse_entree5.set('')
+    nb_reponse_juste.set(0)
+    question2.set('')
+    question3.set('')
+    question4.set('')
+    question5.set('')
+    var_reponse.set('') 
 
 def quitter():   #fermer la fenetre
     fenetre.destroy()
@@ -159,8 +167,8 @@ reponse5=['France']
 
 var_reponse = StringVar()
 nb_reponse_juste = IntVar(0)
-reponse_entree1=StringVar()
 
+reponse_entree1=StringVar()
 reponse_entree2=StringVar()
 reponse_entree3=StringVar()
 reponse_entree4=StringVar()
