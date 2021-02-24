@@ -81,12 +81,14 @@ def page3():
     t1 = time.time()
     temps=t1-t0
 
-    
-    
     reset()
     gagne.place(x=0, y=0)
-    label_q1 = Label(gagne, text='Bien-joué bg tu as mis : '+str(round(temps))+'s', font=police1 , background = 'grey', anchor='center')
+    label_q1 = Label(gagne, text='Bien-joué tu as mis : '+str(round(temps))+'s', font=police1 , background = 'grey', anchor='center')
     label_q1.place(x=100,y=100,width=800, height=70)
+
+    bouton_retour = StringVar()
+    bouton_retour=Button(gagne, text='Retour', command=page1, font=police1)
+    bouton_retour.place(x=int(longueur)-210,y=int(largeur)-60,width=200, height=50)
 
 def reset():
     global menu
