@@ -7,3 +7,4 @@ def simp(mot):
     mot = mot.replace("ç","c")
     mot = mot.replace("ê","e")
     mot = mot.replace("ë","e")
+    print(mot)
