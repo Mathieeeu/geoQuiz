@@ -84,11 +84,21 @@ def page3():
     reset()
     gagne.place(x=0, y=0)
     label_q1 = Label(gagne, text='Bien-joué tu as mis : '+str(round(temps))+'s', font=police1 , background = 'grey', anchor='center')
-    label_q1.place(x=100,y=100,width=800, height=70)
+    label_q1.place(x=(int(longueur)/2)-250,y=200,width=500, height=70)
 
-    bouton_retour = StringVar()
-    bouton_retour=Button(gagne, text='Retour', command=page1, font=police1)
-    bouton_retour.place(x=int(longueur)-210,y=int(largeur)-60,width=200, height=50)
+
+    bouton_rejouer = StringVar()
+    bouton_rejouer=Button(gagne, text='Rejouer', command=page2, font=police1)
+    bouton_rejouer.place(x=(int(longueur)/2)-100,y=400,width=200, height=50)
+
+    bouton_menu = StringVar()
+    bouton_menu=Button(gagne, text='Menu', command=page1, font=police1)
+    bouton_menu.place(x=(int(longueur)/2)-100,y=475,width=200, height=50)
+
+    bouton_quitter = StringVar()
+    bouton_quitter=Button(gagne, text='Quitter', command=quitter, font=police1)
+    bouton_quitter.place(x=(int(longueur)/2)-100,y=550,width=200, height=50)
+    
 
 def reset():
     global menu
@@ -176,6 +186,7 @@ def test_reponse():
 
 def retour(key):
     page1()
+
 
 
 
