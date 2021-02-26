@@ -35,7 +35,7 @@ def AffichezDB(commande):
 
 
 #///////////////////////////////////////////////////
-
+conditions=""
 alpha=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","x","y","z"]
 
 #Pays Select
@@ -48,27 +48,51 @@ print()
 
 #Questions
 memory=[-1]
-def NewQuest(memory):
-    questions=["Le pays commence par une lettre entre ","q2","ok"]
+def NewQuest(memory,conditions):
+    questions=["Le pays commence par une lettre entre ","Le drapeau du pays contient "]
     numéro=randint(0,len(questions)-1)
     if numéro not in memory:
         memory.append(numéro)
-        choose(questions[numéro])
+        choose(questions[numéro],conditions)
         return memory
     else :
         print("fail")
+        if len(memory)!=len(questions)+1:
+            NewQuest(memory,conditions)
 
-def choose(ASK):
+def choose(ASK,conditions):
     if ASK=="Le pays commence par une lettre entre ":
-        Ques1(ASK)
-    elif ASK=="ok":
-        print("fuck")
-     
-def Ques1(question):
+        conditions=Ques1(ASK,conditions)
+    elif ASK=="Le drapeau du pays contient ":
+        conditions=Ques2(ASK,conditions)
+
+
+
+
+
+
+   
+def AllExcept(conditions):
+    final="SELECT nom FROM pays"+str(conditions)
+    print()
+    print("now")
+    print(final)
+
+
+
+
+
+
+#nom pays     
+def Ques1(question,conditions):
     print(rec[0][1])
 
     z=rec[0][1][0]
     z=z.lower()
+    if z=="î" :
+        z="i"
+    elif z=="é":
+        z="e"
     mean=alpha.index(z)
 
     mini=randint(0,4)
@@ -77,6 +101,8 @@ def Ques1(question):
 
     maxi=randint(0,4)
     maxi=mean+maxi
+    if maxi>=25:
+        maxi=maxi-26
     maximum=alpha[maxi]
 
 
@@ -92,17 +118,28 @@ def Ques1(question):
         for j in range(0,len(fin)-1):
             final.append(fin[j][0])
     print(final)
+    conditions=str(conditions)+"WHERE letter BETWEEN "+str(mini)+" AND "+str(maxi)
+    AllExcept(conditions)
+    return conditions
 
-
-
-def Ques2(question):
     
+#couleurs drapeau
+def Ques2(question,conditions):
+    print(rec[0][1])
+    print(str(question)+str(rec[0][13])+" couleurs")
+    conditions=str(conditions)+" WHERE couleurs_drapeau="+str(rec[0][13])
+    AllExcept(conditions)
+    return conditions
     
 #/////////////////////////////////////////////////////////////////////////
-NewQuest(memory)
-NewQuest(memory)
-NewQuest(memory)
+NewQuest(memory,conditions)
+print()
+NewQuest(memory,conditions)
+print()
+NewQuest(memory,conditions)
+print()
 print(memory)
+print(conditions)
 
 
 
