@@ -47,47 +47,62 @@ print(rec)
 print()
 
 #Questions
-memory=[]
+memory=[-1]
 def NewQuest(memory):
-    questions=["Le pays commence par une lettre entre "]
+    questions=["Le pays commence par une lettre entre ","q2","ok"]
     numéro=randint(0,len(questions)-1)
-    if memory.index(numéro):
+    if numéro not in memory:
         memory.append(numéro)
-        return questions[numéro]
+        choose(questions[numéro])
         return memory
     else :
         print("fail")
-        
 
-print(rec[0][1])
+def choose(ASK):
+    if ASK=="Le pays commence par une lettre entre ":
+        Ques1(ASK)
+    elif ASK=="ok":
+        print("fuck")
+     
+def Ques1(question):
+    print(rec[0][1])
 
-z=rec[0][1][0]
-z=z.lower()
-mean=alpha.index(z)
+    z=rec[0][1][0]
+    z=z.lower()
+    mean=alpha.index(z)
 
-mini=randint(0,4)
-mini=mean-mini
-minimum=alpha[mini]
+    mini=randint(0,4)
+    mini=mean-mini
+    minimum=alpha[mini]
 
-maxi=randint(0,4)
-maxi=mean+maxi
-maximum=alpha[maxi]
-
-
-print(str(questions[numéro])+str(minimum)+" et "+str(maximum))
-print()
-print()
-final=[]
-for i in range(mini,maxi+1):
-
-    other="SELECT nom FROM pays WHERE nom LIKE '"+str(alpha[i])+"%'"
-
-    fin=AffichezDB(other)
-    for j in range(0,len(fin)-1):
-        final.append(fin[j][0])
-print(final)
+    maxi=randint(0,4)
+    maxi=mean+maxi
+    maximum=alpha[maxi]
 
 
+    print(str(question)+str(minimum)+" et "+str(maximum))
+    print()
+    print()
+    final=[]
+    for i in range(mini,maxi+1):
+
+        other="SELECT nom FROM pays WHERE nom LIKE '"+str(alpha[i])+"%'"
+
+        fin=AffichezDB(other)
+        for j in range(0,len(fin)-1):
+            final.append(fin[j][0])
+    print(final)
+
+
+
+def Ques2(question):
+    
+    
+#/////////////////////////////////////////////////////////////////////////
+NewQuest(memory)
+NewQuest(memory)
+NewQuest(memory)
+print(memory)
 
 
 
