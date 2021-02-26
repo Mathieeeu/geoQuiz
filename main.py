@@ -15,6 +15,13 @@ def page1():
     bouton_quit = StringVar()
     bouton_quit=Button(menu, text='Quitter',command=quitter, font=police1)
     bouton_quit.place(x=(int(longueur)/2)-100,y=450,width=200, height=50)
+
+    image_logo = Label(menu, image="")
+    file_logo="logo.png"
+    logo = PhotoImage(file=file_logo)
+    image_logo.configure(image=logo)
+    image_logo.image = logo
+    image_logo.place(x=625,y=195,width=70, height=30)
     
     print('p1 appelé')
 
@@ -141,48 +148,51 @@ def recherche():
 
 def test_reponse():
 
+    global reponse1
+    global reponse2
+    global reponse3
+    global reponse4
+    global reponse5
+
     reponse_simp=simp.simp(var_reponse.get())
-    
-    if str(reponse_simp) in eval('reponse'+str(nb_reponse_juste.get()+1)) :
 
-        nb_reponse_juste.set(nb_reponse_juste.get()+1)
+    for i in range (len(eval('reponse'+str(nb_reponse_juste.get()+1)+'_simp'))):
+        if str(reponse_simp) == eval('reponse'+str(nb_reponse_juste.get()+1)+'_simp[i-1]'):
+                                     
 
-            #print(nb_reponse_juste.get())
-            #print(eval('reponse'+str(nb_reponse_juste.get()+1)))
-            
+            nb_reponse_juste.set(nb_reponse_juste.get()+1)
+                
 
-        if nb_reponse_juste.get() == 1:
-            reponse_entree1.set(var_reponse.get())
-            label_r1.configure(textvariable=reponse_entree1)
-            label_r2.configure(textvariable=var_reponse)
-            question2.set('Pays européen')
-            
-        if nb_reponse_juste.get() == 2:
-            reponse_entree2.set(var_reponse.get())
-            label_r2.configure(textvariable=reponse_entree2)
-            label_r3.configure(textvariable=var_reponse)
-            question3.set('Pays qui ne parle pas anglais')
-            
-        if nb_reponse_juste.get() == 3:
-            reponse_entree3.set(var_reponse.get())
-            label_r3.configure(textvariable=reponse_entree3)
-            label_r4.configure(textvariable=var_reponse)
-            question4.set('Pays possédant une partie de l\'Antartique')
-            
-        if nb_reponse_juste.get() == 4:
-            reponse_entree4.set(var_reponse.get())
-            label_r4.configure(textvariable=reponse_entree4)
-            label_r5.configure(textvariable=var_reponse)
-            question5.set('Pays dont la capitale est Paris')
-            
-        if nb_reponse_juste.get() == 5:
-            reponse_entree5.set(var_reponse.get())
-            label_r5.configure(textvariable=reponse_entree5)
-            LabelEntry = Label(jeu, text='Gagné!!!', width=40, font=police1, bg = 'yellow')
-            LabelEntry.place(x=1050,y=600,width=200, height=70)
-            page3()
-            
-        var_reponse.set('')
+            if nb_reponse_juste.get() == 1:
+                reponse_entree1.set(str(reponse1[i-1]))
+                label_r1.configure(textvariable=reponse_entree1)
+                label_r2.configure(textvariable=var_reponse)
+                question2.set('Pays européen')
+                
+            if nb_reponse_juste.get() == 2:
+                reponse_entree2.set(str(reponse2[i-1]))
+                label_r2.configure(textvariable=reponse_entree2)
+                label_r3.configure(textvariable=var_reponse)
+                question3.set('Pays qui ne parle pas anglais')
+                
+            if nb_reponse_juste.get() == 3:
+                reponse_entree3.set(str(reponse3[i-1]))
+                label_r3.configure(textvariable=reponse_entree3)
+                label_r4.configure(textvariable=var_reponse)
+                question4.set('Pays possédant une partie de l\'Antartique')
+                
+            if nb_reponse_juste.get() == 4:
+                reponse_entree4.set(str(reponse4[i-1]))
+                label_r4.configure(textvariable=reponse_entree4)
+                label_r5.configure(textvariable=var_reponse)
+                question5.set('Pays dont la capitale est Paris')
+                
+            if nb_reponse_juste.get() == 5:
+                reponse_entree5.set(str(reponse5[i-1]))
+                label_r5.configure(textvariable=reponse_entree5)
+                page3()
+                
+            var_reponse.set('')
 
 def retour(key):
     page1()
@@ -207,20 +217,33 @@ fenetre.bind('<KeyPress>', callback)
 fenetre.bind('<Escape>', retour)
 
 
-reponse1=['algerie','allemagne','france','norvege','royaume uni']
-reponse2=['allemagne','france','norvege','royaume uni']
-reponse3=['allemagne','france','norvege']
-reponse4=['france','norvege']
-reponse5=['france']
+reponse1=['Algerie','Allemagne','France','Norvège','Royaume-Uni']
+print(reponse1[2])
+reponse2=['Allemagne','France','Norvège','Royaume-Uni']
+reponse3=['Allemagne','France','Norvège']
+reponse4=['France','Norvège']
+reponse5=['France']
+
+reponse1_simp=simp.simp_list(reponse1)
+reponse2_simp=simp.simp_list(reponse2)
+reponse3_simp=simp.simp_list(reponse3)
+reponse4_simp=simp.simp_list(reponse4)
+reponse5_simp=simp.simp_list(reponse5)
 
 var_reponse = StringVar()
 nb_reponse_juste = IntVar(0)
-reponse_entree1=StringVar()
 
+reponse_entree1=StringVar()
 reponse_entree2=StringVar()
 reponse_entree3=StringVar()
 reponse_entree4=StringVar()
 reponse_entree5=StringVar()
+
+reponse_entree1_simp=StringVar()
+reponse_entree2_simp=StringVar()
+reponse_entree3_simp=StringVar()
+reponse_entree4_simp=StringVar()
+reponse_entree5_simp=StringVar()
 
 question1=StringVar()
 question2=StringVar()
