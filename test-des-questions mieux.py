@@ -157,11 +157,10 @@ while 1:
         
         print("\n\nla condititon était    --------->",enigme(attribut))
         
-        if issues < 20 :
+        if issues < 10:
             tirage = True
-        else : break
-    #if input("")=="":
-      #  nompays=random()
-        #tirage=True
+        elif input("")=="":
+            nompays=random()
+            tirage=True
     
         
