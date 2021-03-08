@@ -3,27 +3,33 @@ import tkinter.font as tkFont
 import simp
 import time
 
-def page1():
+def page1(xx,yy):
     global menu
     reset()
     menu.place(x=0, y=0)
     
     bouton_jouer = StringVar()
     bouton_jouer=Button(menu, text='Jouer',command=page2, font=police1)
-    bouton_jouer.place(x=(int(longueur)/2)-100,y=350,width=200, height=50)
+    bouton_jouer.place(x=xx,y=yy,width=200, height=50)
+    print(xx)
+    print(yy)
 
     bouton_quit = StringVar()
     bouton_quit=Button(menu, text='Quitter',command=quitter, font=police1)
-    bouton_quit.place(x=(int(longueur)/2)-100,y=450,width=200, height=50)
+    bouton_quit.place(x=(int(longueur)/2)-100,y=550,width=200, height=50)
 
     image_logo = Label(menu, image="")
     file_logo="logo.png"
     logo = PhotoImage(file=file_logo)
     image_logo.configure(image=logo)
     image_logo.image = logo
-    image_logo.place(x=625,y=195,width=70, height=30)
+    image_logo.place(x=440,y=150,width=624, height=240)
     
-    print('p1 appelé')
+    #print('p1 appelé')
+
+    menu.bind('<Motion>', motion)
+
+
 
 def page2():
     global jeu
@@ -40,7 +46,7 @@ def page2():
     t0 = time.time()
 
     bouton_retour = StringVar()
-    bouton_retour=Button(jeu, text='Retour', command=page1, font=police1)
+    bouton_retour=Button(jeu, text='Retour', command=retour, font=police1)
     bouton_retour.place(x=int(longueur)-210,y=int(largeur)-60,width=200, height=50)
 
     print('p2 appelé')
@@ -99,7 +105,7 @@ def page3():
     bouton_rejouer.place(x=(int(longueur)/2)-100,y=400,width=200, height=50)
 
     bouton_menu = StringVar()
-    bouton_menu=Button(gagne, text='Menu', command=page1, font=police1)
+    bouton_menu=Button(gagne, text='Menu', command=retour, font=police1)
     bouton_menu.place(x=(int(longueur)/2)-100,y=475,width=200, height=50)
 
     bouton_quitter = StringVar()
@@ -194,8 +200,24 @@ def test_reponse():
                 
             var_reponse.set('')
 
-def retour(key):
-    page1()
+def echap(key):
+    retour()
+    
+def retour():
+    page1(620,450)
+
+def f_follow(key):
+    if follow.get()!='1':
+        follow.set('1')
+    else :
+        follow.set('0')
+
+
+def motion(event):
+    xx, yy = event.x, event.y
+    print('{}, {}'.format(xx, yy))
+    if follow.get()=='1':
+        page1((xx-100),(yy-25))
 
 
 
@@ -215,6 +237,9 @@ gagne = Canvas(fenetre, width=longueur, height=largeur)
 
 fenetre.bind('<KeyPress>', callback)
 fenetre.bind('<Escape>', retour)
+fenetre.bind('a', f_follow)
+
+
 
 
 reponse1=['Algerie','Allemagne','France','Norvège','Royaume-Uni']
@@ -232,6 +257,8 @@ reponse5_simp=simp.simp_list(reponse5)
 
 var_reponse = StringVar()
 nb_reponse_juste = IntVar(0)
+
+follow = StringVar()
 
 reponse_entree1=StringVar()
 reponse_entree2=StringVar()
@@ -254,5 +281,5 @@ question5=StringVar()
 question1.set('Pays avec un drapeau à 3 couleurs')
 
 
-page1()
+page1(620,450)
 menu.mainloop()
