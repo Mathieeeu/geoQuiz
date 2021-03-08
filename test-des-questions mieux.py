@@ -72,7 +72,7 @@ def question(pays,attribut):
             try:
                 i1=liste[i+1]
             except:
-                i1=999999999
+                i1=9999999999
             if liste[i] <= pays.superficie and pays.superficie <= i1 :
                 return(liste[i],i1)
     if attribut == "population":
@@ -81,7 +81,7 @@ def question(pays,attribut):
             try:
                 i1=liste[i+1]
             except:
-                i1=999999999
+                i1=9999999999
             if liste[i] <= pays.population and pays.population <= i1 :
                 return(liste[i],i1)
     if attribut == "initiale_pays":
