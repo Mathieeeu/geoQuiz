@@ -118,6 +118,7 @@ def question(pays,attribut):
         return mot
 
 def calcul(valeur,attribut):
+    global commandeSQL
     if attribut == "initiale_nom" or attribut == "initiale_capitale":   # POUR LES LETTRE
         attribut=attribut.replace("initiale_","")
         condition = (attribut + " like \'"+valeur+"%'")
@@ -127,8 +128,12 @@ def calcul(valeur,attribut):
     cursor = sqliteConnection.cursor()
     #ecriture de la requéte, on récupére le contenu de la listeDeroulante avec la fonction .get()
     sqlite_select_Query = ("select nom from pays where "+ condition)
+    commandeSQL += (" and "  + sqlite_select_Query.replace("select nom from pays where ",""))
+    if commandeSQL.startswith("select nom from pays where  and"):
+        commandeSQL=commandeSQL.replace("where  and","where")
+    print("\n\nla commande c'est "+commandeSQL+"\n\n")
     #execution de la requéte
-    cursor.execute(sqlite_select_Query)
+    cursor.execute(commandeSQL)
     #on place tout les enregistrements dans une variable record
     record = cursor.fetchall()
     print(record)
@@ -136,8 +141,9 @@ def calcul(valeur,attribut):
 
 
 # listealpha=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
-
+etape = 4
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+commandeSQL = "select nom from pays where "
 tirage=True
 nompays=random()
 listeQ=["superficie","initiale_nom","initiale_capitale","population"]
@@ -146,21 +152,31 @@ while 1:
         print("______________________________________________________\n"+str(nompays))
         pays1=AffichezDB(nompays)
         tirage=False
+        
         print(pays1.affichageinfos())
 
 
         print("\n#############################################")
-        attribut = listeQ[randint(0,len(listeQ)-1)]
-        valeur = question(pays1,attribut)
-        issues = calcul(valeur,attribut)
-        print("\n\n\nIl y a un cetain combre de possiblites qui est egal au chiffr esuviant ------------>        ",issues)
+        for i in range(etape):
+            attribut = listeQ[randint(0,len(listeQ)-1)]
+            listeQ.pop(listeQ.index(attribut))
+            print(listeQ)
+            valeur = question(pays1,attribut)
+            issues = calcul(valeur,attribut)
+            print("\n\n\nIl y a un cetain combre de possiblites qui est egal au chiffre suviant ------------>        ",issues)
         
-        print("\n\nla condititon était    --------->",enigme(attribut))
+            print("\n\nla condititon était    --------->",enigme(attribut))
         
-        if issues < 10:
-            tirage = True
-        elif input("")=="":
-            nompays=random()
-            tirage=True
-    
+            if (issues < 20 and i == 0) or (issues < 10 and i == 1) or (issues < 5 and i == 2)  or (issues!= 1  and i ==3):
+                tirage = True
+                listeQ=["superficie","initiale_nom","initiale_capitale","population"]
+                commandeSQL = "select nom from pays where "
+                print("a")
+                break
+            """
+            elif input("")=="":
+                nompays=random()
+                listeQ=["superficie","initiale_nom","initiale_capitale","population"]
+                tirage=True
+            """
         
