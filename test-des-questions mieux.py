@@ -79,6 +79,12 @@ def enigme(attribut):
     if attribut == "initiale_capitale" :
         initiale_cap=question(pays1,"initiale_capitale")
         return("La capitale de ce pays commence par un "+str(initiale_cap))
+    if attribut == "initiale_capitale_entre" :
+        initiale_capmin,initiale_capmax=question(pays1,"initiale_capitale_entre")
+        return("La capitale de ce pays commence par une lettre entre "+str(initiale_capmin)+" et " +str(initiale_capmax))
+    if attribut == "initiale_nom_entre" :
+        initiale_nommin,initiale_nommax=question(pays1,"initiale_nom_entre")
+        return("Le nom de ce pays commence par une lettre entre "+str(initiale_nommin)+" et " +str(initiale_nommax))
         
         #print(AffichezDB(nompays,listeQ[randint(0,len(listeQ)-1)]))
 
@@ -93,7 +99,7 @@ def question(pays,attribut):
                 i1=9999999999
             if liste[i] <= pays.superficie and pays.superficie <= i1 :
                 return(liste[i],i1)
-    if attribut == "population":
+    elif attribut == "population":
         liste=[0,10000,100000,1000000,5000000,10000000,50000000,100000000] #0 10k 100k 1M 5M 10M 50M 100M
         for i in range(len(liste)):
             try:
@@ -102,25 +108,42 @@ def question(pays,attribut):
                 i1=9999999999
             if liste[i] <= pays.population and pays.population <= i1 :
                 return(liste[i],i1)
-    if attribut == "initiale_nom":
+    elif attribut == "initiale_nom" or attribut == "initiale_nom_entre":
         mot=pays.nom[0]
         mot = mot.lower()
         mot = mot.replace("é","e")
         mot = mot.replace("î","i")
         mot=mot.upper()
-        return mot
-    if attribut == "initiale_capitale":
+    elif attribut == "initiale_capitale" or attribut == "initiale_capitale_entre":
         mot=pays.capitale[0]
         mot = mot.lower()
         mot = mot.replace("é","e")
         mot = mot.replace("î","i")
         mot=mot.upper()
-        return mot
+    if attribut.endswith("_entre"):
+        print("POSITION PRECISE ",listealpha.index(mot[0]))
+        if (listealpha.index(mot[0]) > 6) and (listealpha.index(mot[0]) < 17 ):
+            selecteur=randint((listealpha.index(mot[0])-7),listealpha.index(mot[0]))
+        elif (listealpha.index(mot[0]) <= 6) :
+            selecteur=randint(0,listealpha.index(mot[0]))
+        elif (listealpha.index(mot[0]) >= 17):
+            selecteur=18
+        print("POSITION RANDOMISEEEEEEEE",selecteur,selecteur+8)
+        print( "on veut une lettre entre " + listealpha[selecteur] + " et " + listealpha[selecteur+8])
+        return listealpha[selecteur],listealpha[selecteur+8]
+    return mot
+        
+        
+        
+    
 
 def calcul(valeur,attribut):
     global commandeSQL
     if attribut == "initiale_nom" or attribut == "initiale_capitale":   # POUR LES LETTRE
         attribut=attribut.replace("initiale_","")
+        print(attribut)
+        if attribut .endswith("_entre"):
+            attribut=attribut.replace("_entre","")
         condition = (attribut + " like \'"+valeur+"%'")
     else :                                                                                          #POUR LES CHIFFRES MIAM
         condition = (attribut + " > " + str(valeur[0]) + " and " + attribut + " < " + str(valeur[1]))
@@ -140,13 +163,13 @@ def calcul(valeur,attribut):
     return(len(record))
 
 
-# listealpha=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
+listealpha=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
 etape = 4
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 commandeSQL = "select nom from pays where "
 tirage=True
 nompays=random()
-listeQ=["superficie","initiale_nom","initiale_capitale","population"]
+listeQ=["initiale_nom_entre","initiale_capitale_entre"] #"superficie","initiale_nom","initiale_capitale","population",
 while 1:
     if tirage==True:
         print("______________________________________________________\n"+str(nompays))
@@ -163,20 +186,21 @@ while 1:
             print(listeQ)
             valeur = question(pays1,attribut)
             issues = calcul(valeur,attribut)
-            print("\n\n\nIl y a un cetain combre de possiblites qui est egal au chiffre suviant ------------>        ",issues)
+            print("\n\n\nIl y a un cetain combre de possiblites qui est egal au chiffre suviant ------------>        ",issues," en ",i+1,"etapes")
         
             print("\n\nla condititon était    --------->",enigme(attribut))
         
-            if (issues < 20 and i == 0) or (issues < 10 and i == 1) or (issues < 5 and i == 2)  or (issues!= 1  and i ==3):
+            """if (issues < 20 and i == 0) or (issues < 10 and i == 1) or (issues < 5 and i == 2)  or (issues!= 1  and i ==3):
                 tirage = True
                 listeQ=["superficie","initiale_nom","initiale_capitale","population"]
                 commandeSQL = "select nom from pays where "
                 print("a")
-                break
-            """
-            elif input("")=="":
+                nompays=random()
+                break"""
+            
+            if input("")=="":
                 nompays=random()
                 listeQ=["superficie","initiale_nom","initiale_capitale","population"]
                 tirage=True
-            """
+            
         
