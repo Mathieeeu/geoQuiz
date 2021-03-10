@@ -11,8 +11,7 @@ def page1(xx,yy):
     bouton_jouer = StringVar()
     bouton_jouer=Button(menu, text='Jouer',command=page2, font=police1)
     bouton_jouer.place(x=xx,y=yy,width=200, height=50)
-    print(xx)
-    print(yy)
+
 
     bouton_quit = StringVar()
     bouton_quit=Button(menu, text='Quitter',command=quitter, font=police1)
@@ -215,7 +214,6 @@ def f_follow(key):
 
 def motion(event):
     xx, yy = event.x, event.y
-    print('{}, {}'.format(xx, yy))
     if follow.get()=='1':
         page1((xx-100),(yy-25))
 
