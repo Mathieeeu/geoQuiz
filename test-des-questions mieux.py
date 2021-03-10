@@ -9,6 +9,7 @@ class pays:
         self.population=population
         self.point_culminant=point_culminant
         self.superficie=superficie
+        #self.frontieres=frontieres
 
     def affichageinfos(self):
         infos=[self.nom,self.capitale,self.population,self.point_culminant,self.superficie]
@@ -65,28 +66,32 @@ def AffichezDB(nom):
 def enigme(attribut):
     
     if attribut=="superficie_entre":
-        supermin,supermax = question(pays1,"superficie")
+        supermin,supermax = question(pays1,"superficie_entre")
         if supermax == 999999999 :
-            return("Ce pays fait plus de " + str(supermin) + " km² !")
-        else : return("Ce pays fait entre " + str(supermin) + " et " + str(supermax) + " km² !")
+            print("Ce pays fait plus de " + str(supermin) + " km² !")
+            return(supermin)
+        else :
+            print("Ce pays fait entre " + str(supermin) + " et " + str(supermax) + " km² !")
+            return [supermin,supermax]
 
-    if attribut=="superficie_plus":
-        supermin,supermax = question(pays1,"superficie")
-        if supermax == 999999999 :
-            return("Ce pays fait plus de " + str(supermin) + " km² !")
-        else : return("Ce pays fait entre " + str(supermin) + " et " + str(supermax) + " km² !")
+    if attribut=="superficie_sup":
+        supermin = question(pays1,"superficie_sup")
+        print("Ce pays fait plus de " + str(supermin) + " km² !")
+        return supermin
 
-        if attribut=="superficie_moins":
-        supermin,supermax = question(pays1,"superficie")
-        if supermax == 999999999 :
-            return("Ce pays fait plus de " + str(supermin) + " km² !")
-        else : return("Ce pays fait entre " + str(supermin) + " et " + str(supermax) + " km² !")
+    if attribut=="superficie_inf":
+        supermax = question(pays1,"superficie_inf")
+        print("Ce pays fait moins de " + str(supermax) + " km² !")
+        return supermax
         
     if attribut == "population" :
         popmin,popmax = question(pays1,"population")
         if popmax == 999999999 :
-            return("Ce pays compte plus de " + str(popmin) + " habitants !")
-        else : return("Ce pays compte entre " + str(popmin) + " et " + str(popmax) + " habitants !")
+            print("Ce pays compte plus de " + str(popmin) + " habitants !")
+            return popmin
+        else :
+            print("Ce pays compte entre " + str(popmin) + " et " + str(popmax) + " habitants !")
+            return [popmin,popmax]
         
     if attribut == "initiale_nom" :
         initiale_pays=question(pays1,"initiale_nom")
@@ -95,12 +100,16 @@ def enigme(attribut):
     if attribut == "initiale_capitale" :
         initiale_cap=question(pays1,"initiale_capitale")
         return("La capitale de ce pays commence par un "+str(initiale_cap))
+
+    if attribut == "initiale_capitale" :
+        initiale_cap=question(pays1,"initiale_capitale")
+        return("La capitale de ce pays commence par un "+str(initiale_cap))
         
         #print(AffichezDB(nompays,listeQ[randint(0,len(listeQ)-1)]))
 
 def question(pays,attribut):
     i1,i2=0,0
-    if attribut == "superficie":
+    if attribut == "superficie_entre":
         liste=[0,100,1000,5000,25000,50000,100000,200000,500000,1000000,2000000] # 0 100 1k 5k 25k 50k 100k 200k 500k 1M 2M
         for i in range(len(liste)):
             try:
@@ -109,6 +118,27 @@ def question(pays,attribut):
                 i1=9999999999
             if liste[i] <= pays.superficie and pays.superficie <= i1 :
                 return(liste[i],i1)
+
+
+
+    if attribut == "superficie_sup":
+        liste=[0,100,1000,5000,25000,50000,100000,200000,500000] # 0 100 1k 5k 25k 50k 100k 200k 500k
+        random = randint(0,len(liste)-1)
+        while liste[random] >= pays.superficie :
+            random = randint(0,len(liste)-1)
+        return(liste[random])
+        
+
+    if attribut == "superficie_inf":
+        liste=[50000,100000,200000,500000,1000000,2000000] # 5k 25k 50k 100k 200k 500k 1M 2M
+        random = randint(0,len(liste)-1)
+        while liste[random] <= pays.superficie :
+            random = randint(0,len(liste)-1)
+        return(liste[random])
+
+
+
+            
     if attribut == "population":
         liste=[0,10000,100000,1000000,5000000,10000000,50000000,100000000] #0 10k 100k 1M 5M 10M 50M 100M
         for i in range(len(liste)):
@@ -118,6 +148,7 @@ def question(pays,attribut):
                 i1=9999999999
             if liste[i] <= pays.population and pays.population <= i1 :
                 return(liste[i],i1)
+            
     if attribut == "initiale_nom":
         mot=pays.nom[0]
         mot = mot.lower()
@@ -137,8 +168,20 @@ def calcul(valeur,attribut):
     if attribut == "initiale_nom" or attribut == "initiale_capitale":   # POUR LES LETTRE
         attribut=attribut.replace("initiale_","")
         condition = (attribut + " like \'"+valeur+"%'")
-    else :                                                                                          #POUR LES CHIFFRES MIAM
+    elif attribut == "superficie_entre":                                                                                        #POUR LES CHIFFRES MIAM
+        attribut=attribut.replace("_entre","")
         condition = (attribut + " > " + str(valeur[0]) + " and " + attribut + " < " + str(valeur[1]))
+    elif attribut == "superficie_sup":                                                                                          #POUR LES CHIFFRES MIAM
+        attribut=attribut.replace("_sup","")
+        condition = (attribut + " > " + str(valeur))
+    elif attribut == "superficie_inf":                                                                                          #POUR LES CHIFFRES MIAM
+        attribut=attribut.replace("_inf","")
+        condition = (attribut + " < " + str(valeur))
+    else:
+        #attribut=attribut.replace("_entre","")
+        condition = (attribut + " > " + str(valeur[0]) + " and " + attribut + " < " + str(valeur[1]))
+        
+        print(condition)
     sqliteConnection = connexion()
     cursor = sqliteConnection.cursor()
     #ecriture de la requéte, on récupére le contenu de la listeDeroulante avec la fonction .get()
@@ -156,22 +199,25 @@ def calcul(valeur,attribut):
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 tirage=True
 nompays=random()
-listeQ=["superficie","initiale_nom","initiale_capitale","population"]
+listeQ=["population"]#"superficie_entre","superficie_sup","superficie_inf","initiale_nom","initiale_capitale",]
 while 1:
     if tirage==True:
         print("______________________________________________________\n"+str(nompays))
         pays1=AffichezDB(nompays)
         tirage=False
         print(pays1.affichageinfos())
-
+        
 
         print("\n#############################################")
         attribut = listeQ[randint(0,len(listeQ)-1)]
-        valeur = question(pays1,attribut)
+        valeur = enigme(attribut)
+        print(valeur)
         issues = calcul(valeur,attribut)
-        print("\n\n\nIl y a un cetain combre de possiblites qui est egal au chiffr esuviant ------------>        ",issues)
+        print(issues)
+        #issues = 11
+        print("\n\n\nIl y a un cetain combre de possiblites qui est egal au chiffre suviant ------------>        ",issues)
         
-        print("\n\nla condititon était    --------->",enigme(attribut))
+
         
         if issues < 10:
             tirage = True
