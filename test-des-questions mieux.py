@@ -83,6 +83,7 @@ def enigme(attribut):
         supermax = question(pays1,"superficie_inf")
         print("Ce pays fait moins de " + str(supermax) + " km² !")
         return supermax
+
         
     if attribut == "population" :
         popmin,popmax = question(pays1,"population")
@@ -92,6 +93,19 @@ def enigme(attribut):
         else :
             print("Ce pays compte entre " + str(popmin) + " et " + str(popmax) + " habitants !")
             return [popmin,popmax]
+
+    if attribut=="population_sup":
+        supermin = question(pays1,"superficie_sup")
+        print("Ce pays fait plus de " + str(supermin) + " km² !")
+        return supermin
+
+    if attribut=="population_inf":
+        supermax = question(pays1,"superficie_inf")
+        print("Ce pays fait moins de " + str(supermax) + " km² !")
+        return supermax
+
+
+    
         
     if attribut == "initiale_nom" :
         initiale_pays=question(pays1,"initiale_nom")
@@ -199,7 +213,7 @@ def calcul(valeur,attribut):
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 tirage=True
 nompays=random()
-listeQ=["population"]#"superficie_entre","superficie_sup","superficie_inf","initiale_nom","initiale_capitale",]
+listeQ=["population","poplation_sup","population_inf"]#"superficie_entre","superficie_sup","superficie_inf","initiale_nom","initiale_capitale",]
 while 1:
     if tirage==True:
         print("______________________________________________________\n"+str(nompays))
