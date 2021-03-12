@@ -109,15 +109,14 @@ def enigme(attribut):
         
     if attribut == "initiale_nom" :
         initiale_pays=question(pays1,"initiale_nom")
-        return("Ce pays commence par un "+str(initiale_pays))
+        print("Ce pays commence par un "+str(initiale_pays))
+        return initiale_pays
     
     if attribut == "initiale_capitale" :
         initiale_cap=question(pays1,"initiale_capitale")
-        return("La capitale de ce pays commence par un "+str(initiale_cap))
+        print("La capitale de ce pays commence par un "+str(initiale_cap))
+        return initiale_cap
 
-    if attribut == "initiale_capitale" :
-        initiale_cap=question(pays1,"initiale_capitale")
-        return("La capitale de ce pays commence par un "+str(initiale_cap))
         
         #print(AffichezDB(nompays,listeQ[randint(0,len(listeQ)-1)]))
 
@@ -228,7 +227,7 @@ def calcul(valeur,attribut):
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 tirage=True
 nompays=random()
-listeQ=["population_entre","population_sup","population_inf"]#"superficie_entre","superficie_sup","superficie_inf","initiale_nom","initiale_capitale",]
+listeQ=["initiale_nom","initiale_capitale","population_entre","population_sup","population_inf","superficie_entre","superficie_sup","superficie_inf"]
 while 1:
     if tirage==True:
         print("______________________________________________________\n"+str(nompays))
@@ -239,6 +238,7 @@ while 1:
 
         print("\n#############################################")
         attribut = listeQ[randint(0,len(listeQ)-1)]
+        print(attribut)
         valeur = enigme(attribut)
         print(valeur)
         issues = calcul(valeur,attribut)
@@ -248,9 +248,9 @@ while 1:
         
 
         
-        if issues < 10:
-            tirage = True
-        elif input("")=="":
+        #if issues < 10:
+           # tirage = True
+        if input("")=="":
             nompays=random()
             tirage=True
     
