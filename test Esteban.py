@@ -85,8 +85,9 @@ def AllExcept(conditions):
 
 #nom pays     
 def Ques1(question,conditions):
-    print(rec[0][1])
 
+    print(rec[0][1])
+    
     z=rec[0][1][0]
     z=z.lower()
     if z=="î" :
@@ -117,6 +118,9 @@ def Ques1(question,conditions):
         fin=AffichezDB(other)
         for j in range(0,len(fin)-1):
             final.append(fin[j][0])
+            
+                
+    print("MARK")
     print(final)
     conditions=str(conditions)+"WHERE letter BETWEEN "+str(mini)+" AND "+str(maxi)
     AllExcept(conditions)
