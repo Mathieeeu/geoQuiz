@@ -85,8 +85,8 @@ def enigme(attribut):
         return supermax
 
         
-    if attribut == "population" :
-        popmin,popmax = question(pays1,"population")
+    if attribut == "population_entre" :
+        popmin,popmax = question(pays1,"population_entre")
         if popmax == 999999999 :
             print("Ce pays compte plus de " + str(popmin) + " habitants !")
             return popmin
@@ -96,12 +96,12 @@ def enigme(attribut):
 
     if attribut=="population_sup":
         supermin = question(pays1,"superficie_sup")
-        print("Ce pays fait plus de " + str(supermin) + " km² !")
+        print("Ce pays compte plus de " + str(supermin) + " habitants !")
         return supermin
 
     if attribut=="population_inf":
         supermax = question(pays1,"superficie_inf")
-        print("Ce pays fait moins de " + str(supermax) + " km² !")
+        print("Ce pays compte moins de " + str(supermax) + " habitants !")
         return supermax
 
 
@@ -153,7 +153,7 @@ def question(pays,attribut):
 
 
             
-    if attribut == "population":
+    if attribut == "population_entre":
         liste=[0,10000,100000,1000000,5000000,10000000,50000000,100000000] #0 10k 100k 1M 5M 10M 50M 100M
         for i in range(len(liste)):
             try:
@@ -162,6 +162,21 @@ def question(pays,attribut):
                 i1=9999999999
             if liste[i] <= pays.population and pays.population <= i1 :
                 return(liste[i],i1)
+
+    if attribut == "population_sup":
+        liste=[0,10000,100000,1000000,5000000,10000000] #0 10k 100k 1M 5M 10M
+        random = randint(0,len(liste)-1)
+        while liste[random] >= pays.population :
+            random = randint(0,len(liste)-1)
+        return(liste[random])
+        
+
+    if attribut == "population_inf":
+        liste=[100000,1000000,5000000,10000000,50000000,100000000] #100k 1M 5M 10M 50M 100MM
+        random = randint(0,len(liste)-1)
+        while liste[random] <= pays.population :
+            random = randint(0,len(liste)-1)
+        return(liste[random])
             
     if attribut == "initiale_nom":
         mot=pays.nom[0]
@@ -182,13 +197,13 @@ def calcul(valeur,attribut):
     if attribut == "initiale_nom" or attribut == "initiale_capitale":   # POUR LES LETTRE
         attribut=attribut.replace("initiale_","")
         condition = (attribut + " like \'"+valeur+"%'")
-    elif attribut == "superficie_entre":                                                                                        #POUR LES CHIFFRES MIAM
+    elif attribut == "superficie_entre" or attribut == "population_entre":                                                                                        #POUR LES CHIFFRES MIAM
         attribut=attribut.replace("_entre","")
         condition = (attribut + " > " + str(valeur[0]) + " and " + attribut + " < " + str(valeur[1]))
-    elif attribut == "superficie_sup":                                                                                          #POUR LES CHIFFRES MIAM
+    elif attribut == "superficie_sup" or attribut == "population_sup":                                                                                          #POUR LES CHIFFRES MIAM
         attribut=attribut.replace("_sup","")
         condition = (attribut + " > " + str(valeur))
-    elif attribut == "superficie_inf":                                                                                          #POUR LES CHIFFRES MIAM
+    elif attribut == "superficie_inf" or attribut == "population_inf":                                                                                          #POUR LES CHIFFRES MIAM
         attribut=attribut.replace("_inf","")
         condition = (attribut + " < " + str(valeur))
     else:
@@ -213,7 +228,7 @@ def calcul(valeur,attribut):
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 tirage=True
 nompays=random()
-listeQ=["population","poplation_sup","population_inf"]#"superficie_entre","superficie_sup","superficie_inf","initiale_nom","initiale_capitale",]
+listeQ=["population_entre","population_sup","population_inf"]#"superficie_entre","superficie_sup","superficie_inf","initiale_nom","initiale_capitale",]
 while 1:
     if tirage==True:
         print("______________________________________________________\n"+str(nompays))
