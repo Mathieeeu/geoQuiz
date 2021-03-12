@@ -89,6 +89,7 @@ def enigme(attribut):
         #print(AffichezDB(nompays,listeQ[randint(0,len(listeQ)-1)]))
 
 def question(pays,attribut):
+    global selecteur
     i1,i2=0,0
     if attribut == "superficie":
         liste=[0,100,1000,5000,25000,50000,100000,200000,500000,1000000,2000000] # 0 100 1k 5k 25k 50k 100k 200k 500k 1M 2M
@@ -126,8 +127,8 @@ def question(pays,attribut):
             selecteur=randint((listealpha.index(mot[0])-7),listealpha.index(mot[0]))
         elif (listealpha.index(mot[0]) <= 6) :
             selecteur=randint(0,listealpha.index(mot[0]))
-        elif (listealpha.index(mot[0]) >= 17):
-            selecteur=18
+        elif (listealpha.index(mot[0]) >= 16):
+            selecteur=17
         print("POSITION RANDOMISEEEEEEEE",selecteur,selecteur+8)
         print( "on veut une lettre entre " + listealpha[selecteur] + " et " + listealpha[selecteur+8])
         return listealpha[selecteur],listealpha[selecteur+8]
@@ -139,12 +140,16 @@ def question(pays,attribut):
 
 def calcul(valeur,attribut):
     global commandeSQL
-    if attribut == "initiale_nom" or attribut == "initiale_capitale":   # POUR LES LETTRE
+    if attribut == "initiale_nom" or attribut == "initiale_capitale" or attribut == "initiale_nom_entre" or attribut == "initiale_capitale_entre":   # POUR LES LETTRE
         attribut=attribut.replace("initiale_","")
-        print(attribut)
-        if attribut .endswith("_entre"):
+        if attribut.endswith("_entre"):
             attribut=attribut.replace("_entre","")
-        condition = (attribut + " like \'"+valeur+"%'")
+            condition=""
+            for i in range (9):
+                condition +=(attribut + " like \'"+listealpha[listealpha.index(valeur[0])+i]+"%' or ")
+            condition += "nettoyeur"
+            condition = condition.replace(" or nettoyeur","")
+        else: condition = (attribut + " like \'"+str(valeur)+"%'")
     else :                                                                                          #POUR LES CHIFFRES MIAM
         condition = (attribut + " > " + str(valeur[0]) + " and " + attribut + " < " + str(valeur[1]))
     sqliteConnection = connexion()
@@ -154,7 +159,7 @@ def calcul(valeur,attribut):
     commandeSQL += (" and "  + sqlite_select_Query.replace("select nom from pays where ",""))
     if commandeSQL.startswith("select nom from pays where  and"):
         commandeSQL=commandeSQL.replace("where  and","where")
-    print("\n\nla commande c'est "+commandeSQL+"\n\n")
+    print("\n\nla commande f'est "+commandeSQL+"\n\n")
     #execution de la requéte
     cursor.execute(commandeSQL)
     #on place tout les enregistrements dans une variable record
@@ -169,7 +174,8 @@ etape = 4
 commandeSQL = "select nom from pays where "
 tirage=True
 nompays=random()
-listeQ=["initiale_nom_entre","initiale_capitale_entre"] #"superficie","initiale_nom","initiale_capitale","population",
+listeQ=["superficie","initiale_nom","initiale_capitale","population","initiale_nom_entre","initiale_capitale_entre"] #"superficie","initiale_nom","initiale_capitale","population",
+
 while 1:
     if tirage==True:
         print("______________________________________________________\n"+str(nompays))
@@ -190,17 +196,19 @@ while 1:
         
             print("\n\nla condititon était    --------->",enigme(attribut))
         
-            """if (issues < 20 and i == 0) or (issues < 10 and i == 1) or (issues < 5 and i == 2)  or (issues!= 1  and i ==3):
+            if (issues < 20 and i == 0) or (issues < 10 and i == 1) or (issues < 5 and i == 2)  or (issues!= 1  and i ==3):
                 tirage = True
                 listeQ=["superficie","initiale_nom","initiale_capitale","population"]
                 commandeSQL = "select nom from pays where "
                 print("a")
                 nompays=random()
-                break"""
+                break
             
-            if input("")=="":
+            """if input("")=="":
                 nompays=random()
                 listeQ=["superficie","initiale_nom","initiale_capitale","population"]
-                tirage=True
+                tirage=True"""
+
+
             
         
