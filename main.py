@@ -1,6 +1,7 @@
 from tkinter import *
 import tkinter.font as tkFont
 import simp
+import questions_beta
 import time
 
 def page1(xx,yy):
@@ -240,8 +241,8 @@ fenetre.bind('a', f_follow)
 
 
 
-reponse1=['Algerie','Allemagne','France','Norvège','Royaume-Uni']
-print(reponse1[2])
+reponse1=questions_beta.lancer_tirage() #['Algerie','Allemagne','France','Norvège','Royaume-Uni']
+#print(reponse1[2])
 reponse2=['Allemagne','France','Norvège','Royaume-Uni']
 reponse3=['Allemagne','France','Norvège']
 reponse4=['France','Norvège']

@@ -218,17 +218,25 @@ def calcul(valeur,attribut):
     cursor.execute(sqlite_select_Query)
     #on place tout les enregistrements dans une variable record
     record = cursor.fetchall()
-    print(record)
-    return(len(record))
+    print()
+    print()
+    final=[]
+    for j in range(0,len(record)-1):
+        final.append(record[j][0])
+    #print(final)
+    return(final)
+
 
 
 # listealpha=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
 
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-tirage=True
-nompays=random()
-listeQ=["initiale_nom","initiale_capitale","population_entre","population_sup","population_inf","superficie_entre","superficie_sup","superficie_inf"]
-while 1:
+def lancer_tirage():
+    global tirage, nompays, listeQ, pays1, attribut, valeur, issues
+    tirage=True
+    nompays=random()
+    listeQ=["initiale_nom","initiale_capitale","population_entre","population_sup","population_inf","superficie_entre","superficie_sup","superficie_inf"]
+
     if tirage==True:
         print("______________________________________________________\n"+str(nompays))
         pays1=AffichezDB(nompays)
@@ -245,8 +253,7 @@ while 1:
         print(issues)
         #issues = 11
         print("\n\n\nIl y a un cetain combre de possiblites qui est egal au chiffre suviant ------------>        ",issues)
-        
-
+        return issues
         
         #if issues < 10:
            # tirage = True
