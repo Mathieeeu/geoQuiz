@@ -131,6 +131,7 @@ def question(pays,attribut):
             listefrontieres=pays.frontieres.split(',')
             print(listefrontieres)
             frontieres=[]
+            print(attribut[-1])
             for i in range (int(attribut[-1])):
                 try:
                     nb=randint(0,len(listefrontieres)-1)
@@ -206,7 +207,8 @@ commandeSQL = "select nom from pays where "
 tirage=True
 nompays=random()
 listeQ=["frontieres_1","frontieres_2","superficie","initiale_nom","initiale_capitale","population","initiale_nom_entre","initiale_capitale_entre"]
-listeQbackup=listeQ
+listeQbackup=listeQ.copy()
+
 while 1:
     if tirage==True:
         print("______________________________________________________\n"+str(nompays))
@@ -219,9 +221,9 @@ while 1:
         print("\n#############################################")
         for j in range(etape):
             attribut = listeQ[randint(0,len(listeQ)-1)]
-            if attribut.startswith("frontieres_"):
+            if attribut.startswith("frontieres"):
                 for i in listeQ:
-                    if i.startswith("frontieres_"):
+                    if i.startswith("frontieres"):
                         listeQ.pop(listeQ.index(i))
             elif attribut.startswith("superficie"):
                 for i in listeQ:
@@ -254,8 +256,9 @@ while 1:
             
             if ((issues < 30 and j == 0) or (issues < 12 and j == 1) or (issues < 7 and j == 2)  or (issues < 3  and j ==3) or (issues!=1  and j ==4)):                            #recherche manouelle
                 if input("")=="" :
-                    nompays=random()
                     listeQ=listeQbackup
+                    nompays=random()
+                    
                     tirage=True
                     commandeSQL = "select nom from pays where "
                     break
