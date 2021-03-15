@@ -9,6 +9,9 @@ class pays:
         self.population=population
         self.point_culminant=point_culminant
         self.superficie=superficie
+        if "Côte d'Ivoire" in frontieres:
+            frontieres=frontieres.replace("Côte d'Ivoire","Côte dIvoire")
+            print(frontieres)
         self.frontieres=frontieres
 
     def affichageinfos(self):
@@ -38,7 +41,7 @@ def deconnexion(sqliteConnection):
 
 
 def random():
-    chiffre=randint(1,199)
+    chiffre=randint(31,31)
     sqliteConnection = connexion()
     cursor = sqliteConnection.cursor()
     #ecriture de la requéte, on récupére le contenu de la listeDeroulante avec la fonction .get()
@@ -206,7 +209,15 @@ etape = 5
 commandeSQL = "select nom from pays where "
 tirage=True
 nompays=random()
-listeQ=["frontieres_1","frontieres_2","superficie","initiale_nom","initiale_capitale","population","initiale_nom_entre","initiale_capitale_entre"]
+listeQ0=["frontieres_1","frontieres_2","superficie","initiale_nom","initiale_capitale","population","initiale_nom_entre","initiale_capitale_entre"]
+listeQ1=["frontieres_1","frontieres_2","superficie","initiale_nom","initiale_capitale","population","initiale_nom_entre","initiale_capitale_entre"]
+listeQ2=["frontieres_1","frontieres_2","superficie","initiale_nom","initiale_capitale","population","initiale_nom_entre","initiale_capitale_entre"]
+listeQ3=["frontieres_1","frontieres_2","superficie","initiale_nom","initiale_capitale","population","initiale_nom_entre","initiale_capitale_entre"]
+listeQ4=["frontieres_1","frontieres_2","superficie","initiale_nom","initiale_capitale","population","initiale_nom_entre","initiale_capitale_entre"]
+
+#listeQ0backup,listeQ1backup,listeQ2backup,listeQ3backup,listeQ4backup=listeQ0.copy(),listeQ1.copy(),listeQ2.copy(),listeQ3.copy(),listeQ4.copy()
+
+listeQ=[listeQ0,listeQ1,listeQ2,listeQ3,listeQ4]
 listeQbackup=listeQ.copy()
 
 while 1:
@@ -220,31 +231,31 @@ while 1:
 
         print("\n#############################################")
         for j in range(etape):
-            attribut = listeQ[randint(0,len(listeQ)-1)]
+            attribut = listeQ[j][randint(0,len(listeQ[j])-1)]
             if attribut.startswith("frontieres"):
-                for i in listeQ:
+                for i in listeQ[j]:
                     if i.startswith("frontieres"):
-                        listeQ.pop(listeQ.index(i))
+                        listeQ[j].pop(listeQ[j].index(i))
             elif attribut.startswith("superficie"):
-                for i in listeQ:
+                for i in listeQ[j]:
                     if i.startswith("superficie"):
-                        listeQ.pop(listeQ.index(i))
+                        listeQ[j].pop(listeQ[j].index(i))
             elif attribut.startswith("population"):
-                for i in listeQ:
+                for i in listeQ[j]:
                     if i.startswith("population"):
-                        listeQ.pop(listeQ.index(i))
+                        listeQ[j].pop(listeQ[j].index(i))
             elif attribut.startswith("initiale_nom"):
-                for i in listeQ:
+                for i in listeQ[j]:
                     if i.startswith("initiale_nom"):
-                        listeQ.pop(listeQ.index(i))
+                        listeQ[j].pop(listeQ[j].index(i))
             elif attribut.startswith("initiale_capitale"):
-                for i in listeQ:
+                for i in listeQ[j]:
                     if i.startswith("initiale_capitale"):
-                        listeQ.pop(listeQ.index(i))
-            print(listeQ)
+                        listeQ[j].pop(listeQ[j].index(i))
+            print(listeQ[j])
             valeur = question(pays1,attribut)
             issues = calcul(valeur,attribut)
-            print("\n\n\nIl y a un cetain combre de possiblites qui est egal au chiffre suviant ------------>        ",issues," en ",j+1,"etapes")
+            print("\n\n\nIl y a un cetain combre de possiblites qui est egal au chiffre suviant ------------>        ",issues," en ",j+1,"etapes \n\n")
         
             """if ((issues < 30 and j == 0) or (issues < 12 and j == 1) or (issues < 7 and j == 2)  or (issues < 3  and j ==3) or (issues!=1  and j ==4)):                                   #recherche auto
                 tirage = True
@@ -254,9 +265,9 @@ while 1:
                 nompays=random()
                 break"""
             
-            if ((issues < 30 and j == 0) or (issues < 12 and j == 1) or (issues < 7 and j == 2)  or (issues < 3  and j ==3) or (issues!=1  and j ==4)):                            #recherche manouelle
+            if ((issues <= 30 and j == 0) or (issues <= 12 and j == 1) or (issues <= 7 and j == 2)  or (issues <= 3  and j ==3) or (issues!=1  and j ==4)):                            #recherche manouelle
                 if input("")=="" :
-                    listeQ=listeQbackup
+                    listeQ=listeQbackup.copy()
                     nompays=random()
                     
                     tirage=True
