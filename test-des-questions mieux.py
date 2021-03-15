@@ -3,19 +3,22 @@ from random import *
 question=1
 class pays:
 
-    def __init__(self,nom,capitale,population,point_culminant,superficie,frontieres):
+    def __init__(self,nom,capitale,population,point_culminant,superficie,frontieres,langue,continent,fuseaux):
         self.nom=nom
         self.capitale=capitale
         self.population=population
         self.point_culminant=point_culminant
         self.superficie=superficie
-        if "Côte d'Ivoire" in frontieres:
-            frontieres=frontieres.replace("Côte d'Ivoire","Côte dIvoire")
-            print(frontieres)
         self.frontieres=frontieres
+        self.langue=langue
+        self.continent=continent
+        self.fuseaux=fuseaux
+        #antarctique
+        #tel
+        #acces_mer
 
     def affichageinfos(self):
-        infos=[self.nom,self.capitale,self.population,self.point_culminant,self.superficie,self.frontieres]
+        infos=[self.nom,self.capitale,self.population,self.point_culminant,self.superficie,self.frontieres,self.langue,self.continent,self.fuseaux]
         return infos
 
 
@@ -41,7 +44,7 @@ def deconnexion(sqliteConnection):
 
 
 def random():
-    chiffre=randint(31,31)
+    chiffre=randint(1,199)
     sqliteConnection = connexion()
     cursor = sqliteConnection.cursor()
     #ecriture de la requéte, on récupére le contenu de la listeDeroulante avec la fonction .get()
@@ -62,7 +65,7 @@ def AffichezDB(nom):
     cursor.execute(sqlite_select_Query)
     #on place tout les enregistrements dans une variable record
     record = cursor.fetchall()
-    pays1 = pays(record[0][1],record[0][2],record[0][3],record[0][4],record[0][5],record[0][6])
+    pays1 = pays(record[0][1],record[0][2],record[0][3],record[0][4],record[0][5],record[0][6],record[0][7],record[0][8],record[0][9])
     return pays1
 
 def enigme(attribut):
@@ -92,6 +95,8 @@ def enigme(attribut):
         return("ce pays a une frontière commune avec : "+str(question(pays1,"frontieres_1")))
     elif attribut == ("frontieres_2"):
         return("ce pays a des frontières avec : "+str(question(pays1,"frontieres_2")))
+    elif attribut== ("continent_1"):
+        return("ce pays est sur le continent : "+str(question(pays1,"continent_1")))
         
         #print(AffichezDB(nompays,listeQ[randint(0,len(listeQ)-1)]))
 
@@ -147,6 +152,25 @@ def question(pays,attribut):
         else:
             print("ce pays n'a pas de frontiere fdp")
             return None
+    elif attribut.startswith("continent_"):
+        if attribut == "continent_1":
+            print(pays.continent)
+            liste=[pays.continent]
+        else :
+            listeContinents=["Afrique","Europe","Amérique","Océanie","Asie"]
+            listeContinents.pop(listeContinents.index(pays.continent))
+            liste = [pays.continent,listeContinents[randint(0,len(listeContinents)-1)],pays.continent]
+            liste.pop(choice([0, 2]))
+            print(liste)
+        return liste
+
+
+
+
+
+
+
+        
     if attribut.endswith("_entre"):
         print("POSITION PRECISE ",listealpha.index(mot[0]))
         if (listealpha.index(mot[0]) > 6) and (listealpha.index(mot[0]) < 17 ):
@@ -185,6 +209,10 @@ def calcul(valeur,attribut):
             condition+="netoyyeru)"
             condition=condition. replace(" and netoyyeru","")
         else: condition = "frontieres = 'None'"
+    elif attribut.startswith("continent_"):
+        if len(valeur)==1:
+            condition = "continent ='"+valeur[0]+"'"
+        else : condition = "(continent ='"+valeur[0]+"' or continent ='"+valeur[1]+"')"
     else :                                                                                          #POUR LES CHIFFRES MIAM
         condition = (attribut + " > " + str(valeur[0]) + " and " + attribut + " < " + str(valeur[1]))
     sqliteConnection = connexion()
@@ -209,10 +237,10 @@ etape = 5
 commandeSQL = "select nom from pays where "
 tirage=True
 nompays=random()
-listeQ0=["frontieres_1","frontieres_2","superficie","initiale_nom","initiale_capitale","population","initiale_nom_entre","initiale_capitale_entre"]
-listeQ1=["frontieres_1","frontieres_2","superficie","initiale_nom","initiale_capitale","population","initiale_nom_entre","initiale_capitale_entre"]
-listeQ2=["frontieres_1","frontieres_2","superficie","initiale_nom","initiale_capitale","population","initiale_nom_entre","initiale_capitale_entre"]
-listeQ3=["frontieres_1","frontieres_2","superficie","initiale_nom","initiale_capitale","population","initiale_nom_entre","initiale_capitale_entre"]
+listeQ0=["initiale_nom_entre","initiale_capitale_entre","continent_2"]
+listeQ1=["initiale_nom","initiale_capitale","population","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2"]
+listeQ2=["superficie","initiale_nom","initiale_capitale","population","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2"]
+listeQ3=["frontieres_1","superficie","initiale_nom","initiale_capitale","population","initiale_nom_entre","initiale_capitale_entre"]
 listeQ4=["frontieres_1","frontieres_2","superficie","initiale_nom","initiale_capitale","population","initiale_nom_entre","initiale_capitale_entre"]
 
 #listeQ0backup,listeQ1backup,listeQ2backup,listeQ3backup,listeQ4backup=listeQ0.copy(),listeQ1.copy(),listeQ2.copy(),listeQ3.copy(),listeQ4.copy()
@@ -233,26 +261,37 @@ while 1:
         for j in range(etape):
             attribut = listeQ[j][randint(0,len(listeQ[j])-1)]
             if attribut.startswith("frontieres"):
-                for i in listeQ[j]:
-                    if i.startswith("frontieres"):
-                        listeQ[j].pop(listeQ[j].index(i))
+                for chaqueliste in listeQ:
+                    for i in chaqueliste[j]:
+                        if i.startswith("frontieres"):
+                            chaqueliste[j].pop(chaqueliste[j].index(i))
             elif attribut.startswith("superficie"):
-                for i in listeQ[j]:
-                    if i.startswith("superficie"):
-                        listeQ[j].pop(listeQ[j].index(i))
+                for chaqueliste in listeQ:
+                    for i in chaqueliste[j]:
+                        if i.startswith("superficie"):
+                            chaqueliste[j].pop(chaqueliste[j].index(i))
             elif attribut.startswith("population"):
-                for i in listeQ[j]:
-                    if i.startswith("population"):
-                        listeQ[j].pop(listeQ[j].index(i))
+                 for chaqueliste in listeQ:
+                     for i in listeQ[j]:
+                        if i.startswith("population"):
+                            listeQ[j].pop(listeQ[j].index(i))
             elif attribut.startswith("initiale_nom"):
-                for i in listeQ[j]:
-                    if i.startswith("initiale_nom"):
-                        listeQ[j].pop(listeQ[j].index(i))
+                 for chaqueliste in listeQ:
+                    for i in chaquelistej]:
+                        if i.startswith("initiale_nom"):
+                            chaqueliste[j].pop(chaqueliste[j].index(i))
             elif attribut.startswith("initiale_capitale"):
-                for i in listeQ[j]:
-                    if i.startswith("initiale_capitale"):
-                        listeQ[j].pop(listeQ[j].index(i))
-            print(listeQ[j])
+                 for chaqueliste in listeQ:
+                    for i in chaqueliste[j]:
+                        if i.startswith("initiale_capitale"):
+                            chaqueliste[j].pop(chaqueliste[j].index(i))
+            elif attribut.startswith("continent"):
+                 for chaqueliste in listeQ:
+                    for i in chaqueliste[j]:
+                     for chaqueliste in listeQ:
+                        if i.startswith("continent"):
+                            chaqueliste[j].pop(chaqueliste[j].index(i))
+            print(chaqueliste[j])
             valeur = question(pays1,attribut)
             issues = calcul(valeur,attribut)
             print("\n\n\nIl y a un cetain combre de possiblites qui est egal au chiffre suviant ------------>        ",issues," en ",j+1,"etapes \n\n")
