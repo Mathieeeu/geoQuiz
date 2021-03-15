@@ -41,6 +41,7 @@ def page2():
     global t0
     
     reset()
+    crea_question()
     jeu.place(x=0, y=0)
 
     t0 = time.time()
@@ -122,6 +123,7 @@ def reset():
     global label_r3
     global label_r4
     global label_r5
+
     
     menu.destroy()
     jeu.destroy()
@@ -141,6 +143,28 @@ def reset():
     question4.set('')
     question5.set('')
     nb_reponse_juste.set(0)
+
+
+def crea_question():
+
+    global t_question1,t_question2,t_question3,t_question4,t_question5
+    global reponse1,reponse2,reponse3,reponse4,reponse5
+    global reponse1_simp,reponse2_simp,reponse3_simp,reponse4_simp,reponse5_simp
+    
+    t_question1,reponse1=questions_beta.lancer_tirage()
+    t_question2,reponse2=questions_beta.lancer_tirage()
+    t_question3,reponse3=questions_beta.lancer_tirage() 
+    t_question4,reponse4=questions_beta.lancer_tirage()
+    t_question5,reponse5=questions_beta.lancer_tirage()
+
+    question1.set(t_question1)
+
+    reponse1_simp=simp.simp_list(reponse1)
+    reponse2_simp=simp.simp_list(reponse2)
+    reponse3_simp=simp.simp_list(reponse3)
+    reponse4_simp=simp.simp_list(reponse4)
+    reponse5_simp=simp.simp_list(reponse5)
+    
     
 
 def quitter():   #fermer la fenetre
@@ -154,44 +178,56 @@ def recherche():
 
 def test_reponse():
 
-    global reponse1
-    global reponse2
-    global reponse3
-    global reponse4
-    global reponse5
+    global reponse1,reponse2,reponse3,reponse4,reponse5
+
+
+    global reponse1_simp,reponse2_simp,reponse3_simp,reponse4_simp,reponse5_simp
+ 
+
+    global t_question1,t_question2,t_question3,t_question4,t_question5
 
     reponse_simp=simp.simp(var_reponse.get())
+    #print(reponse_simp)
+    #print(reponse1_simp)
+    #print(reponse2_simp)
+    #print(reponse3_simp)
+    #print(reponse4_simp)
+    #print(reponse5_simp)
 
-    for i in range (len(eval('reponse'+str(nb_reponse_juste.get()+1)+'_simp'))):
-        if str(reponse_simp) == eval('reponse'+str(nb_reponse_juste.get()+1)+'_simp[i-1]'):
+    nb_reponse_juste_fct=nb_reponse_juste.get()
+
+    for i in range (len(eval('reponse'+str(nb_reponse_juste_fct+1)+'_simp'))):
+        #print(i)
+        if str(reponse_simp) == eval('reponse'+str(nb_reponse_juste_fct+1)+'_simp[i-1]'):
+            
                                      
-
             nb_reponse_juste.set(nb_reponse_juste.get()+1)
+            
                 
 
             if nb_reponse_juste.get() == 1:
                 reponse_entree1.set(str(reponse1[i-1]))
                 label_r1.configure(textvariable=reponse_entree1)
                 label_r2.configure(textvariable=var_reponse)
-                question2.set('Pays européen')
+                question2.set(t_question2)
                 
             if nb_reponse_juste.get() == 2:
                 reponse_entree2.set(str(reponse2[i-1]))
                 label_r2.configure(textvariable=reponse_entree2)
                 label_r3.configure(textvariable=var_reponse)
-                question3.set('Pays qui ne parle pas anglais')
+                question3.set(t_question3)
                 
             if nb_reponse_juste.get() == 3:
                 reponse_entree3.set(str(reponse3[i-1]))
                 label_r3.configure(textvariable=reponse_entree3)
                 label_r4.configure(textvariable=var_reponse)
-                question4.set('Pays possédant une partie de l\'Antartique')
+                question4.set(t_question4)
                 
             if nb_reponse_juste.get() == 4:
                 reponse_entree4.set(str(reponse4[i-1]))
                 label_r4.configure(textvariable=reponse_entree4)
                 label_r5.configure(textvariable=var_reponse)
-                question5.set('Pays dont la capitale est Paris')
+                question5.set(t_question5)
                 
             if nb_reponse_juste.get() == 5:
                 reponse_entree5.set(str(reponse5[i-1]))
@@ -199,6 +235,8 @@ def test_reponse():
                 page3()
                 
             var_reponse.set('')
+            
+
 
 def echap(key):
     retour()
@@ -241,18 +279,9 @@ fenetre.bind('a', f_follow)
 
 
 
-reponse1=questions_beta.lancer_tirage() #['Algerie','Allemagne','France','Norvège','Royaume-Uni']
-#print(reponse1[2])
-reponse2=['Allemagne','France','Norvège','Royaume-Uni']
-reponse3=['Allemagne','France','Norvège']
-reponse4=['France','Norvège']
-reponse5=['France']
 
-reponse1_simp=simp.simp_list(reponse1)
-reponse2_simp=simp.simp_list(reponse2)
-reponse3_simp=simp.simp_list(reponse3)
-reponse4_simp=simp.simp_list(reponse4)
-reponse5_simp=simp.simp_list(reponse5)
+
+
 
 var_reponse = StringVar()
 nb_reponse_juste = IntVar(0)
@@ -277,7 +306,9 @@ question3=StringVar()
 question4=StringVar()
 question5=StringVar()
 
-question1.set('Pays avec un drapeau à 3 couleurs')
+
+
+
 
 
 page1(620,450)

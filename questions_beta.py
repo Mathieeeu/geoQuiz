@@ -1,6 +1,6 @@
 import sqlite3
 from random import *
-question=1
+#question=1
 class pays:
 
     def __init__(self,nom,capitale,population,point_culminant,superficie):
@@ -68,54 +68,54 @@ def enigme(attribut):
     if attribut=="superficie_entre":
         supermin,supermax = question(pays1,"superficie_entre")
         if supermax == 999999999 :
-            print("Ce pays fait plus de " + str(supermin) + " km² !")
-            return(supermin)
+            la_question =("Ce pays fait plus de " + str(supermin) + " km² !")
+            return [la_question,supermin]
         else :
-            print("Ce pays fait entre " + str(supermin) + " et " + str(supermax) + " km² !")
-            return [supermin,supermax]
+            la_question =("Ce pays fait entre " + str(supermin) + " et " + str(supermax) + " km² !")
+            return [la_question,supermin,supermax]
 
     if attribut=="superficie_sup":
         supermin = question(pays1,"superficie_sup")
-        print("Ce pays fait plus de " + str(supermin) + " km² !")
-        return supermin
+        la_question =("Ce pays fait plus de " + str(supermin) + " km² !")
+        return [la_question,supermin]
 
     if attribut=="superficie_inf":
         supermax = question(pays1,"superficie_inf")
-        print("Ce pays fait moins de " + str(supermax) + " km² !")
-        return supermax
+        la_question =("Ce pays fait moins de " + str(supermax) + " km² !")
+        return [la_question,supermax]
 
         
     if attribut == "population_entre" :
         popmin,popmax = question(pays1,"population_entre")
         if popmax == 999999999 :
-            print("Ce pays compte plus de " + str(popmin) + " habitants !")
-            return popmin
+            la_question =("Ce pays compte plus de " + str(popmin) + " habitants !")
+            return [la_question,popmin]
         else :
-            print("Ce pays compte entre " + str(popmin) + " et " + str(popmax) + " habitants !")
-            return [popmin,popmax]
+            la_question =("Ce pays compte entre " + str(popmin) + " et " + str(popmax) + " habitants !")
+            return [la_question,popmin,popmax]
 
     if attribut=="population_sup":
         supermin = question(pays1,"superficie_sup")
-        print("Ce pays compte plus de " + str(supermin) + " habitants !")
-        return supermin
+        la_question =("Ce pays compte plus de " + str(supermin) + " habitants !")
+        return [la_question,supermin]
 
     if attribut=="population_inf":
         supermax = question(pays1,"superficie_inf")
-        print("Ce pays compte moins de " + str(supermax) + " habitants !")
-        return supermax
+        la_question =("Ce pays compte moins de " + str(supermax) + " habitants !")
+        return [la_question,supermax]
 
 
     
         
     if attribut == "initiale_nom" :
         initiale_pays=question(pays1,"initiale_nom")
-        print("Ce pays commence par un "+str(initiale_pays))
-        return initiale_pays
+        la_question =("Ce pays commence par un "+str(initiale_pays))
+        return [la_question,initiale_pays]
     
     if attribut == "initiale_capitale" :
         initiale_cap=question(pays1,"initiale_capitale")
-        print("La capitale de ce pays commence par un "+str(initiale_cap))
-        return initiale_cap
+        la_question =("La capitale de ce pays commence par un "+str(initiale_cap))
+        return [la_question,initiale_cap]
 
         
         #print(AffichezDB(nompays,listeQ[randint(0,len(listeQ)-1)]))
@@ -195,21 +195,21 @@ def question(pays,attribut):
 def calcul(valeur,attribut):
     if attribut == "initiale_nom" or attribut == "initiale_capitale":   # POUR LES LETTRE
         attribut=attribut.replace("initiale_","")
-        condition = (attribut + " like \'"+valeur+"%'")
+        condition = (attribut + " like \'"+valeur[1]+"%'")
     elif attribut == "superficie_entre" or attribut == "population_entre":                                                                                        #POUR LES CHIFFRES MIAM
         attribut=attribut.replace("_entre","")
-        condition = (attribut + " > " + str(valeur[0]) + " and " + attribut + " < " + str(valeur[1]))
+        condition = (attribut + " > " + str(valeur[1]) + " and " + attribut + " < " + str(valeur[2]))
     elif attribut == "superficie_sup" or attribut == "population_sup":                                                                                          #POUR LES CHIFFRES MIAM
         attribut=attribut.replace("_sup","")
-        condition = (attribut + " > " + str(valeur))
+        condition = (attribut + " > " + str(valeur[1]))
     elif attribut == "superficie_inf" or attribut == "population_inf":                                                                                          #POUR LES CHIFFRES MIAM
         attribut=attribut.replace("_inf","")
-        condition = (attribut + " < " + str(valeur))
+        condition = (attribut + " < " + str(valeur[1]))
     else:
         #attribut=attribut.replace("_entre","")
-        condition = (attribut + " > " + str(valeur[0]) + " and " + attribut + " < " + str(valeur[1]))
+        condition = (attribut + " > " + str(valeur[1]) + " and " + attribut + " < " + str(valeur[2]))
         
-        print(condition)
+        #print(condition)
     sqliteConnection = connexion()
     cursor = sqliteConnection.cursor()
     #ecriture de la requéte, on récupére le contenu de la listeDeroulante avec la fonction .get()
@@ -246,14 +246,15 @@ def lancer_tirage():
 
         print("\n#############################################")
         attribut = listeQ[randint(0,len(listeQ)-1)]
+        #attribut = "superficie_entre"
         print(attribut)
         valeur = enigme(attribut)
-        print(valeur)
+        print(valeur[0])
         issues = calcul(valeur,attribut)
         print(issues)
         #issues = 11
-        print("\n\n\nIl y a un cetain combre de possiblites qui est egal au chiffre suviant ------------>        ",issues)
-        return issues
+        #print("\n\n\nIl y a un cetain combre de possiblites qui est egal au chiffre suviant ------------>        ",len(issues))
+        return valeur[0],issues
         
         #if issues < 10:
            # tirage = True
