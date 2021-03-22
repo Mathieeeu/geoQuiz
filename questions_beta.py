@@ -195,7 +195,7 @@ def question(pays,attribut):
 def calcul(valeur,attribut):
     if attribut == "initiale_nom" or attribut == "initiale_capitale":   # POUR LES LETTRE
         attribut=attribut.replace("initiale_","")
-        condition = (attribut + " like \'"+valeur[1]+"%'")
+        condition = (attribut + " like \'"+"E"+"%'")
     elif attribut == "superficie_entre" or attribut == "population_entre":                                                                                        #POUR LES CHIFFRES MIAM
         attribut=attribut.replace("_entre","")
         condition = (attribut + " > " + str(valeur[1]) + " and " + attribut + " < " + str(valeur[2]))
@@ -221,7 +221,7 @@ def calcul(valeur,attribut):
     print()
     print()
     final=[]
-    for j in range(0,len(record)-1):
+    for j in range(0,len(record)):
         final.append(record[j][0])
     #print(final)
     return(final)
@@ -235,7 +235,7 @@ def lancer_tirage():
     global tirage, nompays, listeQ, pays1, attribut, valeur, issues
     tirage=True
     nompays=random()
-    listeQ=["initiale_nom","initiale_capitale","population_entre","population_sup","population_inf","superficie_entre","superficie_sup","superficie_inf"]
+    listeQ=["initiale_nom"]#,"initiale_capitale","population_entre","population_sup","population_inf","superficie_entre","superficie_sup","superficie_inf"]
 
     if tirage==True:
         print("______________________________________________________\n"+str(nompays))

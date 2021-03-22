@@ -274,13 +274,7 @@ gagne = Canvas(fenetre, width=longueur, height=largeur)
 
 fenetre.bind('<KeyPress>', callback)
 fenetre.bind('<Escape>', retour)
-fenetre.bind('a', f_follow)
-
-
-
-
-
-
+fenetre.bind('<Control-*>', f_follow)
 
 
 var_reponse = StringVar()
@@ -305,10 +299,6 @@ question2=StringVar()
 question3=StringVar()
 question4=StringVar()
 question5=StringVar()
-
-
-
-
 
 
 page1(620,450)
