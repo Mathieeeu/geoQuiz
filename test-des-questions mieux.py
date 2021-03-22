@@ -1,18 +1,27 @@
 import sqlite3
 from random import *
 question=1
+
+def Este(final):
+    global E
+    E=final
+    return E
+
 class pays:
 
-    def __init__(self,nom,capitale,population,point_culminant,superficie):
+    def __init__(self,nom,capitale,population,point_culminant,superficie,acces_mer,nombre_mots_nom,couleurs_drapeau):
         self.nom=nom
         self.capitale=capitale
         self.population=population
         self.point_culminant=point_culminant
         self.superficie=superficie
+        self.mer=acces_mer
+        self.nombre_mots_nom=nombre_mots_nom
+        self.couleurs_drapeau=couleurs_drapeau
         #self.frontieres=frontieres
 
     def affichageinfos(self):
-        infos=[self.nom,self.capitale,self.population,self.point_culminant,self.superficie]
+        infos=[self.nom,self.capitale,self.population,self.point_culminant,self.superficie,self.mer,self.nombre_mots_nom,self.couleurs_drapeau]
         return infos
         
 
@@ -60,7 +69,7 @@ def AffichezDB(nom):
     cursor.execute(sqlite_select_Query)
     #on place tout les enregistrements dans une variable record
     record = cursor.fetchall()
-    pays1 = pays(record[0][1],record[0][2],record[0][3],record[0][4],record[0][5])
+    pays1 = pays(record[0][1],record[0][2],record[0][3],record[0][4],record[0][5],record[0][12],record[0][16],record[0][13])
     return pays1
 
 def enigme(attribut):
@@ -103,10 +112,7 @@ def enigme(attribut):
         supermax = question(pays1,"superficie_inf")
         print("Ce pays compte moins de " + str(supermax) + " habitants !")
         return supermax
-
-
     
-        
     if attribut == "initiale_nom" :
         initiale_pays=question(pays1,"initiale_nom")
         return("Ce pays commence par un "+str(initiale_pays))
@@ -114,12 +120,28 @@ def enigme(attribut):
     if attribut == "initiale_capitale" :
         initiale_cap=question(pays1,"initiale_capitale")
         return("La capitale de ce pays commence par un "+str(initiale_cap))
-
-    if attribut == "initiale_capitale" :
-        initiale_cap=question(pays1,"initiale_capitale")
-        return("La capitale de ce pays commence par un "+str(initiale_cap))
         
         #print(AffichezDB(nompays,listeQ[randint(0,len(listeQ)-1)]))
+    
+    if attribut == "accès_mer" :
+        M=question(pays1,"accès_mer")
+        if M == "True":
+            print("True")
+            return("Ce pays a un accès à la mer")
+        elif M == "False":
+            print("False")
+            return("Ce pays n'a pas d'accès à la mer")
+        else:
+            print("ERROR ACCES MER")
+            
+    if attribut=="nombre_mots_nom":
+        nbr_mots=question(pays1,"nombre_mots_nom")
+        return("Le nom du pays contient "+str(nbr_mots)+" mots")
+
+    if attribut=="couleurs_drapeau":
+        nbr_couleurs=question(pays1,"couleurs_drapeau")
+        return("Le drapeau du pays contient "+str(nbr_couleurs)+" couleurs")
+        
 
 def question(pays,attribut):
     i1,i2=0,0
@@ -192,6 +214,14 @@ def question(pays,attribut):
         mot = mot.replace("î","i")
         mot=mot.upper()
         return mot
+    if attribut == "accès_mer":
+        return pays1.mer
+    if attribut == "nombre_mots_nom":
+        return pays1.nombre_mots_nom
+    if attribut == "couleurs_drapeau":
+        return pays1.couleurs_drapeau
+
+
 
 def calcul(valeur,attribut):
     if attribut == "initiale_nom" or attribut == "initiale_capitale":   # POUR LES LETTRE
@@ -206,6 +236,24 @@ def calcul(valeur,attribut):
     elif attribut == "superficie_inf" or attribut == "population_inf":                                                                                          #POUR LES CHIFFRES MIAM
         attribut=attribut.replace("_inf","")
         condition = (attribut + " < " + str(valeur))
+        
+    elif attribut == "accès_mer":                                                                                         #POUR LES CHIFFRES MIAM
+        attribut=attribut.replace("è","e")
+        if valeur=="Ce pays a un accès à la mer":
+            valeur="'True'"
+        else:
+            valeur="'False'"
+        condition = ("acces_mer like " + str(valeur))
+        
+    elif attribut =="nombre_mots_nom":
+        valeur=valeur.replace("Le nom du pays contient ","")
+        valeur=valeur.replace(" mots","")
+        condition=(str(attribut)+"="+str(valeur))
+
+    elif attribut=="couleurs_drapeau":
+        valeur=valeur.replace("Le drapeau du pays contient ","")
+        valeur=valeur.replace(" couleurs","")
+        condition=(str(attribut)+"="+str(valeur))
     else:
         #attribut=attribut.replace("_entre","")
         condition = (attribut + " > " + str(valeur[0]) + " and " + attribut + " < " + str(valeur[1]))
@@ -215,6 +263,7 @@ def calcul(valeur,attribut):
     cursor = sqliteConnection.cursor()
     #ecriture de la requéte, on récupére le contenu de la listeDeroulante avec la fonction .get()
     sqlite_select_Query = ("select nom from pays where "+ condition)
+    print(condition)
     #execution de la requéte
     cursor.execute(sqlite_select_Query)
     #on place tout les enregistrements dans une variable record
@@ -224,7 +273,8 @@ def calcul(valeur,attribut):
     final=[]
     for j in range(0,len(record)-1):
         final.append(record[j][0])
-    print(final)
+    #print(final)
+    Este(final)
     return(len(final))
 
 
@@ -233,8 +283,9 @@ def calcul(valeur,attribut):
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 tirage=True
 nompays=random()
-listeQ=["population_entre","population_sup","population_inf","superficie_entre","superficie_sup","superficie_inf"]#,"initiale_nom","initiale_capitale",]
-while 1:
+listeQ=["population_entre","population_sup","population_inf","superficie_entre","superficie_sup","superficie_inf","accès_mer","nombre_mots_nom","couleurs_drapeau"]#,"initiale_nom","initiale_capitale",]
+if 1==1:
+    
     if tirage==True:
         print("______________________________________________________\n"+str(nompays))
         pays1=AffichezDB(nompays)
@@ -244,19 +295,148 @@ while 1:
 
         print("\n#############################################")
         attribut = listeQ[randint(0,len(listeQ)-1)]
+        attribut="couleurs_drapeau"
         valeur = enigme(attribut)
         print(valeur)
+        
         issues = calcul(valeur,attribut)
         print(issues)
         #issues = 11
-        print("\n\n\nIl y a un cetain nombre de possiblites qui est egal au chiffre suviant ------------>        ",issues)
+        print("\n\n\nIl y a un cetain nombre de possiblites qui est egal au chiffre suivant ------------>        ",issues)
         
 
         
         if issues < 10:
             tirage = True
-        elif input("")=="":
-            nompays=random()
-            tirage=True
-    
+
+
+    print("############################")
+    #test Esteban --------------------------------------------------------------------------------------------------------------------------
+    tirage=True
+    nompays=random()
+    print("______________________________________________________\n"+str(nompays))
+    pays1=AffichezDB(nompays)
+    tirage=False
+    print(pays1.affichageinfos())
+    print("\n\n\n\n")
+    Q1=0
+    Q2=0
+    Q3=0
+    Q4=0
+    Q5=0
+    Q6=0
+    Q7=0
+    Q8=0
+    p1=[]
+    p2=[]
+    p3=[]
+    p4=[]
+    p5=[]
+    p6=[]
+    p7=[]
+    p8=[]
+    more=0
+    for i in range(len(listeQ)):
+            
+        attribut=listeQ[i]
+        valeur=enigme(attribut)
+        calcul(valeur,attribut)
+
+        if Q1==0:
+            Q1=E
+        elif Q2==0:
+            Q2=E
+        elif Q3==0:
+            Q3=E
+        elif Q4==0:
+            Q4=E
+        elif Q5==0:
+            Q5=E
+        elif Q6==0:
+            Q6=E
+        elif Q7==0:
+            Q7=E
+        elif Q8==0:
+            Q8=E
+            
+        else:
+            print("Ok check it !")
+        print()
+    print("\n\n\n\nCHECKED\n\n\n")
+    print("Voilà le nombre de réponses entre Q1 et Q8 : "+str(len(Q1))+" "+str(len(Q2))+" "+str(len(Q3))+" "+str(len(Q4))+" "+str(len(Q5))+" "+str(len(Q6))+" "+str(len(Q7))+" "+str(len(Q8))+"\n\n\n")
+    POSSIBLE=[]
+    #Q more
+    a=Q1
+    print(len(Q1))
+    if len(a)<len(Q2):
+        a=Q2
+        print("Q2 sup")
+        print(len(Q2))
+    if len(a)<len(Q3):
+        a=Q3
+        print("Q3 sup")
+        print(len(Q3))
+    if len(a)<len(Q4):
+        a=Q4
+        print("Q4 sup")
+        print(len(Q4))
+    if len(a)<len(Q5):
+        a=Q5
+        print("Q5 sup")
+        print(len(Q5))
+    if len(a)<len(Q6):
+        a=Q6
+        print("Q6 sup")
+        print(len(Q6))
+    if len(a)<len(Q7):
+        a=Q7
+        print("Q7 sup")
+        print(len(Q7))
+    if len(a)<len(Q8):
+        a=Q8
+        print("Q8 sup")
+        print(len(Q8))
+    #Then
+    more=0
+    print(a)
+    #print(str(Q1)+"\n\n"+str(Q2)+"\n\n"+str(Q3)+"\n\n"+str(Q4)+"\n\n"+str(Q5)+"\n\n"+str(Q6)+"\n\n"+str(Q7)+"\n\n"+str(Q8)+"\n\n")
+    for i in range(len(a)):
+        more=0
+        qnumb=[]
+        for j in range(7):
+            if eval("Q"+str(j+1)).count(a[i])==1:
+                more=more+1
+                qnumb.append(j)
+        if more>=5:
+            #print("ajout "+str(a[i]))
+            POSSIBLE.append(a[i])
+            for z in range(7):
+                if qnumb.count(z)==1:
+                    eval("p"+str(z+1)).append(a[i])
+#        else:
+#            print("NONE")
+    print()
+    print(POSSIBLE)
+    print()
+    print(len(POSSIBLE))
+    print(len(p1))
+    print(len(p2))
+    print(len(p3))
+    print(len(p4))
+    print(len(p5))
+    print(len(p6))
+    print(len(p7))
+    print(len(p8))
+            
+        
+
+
+
+
+
+
+
+
+
+
         
