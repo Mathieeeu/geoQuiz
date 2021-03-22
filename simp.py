@@ -19,7 +19,7 @@ def simp(mot):
     mot = mot.replace("ç","c") 
     mot = mot.replace("dz","algerie")
     mot = mot.replace("baguette","france")
-    print(mot)
+    mot = mot.replace("top1","irak")
     return(mot)
 
 def simp_list(liste):

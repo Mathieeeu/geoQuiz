@@ -33,11 +33,9 @@ def page1(xx,yy):
 
 def page2():
     global jeu
-    global label_r1
-    global label_r2
-    global label_r3
-    global label_r4
-    global label_r5
+    global label_r1,label_r2,label_r3,label_r4,label_r5
+    global label_q1,label_q2,label_q3,label_q4,label_q5
+    
     global t0
     
     reset()
@@ -50,12 +48,16 @@ def page2():
     bouton_retour=Button(jeu, text='Retour', command=retour, font=police1)
     bouton_retour.place(x=int(longueur)-210,y=int(largeur)-60,width=200, height=50)
 
+    bouton_abandon = StringVar()
+    bouton_abandon=Button(jeu, text='Abandonner', command=abandon, font=police1)
+    bouton_abandon.place(x=int(longueur)-420,y=int(largeur)-60,width=200, height=50)
+
     print('p2 appelé')
 
     textBoxReponse = Entry(jeu, textvariable=var_reponse, width=40, font=police1, bg = 'yellow')
     textBoxReponse.place(x=1050,y=600,width=200, height=70)
 
-    label_q1 = Label(jeu, textvariable=question1, font=police1 , background = 'grey', anchor='center')
+    label_q1 = Label(jeu, textvariable=question1, font=police1 , background = 'lightgrey', anchor='center')
     label_q1.place(x=100,y=100,width=800, height=70)
 
     label_q2 = Label(jeu, textvariable=question2, font=police1, background = 'grey', anchor='center')
@@ -71,19 +73,19 @@ def page2():
     label_q5.place(x=100,y=500,width=800, height=70)
 
 
-    label_r1 = Label(jeu, textvariable=var_reponse, font=police1, background = 'light grey', anchor='center')
+    label_r1 = Label(jeu, textvariable=var_reponse, font=police1, background = 'lightgrey', anchor='center')
     label_r1.place(x=950,y=100,width=400, height=70)
 
-    label_r2 = Label(jeu, textvariable=reponse_entree2, font=police1, background = 'light grey', anchor='center')
+    label_r2 = Label(jeu, textvariable=reponse_entree2, font=police1, background = 'grey', anchor='center')
     label_r2.place(x=950,y=200,width=400, height=70)
 
-    label_r3 = Label(jeu, textvariable=reponse_entree3, font=police1, background = 'light grey', anchor='center')
+    label_r3 = Label(jeu, textvariable=reponse_entree3, font=police1, background = 'grey', anchor='center')
     label_r3.place(x=950,y=300,width=400, height=70)
 
-    label_r4 = Label(jeu, textvariable=reponse_entree4, font=police1, background = 'light grey', anchor='center')
+    label_r4 = Label(jeu, textvariable=reponse_entree4, font=police1, background = 'grey', anchor='center')
     label_r4.place(x=950,y=400,width=400, height=70)
 
-    label_r5 = Label(jeu, textvariable=reponse_entree5, font=police1, background = 'light grey', anchor='center')
+    label_r5 = Label(jeu, textvariable=reponse_entree5, font=police1, background = 'grey', anchor='center')
     label_r5.place(x=950,y=500,width=400, height=70)
 
 
@@ -207,31 +209,40 @@ def test_reponse():
 
             if nb_reponse_juste.get() == 1:
                 reponse_entree1.set(str(reponse1[i-1]))
-                label_r1.configure(textvariable=reponse_entree1)
-                label_r2.configure(textvariable=var_reponse)
+                label_r1.configure(textvariable=reponse_entree1,background ='lightgreen')
+                label_r2.configure(textvariable=var_reponse,background ='lightgrey')
+                label_q1.configure(background ='lightgreen')
+                label_q2.configure(background ='lightgrey')
                 question2.set(t_question2)
                 
             if nb_reponse_juste.get() == 2:
                 reponse_entree2.set(str(reponse2[i-1]))
-                label_r2.configure(textvariable=reponse_entree2)
-                label_r3.configure(textvariable=var_reponse)
+                label_r2.configure(textvariable=reponse_entree2,background ='lightgreen')
+                label_r3.configure(textvariable=var_reponse,background ='lightgrey')
+                label_q2.configure(background ='lightgreen')
+                label_q3.configure(background ='lightgrey')
                 question3.set(t_question3)
                 
             if nb_reponse_juste.get() == 3:
                 reponse_entree3.set(str(reponse3[i-1]))
-                label_r3.configure(textvariable=reponse_entree3)
-                label_r4.configure(textvariable=var_reponse)
+                label_r3.configure(textvariable=reponse_entree3,background ='lightgreen')
+                label_r4.configure(textvariable=var_reponse,background ='lightgrey')
+                label_q3.configure(background ='lightgreen')
+                label_q4.configure(background ='lightgrey')
                 question4.set(t_question4)
                 
             if nb_reponse_juste.get() == 4:
                 reponse_entree4.set(str(reponse4[i-1]))
-                label_r4.configure(textvariable=reponse_entree4)
-                label_r5.configure(textvariable=var_reponse)
+                label_r4.configure(textvariable=reponse_entree4,background ='lightgreen')
+                label_r5.configure(textvariable=var_reponse,background ='lightgrey')
+                label_q4.configure(background ='lightgreen')
+                label_q5.configure(background ='lightgrey')
                 question5.set(t_question5)
                 
             if nb_reponse_juste.get() == 5:
                 reponse_entree5.set(str(reponse5[i-1]))
-                label_r5.configure(textvariable=reponse_entree5)
+                label_r5.configure(textvariable=reponse_entree5,background ='lightgreen')
+                label_q5.configure(background ='lightgreen')
                 page3()
                 
             var_reponse.set('')
@@ -243,6 +254,9 @@ def echap(key):
     
 def retour():
     page1(620,450)
+
+def abandon():
+    var_reponse.set('Pouah t\'est nul !')
 
 def f_follow(key):
     if follow.get()!='1':
