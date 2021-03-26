@@ -1,5 +1,6 @@
 import sqlite3
 from random import *
+from time import *
 question=1
 class pays:
 
@@ -232,11 +233,132 @@ def calcul(valeur,attribut):
     return(len(record))
 
 
+
+
+
+
+def jeu():
+    global tirage,commandeSQL,nompays,listeQbackup,listeQ,listeattributs,n,sec#test
+    while 1:
+        if tirage==True:
+            n+=1#test
+            ##print("______________________________________________________\n"+str(nompays))
+            pays1=AffichezDB(nompays)
+            tirage=False
+            
+            ##print(pays1.affichageinfos())
+
+
+            ##print("\n#############################################")
+            ##print("les listes sont ",str(listeQ)+"\n\n"+str(listeQbackup))
+            for j in range(etape):
+                attribut = listeQ[j][randint(0,len(listeQ[j])-1)]
+                for chaqueliste in listeQ:
+                    for i in chaqueliste:
+                        try:
+                                chaqueliste.pop(chaqueliste.index(attribut))
+                        except: None
+                if attribut.endswith("_2"):
+                    for chaqueliste in listeQ:
+                        for i in chaqueliste:
+                            try:
+                                chaqueliste.pop(chaqueliste.index(attribut.replace("_2","_1")))
+                            except: None
+                if attribut.endswith("_1"):
+                    for chaqueliste in listeQ:
+                        for i in chaqueliste:
+                            try:
+                                chaqueliste.pop(chaqueliste.index(attribut.replace("_1","_2")))
+                            except: None
+
+
+                                            
+    ##            if attribut.startswith("frontieres"):
+    ##                for chaqueliste in listeQ:
+    ##                    for i in chaqueliste:
+    ##                        if i.startswith("frontieres"):
+    ##                            chaqueliste.pop(chaqueliste.index(i))
+    ##                            print("C ",str(listeQ)+"\n\n"+str(listeQbackup))
+                elif attribut.startswith("superficie"):
+                    for chaqueliste in listeQ:
+                        for i in chaqueliste:
+                            if i.startswith("superficie"):
+                                chaqueliste.pop(chaqueliste.index(i))
+                elif attribut.startswith("population"):
+                    for chaqueliste in listeQ:
+                         for i in chaqueliste:
+                            if i.startswith("population"):
+                                chaqueliste.pop(chaqueliste.index(i))
+                elif attribut.startswith("initiale_nom"):
+                    for chaqueliste in listeQ:
+                        for i in chaqueliste:
+                            if i.startswith("initiale_nom"):
+                                chaqueliste.pop(chaqueliste.index(i))
+                elif attribut.startswith("initiale_capitale"):
+                    for chaqueliste in listeQ:
+                        for i in chaqueliste:
+                            if i.startswith("initiale_capitale"):
+                                chaqueliste.pop(chaqueliste.index(i))
+    ##            elif attribut=="continent_1":
+    ##                for chaqueliste in listeQ:
+    ##                    for i in chaqueliste:
+    ##                        if i=="continent_1":
+    ##                            chaqueliste.pop(chaqueliste.index(i))
+    ##                            
+    ##            elif attribut=="continent_2":
+    ##                for chaqueliste in listeQ:
+    ##                    for i in chaqueliste:
+    ##                        if i=="continent_2":
+    ##                            chaqueliste.pop(chaqueliste.index(i))
+
+                                
+                valeur = question(pays1,attribut)
+                issues = calcul(valeur,attribut)
+                listeattributs.append(attribut)
+
+                ##print("\n\n\nIl y a un cetain combre de possiblites qui est egal au chiffre suviant ------------>        ",issues," en ",j+1,"etapes \n\n")
+                ##print(listeattributs)
+            
+                
+                if ((issues <= 30 and j == 0) or (issues <= 12 and j == 1) or (issues <= 7 and j == 2)  or (issues <= 3  and j ==3) or (issues!=1  and j ==4)):                            #recherche manouelle
+                    #if input("")=="" :
+                        #listeQ=listeQbackup.copy()
+                        nompays=random()
+                        
+                        listeQ0=["initiale_nom_entre","initiale_capitale_entre","continent_2"]
+                        listeQ1=["initiale_nom","initiale_capitale","population","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2"]
+                        listeQ2=["superficie","initiale_nom","initiale_capitale","population","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2"]
+                        listeQ3=["frontieres_1","superficie","initiale_nom","initiale_capitale","population","initiale_nom_entre","initiale_capitale_entre"]
+                        listeQ4=["frontieres_1","frontieres_2","superficie","initiale_nom","initiale_capitale","population","initiale_nom_entre","initiale_capitale_entre"]
+                        listeQbackup=[]
+                        listeQbackup.append(listeQ0)
+                        listeQbackup.append(listeQ1)
+                        listeQbackup.append(listeQ2)
+                        listeQbackup.append(listeQ3)
+                        listeQbackup.append(listeQ4)
+                        #listeQbackup=[listeQ0,listeQ1,listeQ2,listeQ3,listeQ4]
+                        listeQ=listeQbackup.copy()
+                        
+                        listeattributs=[]
+
+                        tirage=True
+                        commandeSQL = "select nom from pays where "
+                        
+                        break
+        if issues == 1 and j == 4 :
+            break
+    sec=int((monotonic()-sec)*1000)#test
+    print(str(nompays))
+    print(listeattributs)
+    print("\n\n\nIl y a un cetain combre de possiblites qui est egal au chiffre suviant ------------>        ",issues," en ",j+1,"etapes \n\n")
+    print(n," essais ont ete realise en seulement ",sec,"ms")#test
+
 listealpha=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
 etape = 5
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 commandeSQL = "select nom from pays where "
 tirage=True
+
 
 nompays=random()
 listeQ0=["initiale_nom_entre","initiale_capitale_entre","continent_2"]
@@ -254,123 +376,36 @@ listeQbackup.append(listeQ3)
 listeQbackup.append(listeQ4)
 #listeQbackup=[listeQ0,listeQ1,listeQ2,listeQ3,listeQ4]
 listeQ=listeQbackup.copy()
-
+n=0#test
 
 listeattributs = []
+sec = monotonic()#test
 
+jeu()
+while 1 :
+    if str(input("Relancer")) == "":
+        tirage=True
+        nompays=random()
+        listeQ0=["initiale_nom_entre","initiale_capitale_entre","continent_2"]
+        listeQ1=["initiale_nom","initiale_capitale","population","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2"]
+        listeQ2=["superficie","initiale_nom","initiale_capitale","population","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2"]
+        listeQ3=["frontieres_1","superficie","initiale_nom","initiale_capitale","population","initiale_nom_entre","initiale_capitale_entre"]
+        listeQ4=["frontieres_1","frontieres_2","superficie","initiale_nom","initiale_capitale","population","initiale_nom_entre","initiale_capitale_entre"]
 
+        #listeQ0backup,listeQ1backup,listeQ2backup,listeQ3backup,listeQ4backup=listeQ0.copy(),listeQ1.copy(),listeQ2.copy(),listeQ3.copy(),listeQ4.copy()
+        listeQbackup=[]
+        listeQbackup.append(listeQ0)
+        listeQbackup.append(listeQ1)
+        listeQbackup.append(listeQ2)
+        listeQbackup.append(listeQ3)
+        listeQbackup.append(listeQ4)
+        #listeQbackup=[listeQ0,listeQ1,listeQ2,listeQ3,listeQ4]
+        listeQ=listeQbackup.copy()
 
-while 1:
-    if tirage==True:
-        ##print("______________________________________________________\n"+str(nompays))
-        pays1=AffichezDB(nompays)
-        tirage=False
         
-        ##print(pays1.affichageinfos())
-
-
-        ##print("\n#############################################")
-        ##print("les listes sont ",str(listeQ)+"\n\n"+str(listeQbackup))
-        for j in range(etape):
-            attribut = listeQ[j][randint(0,len(listeQ[j])-1)]
-            for chaqueliste in listeQ:
-                for i in chaqueliste:
-                    try:
-                            chaqueliste.pop(chaqueliste.index(attribut))
-                    except: None
-            if attribut.endswith("_2"):
-                for chaqueliste in listeQ:
-                    for i in chaqueliste:
-                        try:
-                            chaqueliste.pop(chaqueliste.index(attribut.replace("_2","_1")))
-                        except: None
-            if attribut.endswith("_1"):
-                for chaqueliste in listeQ:
-                    for i in chaqueliste:
-                        try:
-                            chaqueliste.pop(chaqueliste.index(attribut.replace("_1","_2")))
-                        except: None
-
-
-                                        
-##            if attribut.startswith("frontieres"):
-##                for chaqueliste in listeQ:
-##                    for i in chaqueliste:
-##                        if i.startswith("frontieres"):
-##                            chaqueliste.pop(chaqueliste.index(i))
-##                            print("C ",str(listeQ)+"\n\n"+str(listeQbackup))
-            elif attribut.startswith("superficie"):
-                for chaqueliste in listeQ:
-                    for i in chaqueliste:
-                        if i.startswith("superficie"):
-                            chaqueliste.pop(chaqueliste.index(i))
-            elif attribut.startswith("population"):
-                for chaqueliste in listeQ:
-                     for i in chaqueliste:
-                        if i.startswith("population"):
-                            chaqueliste.pop(chaqueliste.index(i))
-            elif attribut.startswith("initiale_nom"):
-                for chaqueliste in listeQ:
-                    for i in chaqueliste:
-                        if i.startswith("initiale_nom"):
-                            chaqueliste.pop(chaqueliste.index(i))
-            elif attribut.startswith("initiale_capitale"):
-                for chaqueliste in listeQ:
-                    for i in chaqueliste:
-                        if i.startswith("initiale_capitale"):
-                            chaqueliste.pop(chaqueliste.index(i))
-##            elif attribut=="continent_1":
-##                for chaqueliste in listeQ:
-##                    for i in chaqueliste:
-##                        if i=="continent_1":
-##                            chaqueliste.pop(chaqueliste.index(i))
-##                            
-##            elif attribut=="continent_2":
-##                for chaqueliste in listeQ:
-##                    for i in chaqueliste:
-##                        if i=="continent_2":
-##                            chaqueliste.pop(chaqueliste.index(i))
-
-                            
-            valeur = question(pays1,attribut)
-            issues = calcul(valeur,attribut)
-            listeattributs.append(attribut)
-
-            ##print("\n\n\nIl y a un cetain combre de possiblites qui est egal au chiffre suviant ------------>        ",issues," en ",j+1,"etapes \n\n")
-            ##print(listeattributs)
-        
-            
-            if ((issues <= 30 and j == 0) or (issues <= 12 and j == 1) or (issues <= 7 and j == 2)  or (issues <= 3  and j ==3) or (issues!=1  and j ==4)):                            #recherche manouelle
-                #if input("")=="" :
-                    #listeQ=listeQbackup.copy()
-                    nompays=random()
-                    
-                    listeQ0=["initiale_nom_entre","initiale_capitale_entre","continent_2"]
-                    listeQ1=["initiale_nom","initiale_capitale","population","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2"]
-                    listeQ2=["superficie","initiale_nom","initiale_capitale","population","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2"]
-                    listeQ3=["frontieres_1","superficie","initiale_nom","initiale_capitale","population","initiale_nom_entre","initiale_capitale_entre"]
-                    listeQ4=["frontieres_1","frontieres_2","superficie","initiale_nom","initiale_capitale","population","initiale_nom_entre","initiale_capitale_entre"]
-                    listeQbackup=[]
-                    listeQbackup.append(listeQ0)
-                    listeQbackup.append(listeQ1)
-                    listeQbackup.append(listeQ2)
-                    listeQbackup.append(listeQ3)
-                    listeQbackup.append(listeQ4)
-                    #listeQbackup=[listeQ0,listeQ1,listeQ2,listeQ3,listeQ4]
-                    listeQ=listeQbackup.copy()
-                    
-                    listeattributs=[]
-
-                    tirage=True
-                    commandeSQL = "select nom from pays where "
-                    
-                    break
-    if issues == 1 and j == 4 :
-        break
-
-print(str(nompays))
-print(listeattributs)
-print("\n\n\nIl y a un cetain combre de possiblites qui est egal au chiffre suviant ------------>        ",issues," en ",j+1,"etapes \n\n")
-if str(input("Relancer")) == "":
-    print("a")
+        listeattributs = []
+        sec = monotonic()#test
+        n=0#test
+        print("\n_____________________________________________________________________________\n")
+        jeu()
         
