@@ -52,9 +52,11 @@ def random():
     sqlite_select_Query = ("select nom from pays where idPays="+str(chiffre))
     #execution de la requéte
     cursor.execute(sqlite_select_Query)
+    
     #on place tout les enregistrements dans une variable record
     record = cursor.fetchall()
     record= record[0][0]
+
     return record
 
 def AffichezDB(nom):
@@ -348,6 +350,7 @@ def jeu():
         if issues == 1 and j == 4 :
             break
     sec=int((monotonic()-sec)*1000)#test
+    
     print(str(nompays))
     print(listeattributs)
     print("\n\n\nIl y a un cetain combre de possiblites qui est egal au chiffre suviant ------------>        ",issues," en ",j+1,"etapes \n\n")
