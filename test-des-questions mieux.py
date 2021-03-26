@@ -141,7 +141,10 @@ def enigme(attribut):
     if attribut=="couleurs_drapeau":
         nbr_couleurs=question(pays1,"couleurs_drapeau")
         return("Le drapeau du pays contient "+str(nbr_couleurs)+" couleurs")
-        
+
+    if attribut=="point_culminant":
+        maxi,mini=question(pays1,"point_culminant")
+        return("Le point culminant de ce pays est entre "+str(mini)+"km et "+str(maxi)+"km")
 
 def question(pays,attribut):
     i1,i2=0,0
@@ -220,6 +223,17 @@ def question(pays,attribut):
         return pays1.nombre_mots_nom
     if attribut == "couleurs_drapeau":
         return pays1.couleurs_drapeau
+    if attribut == "point_culminant":
+        hauteur=pays1.point_culminant/1000
+        liste=[0,1,2,3,4,5,6,7,8,9]
+        mini=0
+        maxi=9
+        for i in range(len(liste)):
+            if liste[i]<hauteur and liste[i]>mini:
+                mini=liste[i]
+            elif liste[i]>hauteur and liste[i]<maxi:
+                maxi=liste[i]
+        return maxi,mini
 
 
 
@@ -254,6 +268,11 @@ def calcul(valeur,attribut):
         valeur=valeur.replace("Le drapeau du pays contient ","")
         valeur=valeur.replace(" couleurs","")
         condition=(str(attribut)+"="+str(valeur))
+    elif attribut=="point_culminant":
+        valeur=valeur.replace("Le point culminant de ce pays est entre ","")
+        valeur=valeur.replace("km et ","")
+        valeur=valeur.replace("km","")
+        condition= (attribut + " > " + str(valeur[0]) + "000 and " + attribut + " < " + str(valeur[1])+"000")
     else:
         #attribut=attribut.replace("_entre","")
         condition = (attribut + " > " + str(valeur[0]) + " and " + attribut + " < " + str(valeur[1]))
@@ -283,7 +302,7 @@ def calcul(valeur,attribut):
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 tirage=True
 nompays=random()
-listeQ=["population_entre","population_sup","population_inf","superficie_entre","superficie_sup","superficie_inf","accès_mer","nombre_mots_nom","couleurs_drapeau"]#,"initiale_nom","initiale_capitale",]
+listeQ=["population_entre","population_sup","population_inf","superficie_entre","superficie_sup","superficie_inf","accès_mer","nombre_mots_nom","couleurs_drapeau","point_culminant"]#,"initiale_nom","initiale_capitale",]
 if 1==1:
     
     if tirage==True:
@@ -295,7 +314,7 @@ if 1==1:
 
         print("\n#############################################")
         attribut = listeQ[randint(0,len(listeQ)-1)]
-        attribut="couleurs_drapeau"
+        attribut="point_culminant"
         valeur = enigme(attribut)
         print(valeur)
         
@@ -312,6 +331,7 @@ if 1==1:
 
     print("############################")
     #test Esteban --------------------------------------------------------------------------------------------------------------------------
+    """
     tirage=True
     nompays=random()
     print("______________________________________________________\n"+str(nompays))
@@ -427,7 +447,7 @@ if 1==1:
     print(len(p6))
     print(len(p7))
     print(len(p8))
-            
+    """        
         
 
 
