@@ -137,13 +137,15 @@ def question(pays,attribut):
         mot = mot.replace("é","e")
         mot = mot.replace("î","i")
         mot=mot.upper()
-        if (listealpha.index(mot[0]) > 6) and (listealpha.index(mot[0]) < 17 ):
-            selecteur=randint((listealpha.index(mot[0])-7),listealpha.index(mot[0]))
-        elif (listealpha.index(mot[0]) <= 6) :
-            selecteur=randint(0,listealpha.index(mot[0]))
-        elif (listealpha.index(mot[0]) >= 16):
-            selecteur=17
-        return listealpha[selecteur],listealpha[selecteur+8]
+        bornes=[]
+        bornes.append(listealpha.index(mot[0])-randint(1,6))
+        bornes.append(listealpha.index(mot[0])+randint(1,6))
+        for i in range(2):
+            if bornes[i]>25:
+                bornes[i]=25
+            if bornes[i]<0:
+                bornes[i]=0
+        return listealpha[bornes[0]],listealpha[bornes[1]]
         
     elif attribut == "initiale_capitale":
         mot=pays.capitale[0]
@@ -159,13 +161,15 @@ def question(pays,attribut):
         mot = mot.replace("é","e")
         mot = mot.replace("î","i")
         mot=mot.upper()
-        if (listealpha.index(mot[0]) > 6) and (listealpha.index(mot[0]) < 17 ):
-            selecteur=randint((listealpha.index(mot[0])-7),listealpha.index(mot[0]))
-        elif (listealpha.index(mot[0]) <= 6) :
-            selecteur=randint(0,listealpha.index(mot[0]))
-        elif (listealpha.index(mot[0]) >= 16):
-            selecteur=17
-        return listealpha[selecteur],listealpha[selecteur+8]
+        bornes=[]
+        bornes.append(listealpha.index(mot[0])-randint(0,5))
+        bornes.append(listealpha.index(mot[0])+randint(0,5))
+        for i in range(2):
+            if bornes[i]>25:
+                bornes[i]=25
+            if bornes[i]<0:
+                bornes[i]=0
+        return listealpha[bornes[0]],listealpha[bornes[1]]
           
         
     elif attribut == "frontieres_1" or attribut =="frontieres_2":
@@ -180,9 +184,13 @@ def question(pays,attribut):
                 except:
                     attribut == "frontieres_1"
                     break
+            if attribut == "frontieres_2" and len(frontieres)==1:
+                return None
             return frontieres
         else:
             return None
+        
+
         
     elif attribut.startswith("continent_"):
         if attribut == "continent_1":
@@ -210,9 +218,9 @@ def calcul(valeur,attribut):
         attribut=attribut.replace("initiale_","")
         if attribut.endswith("_entre"):
             attribut=attribut.replace("_entre","")
-            condition="("
-            for i in range (9):
-                condition +=(attribut + " like \'"+listealpha[listealpha.index(valeur[0])+i]+"%' or ")
+            condition="("            
+            for i in range (int(listealpha.index(valeur[1]))-int(listealpha.index(valeur[0]))+2):
+                condition +=(attribut + " like \'"+listealpha[listealpha.index(valeur[0])+i-1]+"%' or ")
             condition += "nettoyeur)"
             condition = condition.replace(" or nettoyeur","")
         else: condition = (attribut + " like \'"+str(valeur)+"%'")
@@ -356,11 +364,11 @@ def lancer_tirage():
             liste_reponses.append(issues)
 
             
-            if ((len(issues) <= 30 and j == 0) or (len(issues) <= 12 and j == 1) or (len(issues) <= 7 and j == 2)  or (len(issues) <= 3  and j ==3) or (len(issues)!=1  and j ==4)):                            #recherche manouelle
+            if ((len(issues) <= 30 and j == 0) or (len(issues) <= 12 and j == 1) or (len(issues) <= 7 and j == 2)  or (len(issues) <= 3  and j ==3) or (len(issues)!=1  and j ==4) or valeur== None):                            #recherche manouelle
                 tirage=False
-                    
+
             #print("étape :"+str(j+1))
-            if j == 4 and len(issues) == 1:
+            if j == 4 and len(issues) == 1 and valeur != None:
                 return liste_attributs, liste_valeurs, liste_reponses
 
 
@@ -368,4 +376,4 @@ def lancer_tirage():
         return lancer_tirage()
 
 
-#lancer_tirage()
+lancer_tirage()
