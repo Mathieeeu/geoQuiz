@@ -1,7 +1,8 @@
 from tkinter import *
 import tkinter.font as tkFont
-import simp
+from simplificateur import simp, simp_liste, simp_liste_p2, simp_liste_p3
 import creation_questions
+from nommer_questions import nommer_questions
 import time
 
 def page1(xx,yy):
@@ -52,24 +53,24 @@ def page2():
     bouton_abandon=Button(jeu, text='Abandonner', command=abandon, font=police1)
     bouton_abandon.place(x=int(longueur)-420,y=int(largeur)-60,width=200, height=50)
 
-    print('p2 appelé')
+    #print('p2 appelé')
 
     textBoxReponse = Entry(jeu, textvariable=var_reponse, width=40, font=police1, bg = 'yellow')
     textBoxReponse.place(x=1050,y=600,width=200, height=70)
 
-    label_q1 = Label(jeu, textvariable=question1, font=police1 , background = 'lightgrey', anchor='center')
+    label_q1 = Label(jeu, textvariable=question1, font=police2 , background = 'lightgrey', anchor='center')
     label_q1.place(x=100,y=100,width=800, height=70)
 
-    label_q2 = Label(jeu, textvariable=question2, font=police1, background = 'grey', anchor='center')
+    label_q2 = Label(jeu, textvariable=question2, font=police2, background = 'grey', anchor='center')
     label_q2.place(x=100,y=200,width=800, height=70)
 
-    label_q3 = Label(jeu, textvariable=question3, font=police1, background = 'grey', anchor='center')
+    label_q3 = Label(jeu, textvariable=question3, font=police2, background = 'grey', anchor='center')
     label_q3.place(x=100,y=300,width=800, height=70)
 
-    label_q4 = Label(jeu, textvariable=question4, font=police1, background = 'grey', anchor='center')
+    label_q4 = Label(jeu, textvariable=question4, font=police2, background = 'grey', anchor='center')
     label_q4.place(x=100,y=400,width=800, height=70)
 
-    label_q5 = Label(jeu, textvariable=question5, font=police1, background = 'grey', anchor='center')
+    label_q5 = Label(jeu, textvariable=question5, font=police2, background = 'grey', anchor='center')
     label_q5.place(x=100,y=500,width=800, height=70)
 
 
@@ -149,36 +150,14 @@ def reset():
 
 def crea_question():
 
-    global t_question1,t_question2,t_question3,t_question4,t_question5
-    global reponse1,reponse2,reponse3,reponse4,reponse5
-    global reponse1_simp,reponse2_simp,reponse3_simp,reponse4_simp,reponse5_simp
-    global liste_reponses
-    a=''
+    global liste_attributs, liste_valeurs, liste_reponses, liste_questions
 
-    liste_reponses = creation_questions.lancer_tirage()
-    print(liste_reponses)
-    liste_questions=['a','b','c','d','e']
-    #liste_reponses=['A','B','C','D','E']
-    t_question1,reponse1=liste_questions[0],liste_reponses[0]
-    t_question2,reponse2=liste_questions[1],liste_reponses[1]
-    t_question3,reponse3=liste_questions[2],liste_reponses[2]
-    t_question4,reponse4=liste_questions[3],liste_reponses[3]
-    t_question5,reponse5=liste_questions[4],liste_reponses[4]
+    liste_attributs, liste_valeurs, liste_reponses = creation_questions.lancer_tirage()
+    print('Pssssst : '+ str(liste_reponses[4]))
 
-    question1.set(t_question1)
+    liste_questions=nommer_questions(liste_attributs,liste_valeurs)
 
-    #reponse1_simp=simp.simp_list(reponse1)
-    #reponse2_simp=simp.simp_list(reponse2)
-    #reponse3_simp=simp.simp_list(reponse3)
-    #reponse4_simp=simp.simp_list(reponse4)
-    #reponse5_simp=simp.simp_list(reponse5)
-
-    reponse1_simp=reponse1
-    reponse2_simp=reponse2
-    reponse3_simp=reponse3
-    reponse4_simp=reponse4
-    reponse5_simp=reponse5
-    
+    question1.set(liste_questions[0])
     
 
 def quitter():   #fermer la fenetre
@@ -192,79 +171,56 @@ def recherche():
 
 def test_reponse():
 
-    global reponse1,reponse2,reponse3,reponse4,reponse5
+    global liste_attributs, liste_valeurs, liste_reponses, liste_questions
 
-
-    global reponse1_simp,reponse2_simp,reponse3_simp,reponse4_simp,reponse5_simp
- 
-
-    global t_question1,t_question2,t_question3,t_question4,t_question5
-
-    global liste_reponses
-
-    #reponse_simp=simp.simp(var_reponse.get())
-    reponse_simp=var_reponse.get()
-    print(reponse_simp)
-    
-    #print(reponse_simp)
-    #print(reponse1_simp)
-    #print(reponse2_simp)
-    #print(reponse3_simp)
-    #print(reponse4_simp)
-    #print(reponse5_simp)
+    reponse_simp=simp(var_reponse.get())
 
     nb_reponse_juste_fct=nb_reponse_juste.get()
 
+    liste_reponses_simp=simp_liste_p3(liste_reponses)
     
-
-    #for i in range (len(eval('reponse'+str(nb_reponse_juste_fct+1)+'_simp'))):
     for i in range (len(liste_reponses[nb_reponse_juste_fct])):
-        #print(i)
-        
-        
-        #if str(reponse_simp) == eval('reponse'+str(nb_reponse_juste_fct+1)+'_simp[i-1]'):
-        if str(reponse_simp) == liste_reponses[nb_reponse_juste_fct][i]:
-            print(liste_reponses[nb_reponse_juste_fct][i])
-            
-                                     
+       
+        if str(reponse_simp) == liste_reponses_simp[nb_reponse_juste_fct][i][0]:
+                          
             nb_reponse_juste.set(nb_reponse_juste.get()+1)
-            
-                
 
             if nb_reponse_juste.get() == 1:
-                reponse_entree1.set(str(reponse1[i-1]))
+                
+                reponse_entree1.set(liste_reponses[nb_reponse_juste_fct][i][0])
                 label_r1.configure(textvariable=reponse_entree1,background ='lightgreen')
                 label_r2.configure(textvariable=var_reponse,background ='lightgrey')
                 label_q1.configure(background ='lightgreen')
                 label_q2.configure(background ='lightgrey')
-                question2.set(t_question2)
+                question2.set(liste_questions[1])
+                var_reponse.set('')
                 
             if nb_reponse_juste.get() == 2:
-                reponse_entree2.set(str(reponse2[i-1]))
+                reponse_entree2.set(liste_reponses[nb_reponse_juste_fct][i][0])
                 label_r2.configure(textvariable=reponse_entree2,background ='lightgreen')
                 label_r3.configure(textvariable=var_reponse,background ='lightgrey')
                 label_q2.configure(background ='lightgreen')
                 label_q3.configure(background ='lightgrey')
-                question3.set(t_question3)
+                question3.set(liste_questions[2])
                 
             if nb_reponse_juste.get() == 3:
-                reponse_entree3.set(str(reponse3[i-1]))
+                reponse_entree3.set(liste_reponses[nb_reponse_juste_fct][i][0])
                 label_r3.configure(textvariable=reponse_entree3,background ='lightgreen')
                 label_r4.configure(textvariable=var_reponse,background ='lightgrey')
                 label_q3.configure(background ='lightgreen')
                 label_q4.configure(background ='lightgrey')
-                question4.set(t_question4)
+                question4.set(liste_questions[3])
                 
             if nb_reponse_juste.get() == 4:
-                reponse_entree4.set(str(reponse4[i-1]))
+                reponse_entree4.set(liste_reponses[nb_reponse_juste_fct][i][0])
                 label_r4.configure(textvariable=reponse_entree4,background ='lightgreen')
                 label_r5.configure(textvariable=var_reponse,background ='lightgrey')
                 label_q4.configure(background ='lightgreen')
                 label_q5.configure(background ='lightgrey')
-                question5.set(t_question5)
+                question5.set(liste_questions[4])
                 
             if nb_reponse_juste.get() == 5:
-                reponse_entree5.set(str(reponse5[i-1]))
+                reponse_entree5.set(liste_reponses[nb_reponse_juste_fct][i][0])
                 label_r5.configure(textvariable=reponse_entree5,background ='lightgreen')
                 label_q5.configure(background ='lightgreen')
                 page3()
@@ -280,7 +236,7 @@ def retour():
     page1(620,450)
 
 def abandon():
-    var_reponse.set('Pouah t\'est nul !')
+    var_reponse.set(str(liste_reponses[4][0][0]))
 
 def f_follow(key):
     if follow.get()!='1':
@@ -304,6 +260,7 @@ fenetre = Tk()
 fenetre.geometry(longueur+'x'+largeur)
 fenetre.title('GéoQuiz')
 police1=tkFont.Font(family="MV Boli",size=20)
+police2=tkFont.Font(family="MV Boli",size=16)
 
 menu = Canvas(fenetre, width=longueur, height=largeur)
 jeu = Canvas(fenetre, width=longueur, height=largeur)

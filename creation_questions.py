@@ -203,6 +203,8 @@ def calcul(valeur,attribut):
     global commandeSQL
 
     #print("attribut recherché : "+str(attribut))
+
+    liste_temp=[]
     
     if attribut == "initiale_nom" or attribut == "initiale_capitale" or attribut == "initiale_nom_entre" or attribut == "initiale_capitale_entre" :   # POUR LES LETTRE
         attribut=attribut.replace("initiale_","")
@@ -251,8 +253,10 @@ def calcul(valeur,attribut):
     cursor.execute(commandeSQL)
     #on place tout les enregistrements dans une variable record
     record = cursor.fetchall()
-    print(record)
-    return(record)
+    for row in record :
+        #print(list(row))
+        liste_temp.append(list(row))
+    return(liste_temp)
 
 
 
@@ -357,17 +361,11 @@ def lancer_tirage():
                     
             #print("étape :"+str(j+1))
             if j == 4 and len(issues) == 1:
-                #print("le résultat final est : attributs : "+str(liste_attributs) +" valeurs : " + str(liste_valeurs) + " reponses :" + str(liste_reponses))
-                #return [liste_attributs],[liste_valeurs],[liste_reponses]
-                #print(liste_attributs)
-                return liste_reponses
+                return liste_attributs, liste_valeurs, liste_reponses
 
 
     if tirage==False:
         return lancer_tirage()
 
 
-
-        
-    
 #lancer_tirage()
