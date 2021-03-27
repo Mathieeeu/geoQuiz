@@ -47,7 +47,7 @@ def nommer_questions(liste_attributs,liste_valeurs):
             liste_questions.append("Le pays a des frontières communes avec "+str(liste_valeurs[i][0])+" et "+str(liste_valeurs[i][1]))
 
         elif liste_attributs[i] == ("continent_1"):
-            liste_questions.append("Le pays est sur le continent "+str(liste_valeurs[i]))
+            liste_questions.append("Le pays est sur le continent "+str(liste_valeurs[i][0]))
 
         elif liste_attributs[i] == ("continent_2"):
             liste_questions.append("Le pays est sur le continent "+str(liste_valeurs[i][0])+" ou "+str(liste_valeurs[i][1]))
