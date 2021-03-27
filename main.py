@@ -1,7 +1,7 @@
 from tkinter import *
 import tkinter.font as tkFont
 import simp
-import questions_beta
+import creation_questions
 import time
 
 def page1(xx,yy):
@@ -152,20 +152,32 @@ def crea_question():
     global t_question1,t_question2,t_question3,t_question4,t_question5
     global reponse1,reponse2,reponse3,reponse4,reponse5
     global reponse1_simp,reponse2_simp,reponse3_simp,reponse4_simp,reponse5_simp
-    
-    t_question1,reponse1=questions_beta.lancer_tirage()
-    t_question2,reponse2=questions_beta.lancer_tirage()
-    t_question3,reponse3=questions_beta.lancer_tirage() 
-    t_question4,reponse4=questions_beta.lancer_tirage()
-    t_question5,reponse5=questions_beta.lancer_tirage()
+    global liste_reponses
+    a=''
+
+    liste_reponses = creation_questions.lancer_tirage()
+    print(liste_reponses)
+    liste_questions=['a','b','c','d','e']
+    #liste_reponses=['A','B','C','D','E']
+    t_question1,reponse1=liste_questions[0],liste_reponses[0]
+    t_question2,reponse2=liste_questions[1],liste_reponses[1]
+    t_question3,reponse3=liste_questions[2],liste_reponses[2]
+    t_question4,reponse4=liste_questions[3],liste_reponses[3]
+    t_question5,reponse5=liste_questions[4],liste_reponses[4]
 
     question1.set(t_question1)
 
-    reponse1_simp=simp.simp_list(reponse1)
-    reponse2_simp=simp.simp_list(reponse2)
-    reponse3_simp=simp.simp_list(reponse3)
-    reponse4_simp=simp.simp_list(reponse4)
-    reponse5_simp=simp.simp_list(reponse5)
+    #reponse1_simp=simp.simp_list(reponse1)
+    #reponse2_simp=simp.simp_list(reponse2)
+    #reponse3_simp=simp.simp_list(reponse3)
+    #reponse4_simp=simp.simp_list(reponse4)
+    #reponse5_simp=simp.simp_list(reponse5)
+
+    reponse1_simp=reponse1
+    reponse2_simp=reponse2
+    reponse3_simp=reponse3
+    reponse4_simp=reponse4
+    reponse5_simp=reponse5
     
     
 
@@ -188,7 +200,12 @@ def test_reponse():
 
     global t_question1,t_question2,t_question3,t_question4,t_question5
 
-    reponse_simp=simp.simp(var_reponse.get())
+    global liste_reponses
+
+    #reponse_simp=simp.simp(var_reponse.get())
+    reponse_simp=var_reponse.get()
+    print(reponse_simp)
+    
     #print(reponse_simp)
     #print(reponse1_simp)
     #print(reponse2_simp)
@@ -198,9 +215,16 @@ def test_reponse():
 
     nb_reponse_juste_fct=nb_reponse_juste.get()
 
-    for i in range (len(eval('reponse'+str(nb_reponse_juste_fct+1)+'_simp'))):
+    
+
+    #for i in range (len(eval('reponse'+str(nb_reponse_juste_fct+1)+'_simp'))):
+    for i in range (len(liste_reponses[nb_reponse_juste_fct])):
         #print(i)
-        if str(reponse_simp) == eval('reponse'+str(nb_reponse_juste_fct+1)+'_simp[i-1]'):
+        
+        
+        #if str(reponse_simp) == eval('reponse'+str(nb_reponse_juste_fct+1)+'_simp[i-1]'):
+        if str(reponse_simp) == liste_reponses[nb_reponse_juste_fct][i]:
+            print(liste_reponses[nb_reponse_juste_fct][i])
             
                                      
             nb_reponse_juste.set(nb_reponse_juste.get()+1)

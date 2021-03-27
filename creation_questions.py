@@ -251,7 +251,9 @@ def calcul(valeur,attribut):
     cursor.execute(commandeSQL)
     #on place tout les enregistrements dans une variable record
     record = cursor.fetchall()
+    print(record)
     return(record)
+
 
 
 def lancer_tirage():
@@ -356,14 +358,16 @@ def lancer_tirage():
             #print("étape :"+str(j+1))
             if j == 4 and len(issues) == 1:
                 #print("le résultat final est : attributs : "+str(liste_attributs) +" valeurs : " + str(liste_valeurs) + " reponses :" + str(liste_reponses))
-                print([liste_attributs,liste_valeurs,liste_reponses])
-                
+                #return [liste_attributs],[liste_valeurs],[liste_reponses]
+                #print(liste_attributs)
+                return liste_reponses
+
 
     if tirage==False:
-        lancer_tirage()
+        return lancer_tirage()
 
 
 
         
     
-lancer_tirage()
+#lancer_tirage()
