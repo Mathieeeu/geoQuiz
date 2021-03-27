@@ -138,8 +138,8 @@ def question(pays,attribut):
         mot = mot.replace("î","i")
         mot=mot.upper()
         bornes=[]
-        bornes.append(listealpha.index(mot[0])-randint(1,6))
-        bornes.append(listealpha.index(mot[0])+randint(1,6))
+        bornes.append(listealpha.index(mot[0])-randint(0,5))
+        bornes.append(listealpha.index(mot[0])+randint(0,5))
         for i in range(2):
             if bornes[i]>25:
                 bornes[i]=25
