@@ -219,8 +219,8 @@ def calcul(valeur,attribut):
         if attribut.endswith("_entre"):
             attribut=attribut.replace("_entre","")
             condition="("            
-            for i in range (int(listealpha.index(valeur[1]))-int(listealpha.index(valeur[0]))+2):
-                condition +=(attribut + " like \'"+listealpha[listealpha.index(valeur[0])+i-1]+"%' or ")
+            for i in range (int(listealpha.index(valeur[1]))-int(listealpha.index(valeur[0]))+1):
+                condition +=(attribut + " like \'"+listealpha[listealpha.index(valeur[0])+i]+"%' or ")
             condition += "nettoyeur)"
             condition = condition.replace(" or nettoyeur","")
         else: condition = (attribut + " like \'"+str(valeur)+"%'")
