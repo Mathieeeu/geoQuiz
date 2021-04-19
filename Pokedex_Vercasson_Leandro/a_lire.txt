@@ -1,0 +1,7 @@
+Voici mon projet pokedex, il y a 2 programmes :
+- pokedex 'lite' est juste ce qu'il fallait faire
+- pokedex 'bonus' a beaucoup plus de choses (et quelques bugs aussi) : en plus du pokedex,
+  il y a une autre page ou l'on peut ajouter des dresseurs, combattre des pokemons sauvages 
+  et les capturer ...
+
+Léandro
