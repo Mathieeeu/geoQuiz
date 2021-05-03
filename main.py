@@ -250,6 +250,11 @@ def motion(event):
     if follow.get()=='1':
         page1((xx-100),(yy-25))
 
+def meme_reponse(key):
+    if nb_reponse_juste.get()> 0:
+        var_reponse.set(eval('reponse_entree'+str(nb_reponse_juste.get())).get())
+        test_reponse()
+
 
 
 
@@ -270,6 +275,7 @@ gagne = Canvas(fenetre, width=longueur, height=largeur)
 fenetre.bind('<KeyPress>', callback)
 fenetre.bind('<Escape>', retour)
 fenetre.bind('<Control-*>', f_follow)
+fenetre.bind('<Control_L>', meme_reponse)
 
 
 var_reponse = StringVar()

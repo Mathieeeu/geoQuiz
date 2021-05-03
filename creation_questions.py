@@ -138,8 +138,8 @@ def question(pays,attribut):
         mot = mot.replace("î","i")
         mot=mot.upper()
         bornes=[]
-        bornes.append(listealpha.index(mot[0])-randint(1,6))
-        bornes.append(listealpha.index(mot[0])+randint(1,6))
+        bornes.append(listealpha.index(mot[0])-randint(0,5))
+        bornes.append(listealpha.index(mot[0])+randint(0,5))
         for i in range(2):
             if bornes[i]>25:
                 bornes[i]=25
@@ -219,8 +219,8 @@ def calcul(valeur,attribut):
         if attribut.endswith("_entre"):
             attribut=attribut.replace("_entre","")
             condition="("            
-            for i in range (int(listealpha.index(valeur[1]))-int(listealpha.index(valeur[0]))+2):
-                condition +=(attribut + " like \'"+listealpha[listealpha.index(valeur[0])+i-1]+"%' or ")
+            for i in range (int(listealpha.index(valeur[1]))-int(listealpha.index(valeur[0]))+1):
+                condition +=(attribut + " like \'"+listealpha[listealpha.index(valeur[0])+i]+"%' or ")
             condition += "nettoyeur)"
             condition = condition.replace(" or nettoyeur","")
         else: condition = (attribut + " like \'"+str(valeur)+"%'")
