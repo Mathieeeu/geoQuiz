@@ -31,17 +31,27 @@ def multi_threaded_client(connection):
         if data[-1]=="connexion":
             reco=False
             for joueurs in liste_joueurs:
+                print("joueur: "+str(joueurs.pseudo)+"/"+str(data[0]))
                 if joueurs.pseudo==data[0]:
-                    connection.sendall(str.encode(str(joueurs.score)))
-                    print(str(joueurs.pseudo),str(joueurs.score))
-                    reco=True
+                    if joueurs.ip==data[1]:
+                        connection.sendall(str.encode(str(joueurs.score)))
+                        print(str(joueurs.pseudo),str(joueurs.score))
+                        reco=True
+                    else:
+                        if data[0][-3]=="(" and data[0][-1]==")":
+                            try:
+                                data[0]+="("+int(data[0][-2])+")"
+                            except : None
+                        else:
+                            data[0]+="(1)"
+                            print(data[0])
             if reco==False:
                 joueur1=joueur(data[0],data[1])
                 liste_joueurs.append(joueur1)
-            print("le joueur "+str(data[0])+" s'est connecté(e).\n")
+            print(str(data[0])+" s'est connecté(e).\n")
             print("joueurs connectés :")
             for joueurs in liste_joueurs:
-                print(joueurs.pseudo)
+                print(str(joueurs.pseudo)+" - "+str(joueurs.ip))
         else: 
             print("le joueur "+str(data[0])+" a "+str(data[2])+" points")
             for joueurs in liste_joueurs:
