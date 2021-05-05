@@ -24,9 +24,11 @@ res = ClientMultiSocket.recv(1024)
 message = (str(pseudo)+","+str(ip)+",connexion")
 ClientMultiSocket.send(str.encode(message))
 res = ClientMultiSocket.recv(1024)
-print(res.decode('utf-8'))
-
-score=0
+try:
+    score=int(res.decode('utf-8'))
+except:
+    score=0
+print("score="+str(score))
 while True:
     if  input("point ou pas point ")=="oui":
         score+=1
