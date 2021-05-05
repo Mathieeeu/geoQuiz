@@ -4,6 +4,7 @@ from simplificateur import simp, simp_liste, simp_liste_p2, simp_liste_p3
 import creation_questions
 from nommer_questions import nommer_questions
 import time
+import os
 
 def page1(xx,yy):
     global menu
@@ -11,7 +12,7 @@ def page1(xx,yy):
     menu.place(x=0, y=0)
     
     bouton_jouer = StringVar()
-    bouton_jouer=Button(menu, text='Jouer',command=page2, font=police1)
+    bouton_jouer=Button(menu, text='Jouer',command=page4, font=police1)
     bouton_jouer.place(x=xx,y=yy,width=200, height=50)
 
 
@@ -33,7 +34,7 @@ def page1(xx,yy):
 
 
 def page2():
-    global jeu
+    global jeu_solo
     global label_r1,label_r2,label_r3,label_r4,label_r5
     global label_q1,label_q2,label_q3,label_q4,label_q5
     
@@ -41,52 +42,52 @@ def page2():
     
     reset()
     crea_question()
-    jeu.place(x=0, y=0)
+    jeu_solo.place(x=0, y=0)
 
     t0 = time.time()
 
     bouton_retour = StringVar()
-    bouton_retour=Button(jeu, text='Retour', command=retour, font=police1)
+    bouton_retour=Button(jeu_solo, text='Retour', command=retour, font=police1)
     bouton_retour.place(x=int(longueur)-210,y=int(largeur)-60,width=200, height=50)
 
     bouton_abandon = StringVar()
-    bouton_abandon=Button(jeu, text='Abandonner', command=abandon, font=police1)
+    bouton_abandon=Button(jeu_solo, text='Abandonner', command=abandon, font=police1)
     bouton_abandon.place(x=int(longueur)-420,y=int(largeur)-60,width=200, height=50)
 
     #print('p2 appelé')
 
-    textBoxReponse = Entry(jeu, textvariable=var_reponse, width=40, font=police1, bg = 'yellow')
+    textBoxReponse = Entry(jeu_solo, textvariable=var_reponse, width=40, font=police1, bg = 'yellow')
     textBoxReponse.place(x=1050,y=600,width=200, height=70)
 
-    label_q1 = Label(jeu, textvariable=question1, font=police2 , background = 'lightgrey', anchor='center')
+    label_q1 = Label(jeu_solo, textvariable=question1, font=police2 , background = 'lightgrey', anchor='center')
     label_q1.place(x=100,y=100,width=800, height=70)
 
-    label_q2 = Label(jeu, textvariable=question2, font=police2, background = 'grey', anchor='center')
+    label_q2 = Label(jeu_solo, textvariable=question2, font=police2, background = 'grey', anchor='center')
     label_q2.place(x=100,y=200,width=800, height=70)
 
-    label_q3 = Label(jeu, textvariable=question3, font=police2, background = 'grey', anchor='center')
+    label_q3 = Label(jeu_solo, textvariable=question3, font=police2, background = 'grey', anchor='center')
     label_q3.place(x=100,y=300,width=800, height=70)
 
-    label_q4 = Label(jeu, textvariable=question4, font=police2, background = 'grey', anchor='center')
+    label_q4 = Label(jeu_solo, textvariable=question4, font=police2, background = 'grey', anchor='center')
     label_q4.place(x=100,y=400,width=800, height=70)
 
-    label_q5 = Label(jeu, textvariable=question5, font=police2, background = 'grey', anchor='center')
+    label_q5 = Label(jeu_solo, textvariable=question5, font=police2, background = 'grey', anchor='center')
     label_q5.place(x=100,y=500,width=800, height=70)
 
 
-    label_r1 = Label(jeu, textvariable=var_reponse, font=police1, background = 'lightgrey', anchor='center')
+    label_r1 = Label(jeu_solo, textvariable=var_reponse, font=police1, background = 'lightgrey', anchor='center')
     label_r1.place(x=950,y=100,width=400, height=70)
 
-    label_r2 = Label(jeu, textvariable=reponse_entree2, font=police1, background = 'grey', anchor='center')
+    label_r2 = Label(jeu_solo, textvariable=reponse_entree2, font=police1, background = 'grey', anchor='center')
     label_r2.place(x=950,y=200,width=400, height=70)
 
-    label_r3 = Label(jeu, textvariable=reponse_entree3, font=police1, background = 'grey', anchor='center')
+    label_r3 = Label(jeu_solo, textvariable=reponse_entree3, font=police1, background = 'grey', anchor='center')
     label_r3.place(x=950,y=300,width=400, height=70)
 
-    label_r4 = Label(jeu, textvariable=reponse_entree4, font=police1, background = 'grey', anchor='center')
+    label_r4 = Label(jeu_solo, textvariable=reponse_entree4, font=police1, background = 'grey', anchor='center')
     label_r4.place(x=950,y=400,width=400, height=70)
 
-    label_r5 = Label(jeu, textvariable=reponse_entree5, font=police1, background = 'grey', anchor='center')
+    label_r5 = Label(jeu_solo, textvariable=reponse_entree5, font=police1, background = 'grey', anchor='center')
     label_r5.place(x=950,y=500,width=400, height=70)
 
 
@@ -117,22 +118,93 @@ def page3():
     bouton_quitter.place(x=(int(longueur)/2)-100,y=550,width=200, height=50)
     
 
+def page4():
+    global selec_jeu
+    reset()
+    selec_jeu.place(x=0, y=0)
+    
+    bouton_solo = StringVar()
+    bouton_solo=Button(selec_jeu, text='Solo',command=page2, font=police1)
+    bouton_solo.place(x=(int(longueur)/2)-100,y=450,width=200, height=50)
+
+
+    bouton_multi = StringVar()
+    bouton_multi=Button(selec_jeu, text='Multijoueur',command=page5, font=police1)
+    bouton_multi.place(x=(int(longueur)/2)-100,y=550,width=200, height=50)
+
+    bouton_retour = StringVar()
+    bouton_retour=Button(selec_jeu, text='Retour',command=retour, font=police1)
+    bouton_retour.place(x=(int(longueur)/2)-100,y=650,width=200, height=50)
+
+    
+    image_logo = Label(selec_jeu, image="")
+    file_logo="logo.png"
+    logo = PhotoImage(file=file_logo)
+    image_logo.configure(image=logo)
+    image_logo.image = logo
+    image_logo.place(x=440,y=150,width=624, height=240)
+
+def page5():
+    global jeu_multi
+    reset()
+    jeu_multi.place(x=0, y=0)
+    
+    bouton_solo = StringVar()
+    bouton_solo=Button(jeu_multi, text='Créer partie',command=lancer_serveur, font=police1)
+    bouton_solo.place(x=(int(longueur)/2)-90,y=450,width=220, height=50)
+
+
+    bouton_multi = StringVar()
+    bouton_multi=Button(jeu_multi, text='Rejoindre partie',command=page6, font=police1)
+    bouton_multi.place(x=(int(longueur)/2)-90,y=550,width=220, height=50)
+
+    bouton_retour = StringVar()
+    bouton_retour=Button(jeu_multi, text='Retour',command=retour, font=police1)
+    bouton_retour.place(x=(int(longueur)/2)-90,y=650,width=220, height=50)
+
+    
+    image_logo = Label(jeu_multi, image="")
+    file_logo="logo.png"
+    logo = PhotoImage(file=file_logo)
+    image_logo.configure(image=logo)
+    image_logo.image = logo
+    image_logo.place(x=440,y=150,width=624, height=240)
+
+def page6():
+    global lobby_multi
+    reset()
+    lobby_multi.place(x=0, y=0)
+    
+    bouton_solo = StringVar()
+    bouton_solo=Button(lobby_multi, text='Créer partie',command=new_person, font=police1)
+    bouton_solo.place(x=1000-90,y=450,width=220, height=50)
+
+
+    
+    image_logo = Label(lobby_multi, image="")
+    file_logo="logo.png"
+    logo = PhotoImage(file=file_logo)
+    image_logo.configure(image=logo)
+    image_logo.image = logo
+    image_logo.place(x=440,y=150,width=624, height=240)
+
 def reset():
     global menu
-    global jeu
+    global jeu_solo
     global gagne
     global label_r1
     global label_r2
     global label_r3
     global label_r4
     global label_r5
+    global nombre_personne
 
     
     menu.destroy()
-    jeu.destroy()
+    jeu_solo.destroy()
     gagne.destroy()
     menu = Canvas(fenetre,width=longueur, height=largeur)
-    jeu = Canvas(fenetre, width=longueur, height=largeur)
+    jeu_solo = Canvas(fenetre, width=longueur, height=largeur)
     gagne = Canvas(fenetre, width=longueur, height=largeur)
 
     reponse_entree1.set('')
@@ -153,7 +225,6 @@ def crea_question():
     global liste_attributs, liste_valeurs, liste_reponses, liste_questions
 
     liste_attributs, liste_valeurs, liste_reponses = creation_questions.lancer_tirage()
-    print('Pssssst : '+ str(liste_reponses[4]))
 
     liste_questions=nommer_questions(liste_attributs,liste_valeurs)
 
@@ -256,10 +327,22 @@ def meme_reponse(key):
         test_reponse()
 
 
+def lancer_serveur():
+    os.startfile("serveur.py")
 
+def new_person():
+    global nombre_personne
+    nombre_personne=nombre_personne+1
+    liste_personne=["Léandro","Dionys","Estéban","Mathieu","Kylian"]
+    label_personne = Label(lobby_multi, text=liste_personne[nombre_personne-1], font=police2, background = 'grey', anchor='center')
+    label_personne.place(x=50,y=50+(80*nombre_personne),width=400, height=70)
+    label_score = Label(lobby_multi, text='0', font=police2, background = 'lightgrey', anchor='center')
+    label_score.place(x=450,y=50+(80*nombre_personne),width=100, height=70)
 
 longueur = '1440'
 largeur = '810'
+
+nombre_personne=1
 
 fenetre = Tk()
 fenetre.geometry(longueur+'x'+largeur)
@@ -268,9 +351,11 @@ police1=tkFont.Font(family="MV Boli",size=20)
 police2=tkFont.Font(family="MV Boli",size=16)
 
 menu = Canvas(fenetre, width=longueur, height=largeur)
-jeu = Canvas(fenetre, width=longueur, height=largeur)
+jeu_solo = Canvas(fenetre, width=longueur, height=largeur)
 gagne = Canvas(fenetre, width=longueur, height=largeur)
-
+selec_jeu = Canvas(fenetre, width=longueur, height=largeur)
+jeu_multi = Canvas(fenetre, width=longueur, height=largeur)
+lobby_multi = Canvas(fenetre, width=longueur, height=largeur)
 
 fenetre.bind('<KeyPress>', callback)
 fenetre.bind('<Escape>', retour)
