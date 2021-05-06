@@ -13,7 +13,7 @@ if ip == "":
     ip_client="localhost"
 elif ip == "dev":
     ip="localhost"
-    ip_client="dev"
+    ip_client=input("IP dev : ")
 
 
 print(pseudo,ip)
