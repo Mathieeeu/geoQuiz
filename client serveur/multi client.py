@@ -13,7 +13,7 @@ if ip == "":
     ip_client="localhost"
 elif ip == "dev":
     ip="localhost"
-    ip_client=input("IP dev : ")
+    ip_client=input("IP du client : ")
 
 
 print(pseudo,ip)
@@ -32,6 +32,9 @@ res = ClientMultiSocket.recv(1024)
 message = (str(pseudo)+","+str(ip_client)+",connexion")
 ClientMultiSocket.send(str.encode(message))
 res = ClientMultiSocket.recv(1024)
+if res.decode('utf-8').startswith('pseudo_update,'):
+    pseudo=res.decode('utf-8').replace('pseudo_update,','')
+    print("votre pseudo est maintenant {}".format(pseudo))
 try:
     score=int(res.decode('utf-8'))
 except:

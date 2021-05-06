@@ -26,12 +26,10 @@ def multi_threaded_client(connection):
     connection.send(str.encode('Server is working:'))
     while True:
         data = connection.recv(2048)
-        #print(data.decode('utf-8'))
         data=(data.decode('utf-8')).split(",")
         if data[-1]=="connexion":
             reco=False
             for joueurs in liste_joueurs:
-                print("joueur: "+str(joueurs.pseudo)+"/"+str(data[0]))
                 if joueurs.pseudo==data[0]:
                     if joueurs.ip==data[1]:
                         connection.sendall(str.encode(str(joueurs.score)))
@@ -45,6 +43,7 @@ def multi_threaded_client(connection):
                         else:
                             data[0]+="(1)"
                             print(data[0])
+                            connection.sendall(str.encode(str("pseudo_update,"+data[0])))
             if reco==False:
                 joueur1=joueur(data[0],data[1])
                 liste_joueurs.append(joueur1)
