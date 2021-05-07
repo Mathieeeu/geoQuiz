@@ -27,16 +27,22 @@ def detect_parent(pseudo):
         return pseudo
 
 liste_joueurs=[]
-
 def message_a_tous(message):
-    for clients in liste_client:
-        try:
-            clients.sendall(str.encode(message))
-        except:
-            if input("le message n'a pas pu être envoyé à "+str(liste_joueurs[liste_client.index(clients)].pseudo)+".\n\
+    if message=="deco_test":
+       for clients in liste_client:
+            try:
+                clients.sendall(str.encode(message))
+            except:
+                if input("le joueur "+str(liste_joueurs[liste_client.index(clients)].pseudo)+" s'est déconnecté.\n\
 supprimer le joueur ? ")=="oui":
-                liste_joueurs.pop(liste_client.index(clients))
-                liste_client.pop(liste_client.index(clients))
+                    liste_joueurs.pop(liste_client.index(clients))
+                    liste_client.pop(liste_client.index(clients))
+                    print("joueur supprimé.")
+    else:
+        for clients in liste_client:
+            try:
+                clients.sendall(str.encode(message))
+            except: None
 
 
 def multi_threaded_client(connection):
@@ -82,14 +88,19 @@ def multi_threaded_client(connection):
                 break
             connection.sendall(str.encode(response))
         except:
-            print("un joueur s'est déconnecté.")
+            message_a_tous("deco_test")
             break
     connection.close()
 
 liste_client=[]
 while True:
+    reco=False
     Client, address = ServerSideSocket.accept()
-    liste_client.append(Client)
+    for clients in liste_client:
+        if clients == Client:
+            reco=True
+    if reco==False:
+        liste_client.append(Client)
     #print('Connected to: ' + address[0] + ':' + str(address[1]))
     start_new_thread(multi_threaded_client, (Client, ))
     ThreadCount += 1

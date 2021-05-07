@@ -1,4 +1,6 @@
 import socket
+import keyboard
+
 
 hostname = socket.gethostname()
 ip_client = socket.gethostbyname(hostname)
@@ -43,7 +45,7 @@ print("score="+str(score))
 while True:
     res = ClientMultiSocket.recv(1024)
     print(res.decode('utf-8'))
-    if  input("point ou pas point ")=="oui":
+    if input("point : ")=="oui":
         score+=1
         message = (str(pseudo)+","+str(ip_client)+","+str(score))
         ClientMultiSocket.send(str.encode(message))
