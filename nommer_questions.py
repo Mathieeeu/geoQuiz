@@ -10,11 +10,11 @@ def nommer_questions(liste_attributs,liste_valeurs):
 
         elif liste_attributs[i]=="superficie_sup":
             nb1=espace_zero(int(liste_valeurs[i][0]))
-            liste_questions.append("Ce pays fait + de " + str(nb1) + " km²")
+            liste_questions.append("Ce pays fait plus de " + str(nb1) + " km²")
 
         elif liste_attributs[i]=="superficie_inf":
             nb1=espace_zero(int(liste_valeurs[i][0]))
-            liste_questions.append("Ce pays fait - de " + str(nb1) + " km²")
+            liste_questions.append("Ce pays fait moins de " + str(nb1) + " km²")
 
         elif liste_attributs[i]=="population_entre":
             nb1,nb2=espace_zero(int(liste_valeurs[i][0])),espace_zero(int(liste_valeurs[i][1]))
@@ -22,11 +22,11 @@ def nommer_questions(liste_attributs,liste_valeurs):
 
         elif liste_attributs[i]=="population_sup":
             nb1=espace_zero(int(liste_valeurs[i][0]))
-            liste_questions.append("Ce pays possède + " + str(nb1) + " d'habitants")
+            liste_questions.append("Ce pays possède plus de " + str(nb1) + " habitants")
 
         elif liste_attributs[i]=="population_inf":
             nb1=espace_zero(int(liste_valeurs[i][0]))
-            liste_questions.append("Ce pays possède - de " + str(nb1) + " d'habitants")
+            liste_questions.append("Ce pays possède moins de " + str(nb1) + " habitants")
 
         elif liste_attributs[i] == "initiale_nom" :
             liste_questions.append("Le nom de ce pays commence par un "+str(liste_valeurs[i]))
@@ -80,7 +80,12 @@ def nommer_questions(liste_attributs,liste_valeurs):
             else :
                 liste_questions.append("Le plus haut point de ce pays est entre " + str(nb1) + " et " + str(nb2) + " mètres")
 
-
+        elif liste_attributs[i] == ("mots"):
+            print(liste_valeurs[i])
+            if int(liste_valeurs[i]) == 1:
+                liste_questions.append("Le nom de ce pays est composé d'un seul mot")
+            else :
+                liste_questions.append("Le nom de ce pays est composé de "+str(liste_valeurs[i])+" mots")
             
     return liste_questions
 
