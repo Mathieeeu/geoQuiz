@@ -218,7 +218,8 @@ def question(pays,attribut):
             i1=liste[i+1]
             if liste[i] <= pays.fuseaux and pays.fuseaux <= i1 :
                 return(liste[i],i1)
-        
+    elif attribut == "langue":
+        return pays.langue
     
 
 def calcul(valeur,attribut):
@@ -265,7 +266,8 @@ def calcul(valeur,attribut):
     elif attribut == "fuseaux":
         condition = (attribut + " >= " + str(valeur[0]) + " and " + attribut + " <= " + str(valeur[1]))
         
-    
+    elif attribut == "langue":
+        contition = "langue = '"+str(valeur)+"'"
 
     sqliteConnection = connexion()
     cursor = sqliteConnection.cursor()
@@ -302,7 +304,7 @@ def lancer_tirage():
     listeQ1=["initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2"]
     listeQ2=["superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2","fuseaux"]
     listeQ3=["frontieres_1","superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","antarctique","fuseaux"]
-    listeQ4=["frontieres_1","frontieres_2","superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","antarctique","fuseaux"]
+    listeQ4=["frontieres_1","frontieres_2","superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","antarctique","fuseaux","langue"]
 
     listeQbackup=[]
     listeQbackup.append(listeQ0)
@@ -383,7 +385,11 @@ def lancer_tirage():
                     for i in chaqueliste:
                         if i == "fuseaux":
                             chaqueliste.pop(chaqueliste.index(i))
-                            
+            elif attribut == "langue":
+                for chaqueliste in listeQ:
+                    for i in chaqueliste:
+                        if i == "langue":
+                            chaqueliste.pop(chaqueliste.index(i))               
                             
             valeur = question(pays1,attribut)
             issues = calcul(valeur,attribut)

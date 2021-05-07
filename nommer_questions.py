@@ -60,7 +60,9 @@ def nommer_questions(liste_attributs,liste_valeurs):
                 
         elif liste_attributs[i] == ("fuseaux"):
             nb1,nb2=espace_zero(int(liste_valeurs[i][0])),espace_zero(int(liste_valeurs[i][1]))
-            liste_questions.append("Ce pays possède entre " + str(nb1) + " et " + str(nb2) + " fuseaux horaires")       
+            liste_questions.append("Ce pays possède entre " + str(nb1) + " et " + str(nb2) + " fuseaux horaires")
+        elif liste_attributs[i] == ("langue"):
+            liste_questions.append("Les habitants de ce pays parlent "+str(liste_valeurs[i]))
 
                 
     return liste_questions
