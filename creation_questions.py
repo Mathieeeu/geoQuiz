@@ -3,22 +3,28 @@ from random import *
 question=1
 class pays:
 
-    def __init__(self,nom,capitale,population,point_culminant,superficie,frontieres,langue,continent,fuseaux):
+    def __init__(self,nom,capitale,population,point_culminant,superficie,frontieres,langue,continent,fuseaux,antarctique,tel,acces_mer,couleurs_drapeau,long_frontieres,long_cotes,mots):
         self.nom=nom
         self.capitale=capitale
         self.population=population
-        self.point_culminant=point_culminant
+        self.point_culminant=point_culminant#
         self.superficie=superficie
         self.frontieres=frontieres
-        self.langue=langue
+        self.langue=langue#
         self.continent=continent
-        self.fuseaux=fuseaux
-        #antarctique
-        #tel
-        #acces_mer
+        self.fuseaux=fuseaux#
+        self.antarctique=antarctique#
+        self.tel=tel#
+        self.acces_mer=acces_mer#
+        self.couleurs_drapeau=couleurs_drapeau#
+        self.long_frontieres=long_frontieres#
+        self.long_cotes=long_cotes#
+        self.perimetre=long_cotes+long_frontieres#
+        self.mots=mots#
+    
 
     def affichageinfos(self):
-        infos=[self.nom,self.capitale,self.population,self.point_culminant,self.superficie,self.frontieres,self.langue,self.continent,self.fuseaux]
+        infos=[self.nom,self.capitale,self.population,self.point_culminant,self.superficie,self.frontieres,self.langue,self.continent,self.fuseaux,self.antarctique,self.tel,self.acces_mer,self.couleurs_drapeau,self.long_frontieres,self.long_cotes,self.perimetre,self.mots]
         return infos
 
 
@@ -65,7 +71,10 @@ def AffichezDB(nom):
     cursor.execute(sqlite_select_Query)
     #on place tout les enregistrements dans une variable record
     record = cursor.fetchall()
-    pays1 = pays(record[0][1],record[0][2],record[0][3],record[0][4],record[0][5],record[0][6],record[0][7],record[0][8],record[0][9])
+    pays1 = pays(record[0][1],record[0][2],record[0][3],record[0][4],record[0][5],record[0][6],record[0][7],record[0][8],record[0][9],record[0][10],record[0][11],record[0][12],record[0][13],record[0][14],record[0][15],record[0][16],)
+    #1=nom 2=capitale 3=pop 4=pt_culm 5=superficie 6=frontieres 7=langue 8=continent 9=fuseau
+    #10=antarctique 11=tel 12=acces_mer 13=couleurs_drapeau 14=long_frontiere 15=long_cotes 16=nbr_mots
+    
     return pays1
 
 
@@ -117,7 +126,7 @@ def question(pays,attribut):
         
 
     elif attribut == "population_inf":
-        liste=[100000,1000000,5000000,10000000,50000000,100000000] #100k 1M 5M 10M 50M 100MM
+        liste=[100000,1000000,5000000,10000000,50000000,100000000] #100k 1M 5M 10M 50M 100M
         random = randint(0,len(liste)-1)
         while liste[random] <= pays.population :
             random = randint(0,len(liste)-1)
@@ -202,7 +211,8 @@ def question(pays,attribut):
             liste.pop(choice([0, 2]))
         return liste
         
-   
+    elif attribut == "antarctique" :
+        return pays.antarctique
         
         
     
@@ -240,12 +250,15 @@ def calcul(valeur,attribut):
         else :
             condition = "(continent ='"+valeur[0]+"' or continent ='"+valeur[1]+"')"
         
-    else :
-        if attribut == "superficie_entre" or attribut == "population_entre":
-            if attribut.endswith("_entre"):
-                attribut=attribut.replace("_entre","")
+    elif attribut == "superficie_entre" or attribut == "population_entre":
+        if attribut.endswith("_entre"):
+            attribut=attribut.replace("_entre","")
+            condition = (attribut + " > " + str(valeur[0]) + " and " + attribut + " < " + str(valeur[1]))
+            
+    elif attribut == "antarctique":
+        condition = "antarctique = '"+str(valeur)+"'"
         ##print("c\'est un else, la valeur est : "+str(valeur[1]))
-        condition = (attribut + " > " + str(valeur[0]) + " and " + attribut + " < " + str(valeur[1]))
+        
 
 
     sqliteConnection = connexion()
@@ -282,8 +295,8 @@ def lancer_tirage():
     listeQ0=["initiale_nom_entre","initiale_capitale_entre","continent_2"]
     listeQ1=["initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2"]
     listeQ2=["superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2"]
-    listeQ3=["frontieres_1","superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre"]
-    listeQ4=["frontieres_1","frontieres_2","superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre"]
+    listeQ3=["frontieres_1","superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","antarctique"]
+    listeQ4=["frontieres_1","frontieres_2","superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","antarctique"]
 
     listeQbackup=[]
     listeQbackup.append(listeQ0)
@@ -302,6 +315,7 @@ def lancer_tirage():
 
     #print("______________________________________________________\n Le pays : "+str(nompays))
     pays1=AffichezDB(nompays)
+    
 
     
     #print("les infos du pays : "+str(pays1.affichageinfos()))
@@ -353,6 +367,11 @@ def lancer_tirage():
                     for i in chaqueliste:
                         if i.startswith("initiale_capitale"):
                             chaqueliste.pop(chaqueliste.index(i))
+            elif attribut == "antarctique":
+                for chaqueliste in listeQ:
+                    for i in chaqueliste:
+                        if i == "antarctique":
+                            chaqueliste.pop(chaqueliste.index(i))
 
                             
             valeur = question(pays1,attribut)
@@ -369,8 +388,10 @@ def lancer_tirage():
 
             #print("étape :"+str(j+1))
             if j == 4 and len(issues) == 1 and valeur != None:
-                return liste_attributs, liste_valeurs, liste_reponses
+                print(pays1.affichageinfos())
 
+                return liste_attributs, liste_valeurs, liste_reponses
+        
 
     if tirage==False:
         return lancer_tirage()

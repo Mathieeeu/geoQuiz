@@ -52,6 +52,13 @@ def nommer_questions(liste_attributs,liste_valeurs):
         elif liste_attributs[i] == ("continent_2"):
             liste_questions.append("Le pays est sur le continent "+str(liste_valeurs[i][0])+" ou "+str(liste_valeurs[i][1]))
 
+        elif liste_attributs[i] == ("antarctique"):
+            if liste_valeurs[i] == 'True' :
+                liste_questions.append("Le pays possède une partie de l'Antarctique")
+            elif liste_valeurs[i] == 'False':
+                liste_questions.append("Le pays ne possède aucune partie de l'Antarctique")
+
+                
     return liste_questions
 
 
