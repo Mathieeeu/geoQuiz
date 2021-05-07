@@ -30,8 +30,13 @@ liste_joueurs=[]
 
 def message_a_tous(message):
     for clients in liste_client:
-        print(clients)
-        clients.sendall(str.encode(message))
+        try:
+            clients.sendall(str.encode(message))
+        except:
+            if input("le message n'a pas pu être envoyé à "+str(liste_joueurs[liste_client.index(clients)].pseudo)+".\n\
+supprimer le joueur ? ")=="oui":
+                liste_joueurs.pop(liste_client.index(clients))
+                liste_client.pop(liste_client.index(clients))
 
 
 def multi_threaded_client(connection):
@@ -46,9 +51,6 @@ def multi_threaded_client(connection):
                 for joueurs in liste_joueurs:
                     if detect_parent(joueurs.pseudo)==detect_parent(data[0]):
                         if joueurs.ip==data[1]:
-                            print("les ip")
-                            print(joueurs.ip)
-                            print(data[1])
                             connection.sendall(str.encode(str(joueurs.score)))
                             reco=True
                         else:
@@ -69,7 +71,7 @@ def multi_threaded_client(connection):
                     message_a_tous("\n"+str(data[0])+" s'est reconnecté(e).\n")
                 print("joueurs connectés :")
                 for joueurs in liste_joueurs:
-                    print(str(joueurs.pseudo)+" - "+str(joueurs.ip))
+                    print(str(joueurs.pseudo)+" - "+str(joueurs.score)+" pts - "+str(joueurs.ip))
             else: 
                 print("le joueur "+str(data[0])+" a "+str(data[2])+" points")
                 for joueurs in liste_joueurs:
