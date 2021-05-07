@@ -21,6 +21,8 @@ def simp(mot):
     mot = mot.replace("dz","algerie")
     mot = mot.replace("baguette","france")
     mot = mot.replace("top1","irak")
+    mot = mot.replace("usa","etats unis")
+    mot = mot.replace("rdc","republique démocratique du congo")
     return(mot)
 
 def simp_liste(liste):
