@@ -174,6 +174,7 @@ def page6():
     global lobby_multi
     reset()
     lobby_multi.place(x=0, y=0)
+    new_person()
     
     bouton_solo = StringVar()
     bouton_solo=Button(lobby_multi, text='Créer partie',command=new_person, font=police1)
@@ -342,7 +343,7 @@ def new_person():
 longueur = '1440'
 largeur = '810'
 
-nombre_personne=1
+nombre_personne=0
 
 fenetre = Tk()
 fenetre.geometry(longueur+'x'+largeur)
