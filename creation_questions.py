@@ -197,7 +197,7 @@ def question(pays,attribut):
                 return None
             return frontieres
         else:
-            return None
+            return ("None")
         
     elif attribut.startswith("continent_"):
         if attribut == "continent_1":
@@ -213,11 +213,15 @@ def question(pays,attribut):
         return pays.antarctique
 
     elif attribut == "fuseaux":
-        liste=[1,3,5,8,10,15] # 0 100 1k 5k 25k 50k 100k 200k 500k 1M 2M
-        for i in range(len(liste)):
-            i1=liste[i+1]
-            if liste[i] <= pays.fuseaux and pays.fuseaux <= i1 :
-                return(liste[i],i1)
+        if pays.fuseaux == 1 :
+            return pays.fuseaux
+        else :
+            liste=[2,3,5,8,10,15]
+            for i in range(len(liste)):
+                i1=liste[i+1]
+                if liste[i] <= pays.fuseaux and pays.fuseaux <= i1 :
+                    return(liste[i],i1)
+            
     elif attribut == "langue":
         return pays.langue
     
@@ -242,7 +246,7 @@ def calcul(valeur,attribut):
 
     elif attribut.startswith("frontieres_"):
         condition = "("
-        if not valeur is None:
+        if not valeur == "None":
             for i in valeur:
                 condition += ("frontieres like '%" + i + "%' and ")
             condition+="netoyyeru)"
@@ -264,10 +268,14 @@ def calcul(valeur,attribut):
         condition = "antarctique = '"+str(valeur)+"'"
         
     elif attribut == "fuseaux":
-        condition = (attribut + " >= " + str(valeur[0]) + " and " + attribut + " <= " + str(valeur[1]))
+        if valeur == 1:
+            condition = ("fuseaux = "+str(valeur))
+        else :
+            condition = (attribut + " >= " + str(valeur[0]) + " and " + attribut + " <= " + str(valeur[1]))
         
     elif attribut == "langue":
-        contition = "langue = '"+str(valeur)+"'"
+        condition = "langue = '"+str(valeur)+"'"
+    
 
     sqliteConnection = connexion()
     cursor = sqliteConnection.cursor()
@@ -389,7 +397,7 @@ def lancer_tirage():
                 for chaqueliste in listeQ:
                     for i in chaqueliste:
                         if i == "langue":
-                            chaqueliste.pop(chaqueliste.index(i))               
+                            chaqueliste.pop(chaqueliste.index(i))
                             
             valeur = question(pays1,attribut)
             issues = calcul(valeur,attribut)

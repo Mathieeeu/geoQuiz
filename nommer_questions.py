@@ -41,29 +41,36 @@ def nommer_questions(liste_attributs,liste_valeurs):
             liste_questions.append("Le nom de la capitale de ce pays commence par une lettre entre "+str(liste_valeurs[i][0])+" et " +str(liste_valeurs[i][1]))
 
         elif liste_attributs[i] == ("frontieres_1"):
-            liste_questions.append("Le pays a une frontière commune avec "+str(liste_valeurs[i][0]))
+            if liste_valeurs[i] == "None" :
+                liste_questions.append("Ce pays est une ile")
+            else :
+                liste_questions.append("Ce pays a une frontière commune avec "+str(liste_valeurs[i][0]))
 
         elif liste_attributs[i] == ("frontieres_2"):
-            liste_questions.append("Le pays a des frontières communes avec "+str(liste_valeurs[i][0])+" et "+str(liste_valeurs[i][1]))
+            liste_questions.append("Ce pays a des frontières communes avec "+str(liste_valeurs[i][0])+" et "+str(liste_valeurs[i][1]))
 
         elif liste_attributs[i] == ("continent_1"):
-            liste_questions.append("Le pays est sur le continent "+str(liste_valeurs[i][0]))
+            liste_questions.append("Ce pays est sur le continent "+str(liste_valeurs[i][0]))
 
         elif liste_attributs[i] == ("continent_2"):
-            liste_questions.append("Le pays est sur le continent "+str(liste_valeurs[i][0])+" ou "+str(liste_valeurs[i][1]))
+            liste_questions.append("Ce pays est sur le continent "+str(liste_valeurs[i][0])+" ou "+str(liste_valeurs[i][1]))
 
         elif liste_attributs[i] == ("antarctique"):
             if liste_valeurs[i] == 'True' :
-                liste_questions.append("Le pays possède une partie de l'Antarctique")
+                liste_questions.append("Ce pays possède une partie de l'Antarctique")
             elif liste_valeurs[i] == 'False':
-                liste_questions.append("Le pays ne possède aucune partie de l'Antarctique")
+                liste_questions.append("Ce pays ne possède aucune partie de l'Antarctique")
                 
         elif liste_attributs[i] == ("fuseaux"):
-            nb1,nb2=espace_zero(int(liste_valeurs[i][0])),espace_zero(int(liste_valeurs[i][1]))
-            liste_questions.append("Ce pays possède entre " + str(nb1) + " et " + str(nb2) + " fuseaux horaires")
+            if liste_valeurs[i] == 1 :
+                liste_questions.append("Ce pays possède un seul fuseau horaire")
+            else :
+                nb1,nb2=espace_zero(int(liste_valeurs[i][0])),espace_zero(int(liste_valeurs[i][1]))
+                liste_questions.append("Ce pays possède entre " + str(nb1) + " et " + str(nb2) + " fuseaux horaires")
+            
+
         elif liste_attributs[i] == ("langue"):
             liste_questions.append("Les habitants de ce pays parlent "+str(liste_valeurs[i]))
-
                 
     return liste_questions
 
