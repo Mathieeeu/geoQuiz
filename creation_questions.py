@@ -16,7 +16,7 @@ class pays:
         self.antarctique=antarctique
         self.tel=tel#
         self.acces_mer=acces_mer#
-        self.couleurs_drapeau=couleurs_drapeau#
+        self.couleurs_drapeau=couleurs_drapeau
         self.long_frontieres=long_frontieres#
         self.long_cotes=long_cotes#
         self.perimetre=long_cotes+long_frontieres#
