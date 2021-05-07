@@ -1,6 +1,7 @@
 def simp(mot):
     mot = mot.lower()
     mot = mot.replace("-"," ")
+    mot = mot.replace("'"," ")
     mot = mot.replace("é","e")
     mot = mot.replace("è","e")
     mot = mot.replace("ç","c")
@@ -22,8 +23,20 @@ def simp(mot):
     mot = mot.replace("top1","irak")
     return(mot)
 
-def simp_list(liste):
+def simp_liste(liste):
     liste2=[]
     for i in range(len(liste)):
         liste2.append(simp(liste[i]))
+    return liste2
+
+def simp_liste_p2(liste):
+    liste2=[]
+    for i in range(len(liste)):
+        liste2.append(simp_liste(liste[i]))
+    return liste2
+
+def simp_liste_p3(liste):
+    liste2=[]
+    for i in range(len(liste)):
+        liste2.append(simp_liste_p2(liste[i]))
     return liste2
