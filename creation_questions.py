@@ -12,8 +12,8 @@ class pays:
         self.frontieres=frontieres
         self.langue=langue#
         self.continent=continent
-        self.fuseaux=fuseaux#
-        self.antarctique=antarctique#
+        self.fuseaux=fuseaux
+        self.antarctique=antarctique
         self.tel=tel#
         self.acces_mer=acces_mer#
         self.couleurs_drapeau=couleurs_drapeau#
@@ -199,8 +199,6 @@ def question(pays,attribut):
         else:
             return None
         
-
-        
     elif attribut.startswith("continent_"):
         if attribut == "continent_1":
             liste=[pays.continent]
@@ -213,7 +211,13 @@ def question(pays,attribut):
         
     elif attribut == "antarctique" :
         return pays.antarctique
-        
+
+    elif attribut == "fuseaux":
+        liste=[1,3,5,8,10,15] # 0 100 1k 5k 25k 50k 100k 200k 500k 1M 2M
+        for i in range(len(liste)):
+            i1=liste[i+1]
+            if liste[i] <= pays.fuseaux and pays.fuseaux <= i1 :
+                return(liste[i],i1)
         
     
 
@@ -257,9 +261,11 @@ def calcul(valeur,attribut):
             
     elif attribut == "antarctique":
         condition = "antarctique = '"+str(valeur)+"'"
-        ##print("c\'est un else, la valeur est : "+str(valeur[1]))
         
-
+    elif attribut == "fuseaux":
+        condition = (attribut + " >= " + str(valeur[0]) + " and " + attribut + " <= " + str(valeur[1]))
+        
+    
 
     sqliteConnection = connexion()
     cursor = sqliteConnection.cursor()
@@ -294,9 +300,9 @@ def lancer_tirage():
     nompays=random()
     listeQ0=["initiale_nom_entre","initiale_capitale_entre","continent_2"]
     listeQ1=["initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2"]
-    listeQ2=["superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2"]
-    listeQ3=["frontieres_1","superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","antarctique"]
-    listeQ4=["frontieres_1","frontieres_2","superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","antarctique"]
+    listeQ2=["superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2","fuseaux"]
+    listeQ3=["frontieres_1","superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","antarctique","fuseaux"]
+    listeQ4=["frontieres_1","frontieres_2","superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","antarctique","fuseaux"]
 
     listeQbackup=[]
     listeQbackup.append(listeQ0)
@@ -372,7 +378,12 @@ def lancer_tirage():
                     for i in chaqueliste:
                         if i == "antarctique":
                             chaqueliste.pop(chaqueliste.index(i))
-
+            elif attribut == "fuseaux":
+                for chaqueliste in listeQ:
+                    for i in chaqueliste:
+                        if i == "fuseaux":
+                            chaqueliste.pop(chaqueliste.index(i))
+                            
                             
             valeur = question(pays1,attribut)
             issues = calcul(valeur,attribut)

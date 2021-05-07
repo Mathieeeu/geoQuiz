@@ -57,6 +57,10 @@ def nommer_questions(liste_attributs,liste_valeurs):
                 liste_questions.append("Le pays possède une partie de l'Antarctique")
             elif liste_valeurs[i] == 'False':
                 liste_questions.append("Le pays ne possède aucune partie de l'Antarctique")
+                
+        elif liste_attributs[i] == ("fuseaux"):
+            nb1,nb2=espace_zero(int(liste_valeurs[i][0])),espace_zero(int(liste_valeurs[i][1]))
+            liste_questions.append("Ce pays possède entre " + str(nb1) + " et " + str(nb2) + " fuseaux horaires")       
 
                 
     return liste_questions
