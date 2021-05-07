@@ -7,10 +7,10 @@ class pays:
         self.nom=nom
         self.capitale=capitale
         self.population=population
-        self.point_culminant=point_culminant#
+        self.point_culminant=point_culminant
         self.superficie=superficie
         self.frontieres=frontieres
-        self.langue=langue#
+        self.langue=langue
         self.continent=continent
         self.fuseaux=fuseaux
         self.antarctique=antarctique
@@ -106,6 +106,16 @@ def question(pays,attribut):
         while liste[random] <= pays.superficie :
             random = randint(0,len(liste)-1)
         return(liste[random])
+
+    elif attribut == "point_culminant":
+        liste=[0,500,1500,2500,4000,6000] 
+        for i in range(len(liste)):
+            try:
+                i1=liste[i+1]
+            except:
+                i1=9999
+            if liste[i] <= pays.point_culminant and pays.point_culminant <= i1 :
+                return(liste[i],i1)
             
     elif attribut == "population_entre":
         liste=[0,10000,100000,1000000,5000000,10000000,50000000,100000000] #0 10k 100k 1M 5M 10M 50M 100M
@@ -224,7 +234,8 @@ def question(pays,attribut):
             
     elif attribut == "langue":
         return pays.langue
-    
+
+
 
 def calcul(valeur,attribut):
     global commandeSQL
@@ -263,7 +274,7 @@ def calcul(valeur,attribut):
         if attribut.endswith("_entre"):
             attribut=attribut.replace("_entre","")
             condition = (attribut + " > " + str(valeur[0]) + " and " + attribut + " < " + str(valeur[1]))
-            
+    
     elif attribut == "antarctique":
         condition = "antarctique = '"+str(valeur)+"'"
         
@@ -275,7 +286,9 @@ def calcul(valeur,attribut):
         
     elif attribut == "langue":
         condition = "langue = '"+str(valeur)+"'"
-    
+
+    elif attribut == "point_culminant":
+        condition = (attribut + " > " + str(valeur[0]) + " and " + attribut + " < " + str(valeur[1]))
 
     sqliteConnection = connexion()
     cursor = sqliteConnection.cursor()
@@ -309,10 +322,10 @@ def lancer_tirage():
 
     nompays=random()
     listeQ0=["initiale_nom_entre","initiale_capitale_entre","continent_2"]
-    listeQ1=["initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2"]
-    listeQ2=["superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2","fuseaux"]
-    listeQ3=["frontieres_1","superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","antarctique","fuseaux"]
-    listeQ4=["frontieres_1","frontieres_2","superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","antarctique","fuseaux","langue"]
+    listeQ1=["initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2","point_culminant"]
+    listeQ2=["superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2","fuseaux","point_culminant"]
+    listeQ3=["frontieres_1","superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","antarctique","fuseaux","point_culminant"]
+    listeQ4=["frontieres_1","frontieres_2","superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","antarctique","fuseaux","langue","point_culminant"]
 
     listeQbackup=[]
     listeQbackup.append(listeQ0)
@@ -398,7 +411,11 @@ def lancer_tirage():
                     for i in chaqueliste:
                         if i == "langue":
                             chaqueliste.pop(chaqueliste.index(i))
-                            
+            elif attribut == "point_culminant":
+                 for chaqueliste in listeQ:
+                    for i in chaqueliste:
+                        if i == "point_culminant":
+                            chaqueliste.pop(chaqueliste.index(i))
             valeur = question(pays1,attribut)
             issues = calcul(valeur,attribut)
             ##print("les issues : " + str(issues))

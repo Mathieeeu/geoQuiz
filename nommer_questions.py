@@ -71,7 +71,17 @@ def nommer_questions(liste_attributs,liste_valeurs):
 
         elif liste_attributs[i] == ("langue"):
             liste_questions.append("Les habitants de ce pays parlent "+str(liste_valeurs[i]))
-                
+
+
+        if liste_attributs[i]=="point_culminant":
+            nb1,nb2=espace_zero(int(liste_valeurs[i][0])),espace_zero(int(liste_valeurs[i][1]))
+            if liste_valeurs[i][1] == 9999:
+                liste_questions.append("Le plus haut point de ce pays est supérieur à " +str(nb1)+ " mètres")
+            else :
+                liste_questions.append("Le plus haut point de ce pays est entre " + str(nb1) + " et " + str(nb2) + " mètres")
+
+
+            
     return liste_questions
 
 
