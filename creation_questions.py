@@ -20,7 +20,7 @@ class pays:
         self.long_frontieres=long_frontieres#
         self.long_cotes=long_cotes#
         self.perimetre=long_cotes+long_frontieres#
-        self.mots=mots#
+        self.mots=mots
     
 
     def affichageinfos(self):
@@ -238,6 +238,8 @@ def question(pays,attribut):
     elif attribut == "mots":
         return pays.mots
 
+    elif attribut == "couleurs_drapeau":
+        return pays.couleurs_drapeau
 
 def calcul(valeur,attribut):
     global commandeSQL
@@ -295,6 +297,9 @@ def calcul(valeur,attribut):
     elif attribut == "mots":
         condition = "nombre_mots_nom = "+str(valeur)
         
+    elif attribut == "couleurs_drapeau":
+        condition = "couleurs_drapeau = "+str(valeur)
+    
     sqliteConnection = connexion()
     cursor = sqliteConnection.cursor()
     #ecriture de la requéte, on récupére le contenu de la listeDeroulante avec la fonction .get()
@@ -326,11 +331,11 @@ def lancer_tirage():
     tirage=True
 
     nompays=random()
-    listeQ0=["initiale_nom_entre","initiale_capitale_entre","continent_2","mots"]
-    listeQ1=["initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2","point_culminant","mots"]
-    listeQ2=["superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2","fuseaux","point_culminant","mots"]
-    listeQ3=["frontieres_1","superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","antarctique","fuseaux","point_culminant","mots"]
-    listeQ4=["frontieres_1","frontieres_2","superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","antarctique","fuseaux","langue","point_culminant","mots"]
+    listeQ0=["initiale_nom_entre","initiale_capitale_entre","continent_2","mots","couleurs_drapeau"]
+    listeQ1=["initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2","point_culminant","mots","couleurs_drapeau"]
+    listeQ2=["superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2","fuseaux","point_culminant","mots","couleurs_drapeau"]
+    listeQ3=["frontieres_1","superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","antarctique","fuseaux","point_culminant","mots","couleurs_drapeau"]
+    listeQ4=["frontieres_1","frontieres_2","superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","antarctique","fuseaux","langue","point_culminant","mots","couleurs_drapeau"]
 
     listeQbackup=[]
     listeQbackup.append(listeQ0)
@@ -426,7 +431,12 @@ def lancer_tirage():
                     for i in chaqueliste:
                         if i == "mots":
                             chaqueliste.pop(chaqueliste.index(i))
-
+            elif attribut == "couleurs_drapeau":
+                 for chaqueliste in listeQ:
+                    for i in chaqueliste:
+                        if i == "couleurs_drapeau":
+                            chaqueliste.pop(chaqueliste.index(i))
+                            
                             
             valeur = question(pays1,attribut)
             issues = calcul(valeur,attribut)
