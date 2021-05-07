@@ -19,7 +19,7 @@ elif ip == "dev":
 print(pseudo,ip)
 
 host = ip
-port = 2004
+port = 2003
 
 print('Waiting for connection response')
 try:

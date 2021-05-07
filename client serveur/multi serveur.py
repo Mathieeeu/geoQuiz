@@ -10,7 +10,7 @@ class joueur:
 
 ServerSideSocket = socket.socket()
 host = ''
-port = 2004
+port = 2003
 ThreadCount = 0
 try:
     ServerSideSocket.bind((host, port))
@@ -19,6 +19,12 @@ except socket.error as e:
 
 print('Socket is listening..')
 ServerSideSocket.listen(5)
+
+def detect_parent(pseudo):
+    if pseudo[-3]=="(" and pseudo[-1]==")":
+        return pseudo[0:-3]
+    else:
+        return pseudo
 
 liste_joueurs=[]
 
@@ -30,23 +36,25 @@ def multi_threaded_client(connection):
         if data[-1]=="connexion":
             reco=False
             for joueurs in liste_joueurs:
-                if joueurs.pseudo==data[0]:
+                print(detect_parent(joueurs.pseudo)+str(" //// ")+detect_parent(data[0]))
+                if detect_parent(joueurs.pseudo)==detect_parent(data[0]):
                     if joueurs.ip==data[1]:
                         connection.sendall(str.encode(str(joueurs.score)))
                         print(str(joueurs.pseudo),str(joueurs.score))
                         reco=True
                     else:
-                        if data[0][-3]=="(" and data[0][-1]==")":
-                            try:
-                                data[0]+="("+int(data[0][-2])+")"
-                            except : None
+                        if joueurs.pseudo[-3]=="(" and joueurs.pseudo[-1]==")":
+                            print(data[0]+" avant")
+                            data[0]=detect_parent(data[0])+"("+str(int(joueurs.pseudo[-2])+1)+")"
+                            print(data[0]+" après")
                         else:
                             data[0]+="(1)"
-                            print(data[0])
-                            connection.sendall(str.encode(str("pseudo_update,"+data[0])))
+                            print("pseudo update : "+data[0])
             if reco==False:
                 joueur1=joueur(data[0],data[1])
+                print("AU FINAL "+joueur1.pseudo)
                 liste_joueurs.append(joueur1)
+            connection.sendall(str.encode(str("pseudo_update,"+data[0])))
             print(str(data[0])+" s'est connecté(e).\n")
             print("joueurs connectés :")
             for joueurs in liste_joueurs:
