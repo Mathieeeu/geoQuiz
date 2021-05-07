@@ -41,12 +41,14 @@ except:
     score=0
 print("score="+str(score))
 while True:
+    res = ClientMultiSocket.recv(1024)
+    print(res.decode('utf-8'))
     if  input("point ou pas point ")=="oui":
         score+=1
         message = (str(pseudo)+","+str(ip_client)+","+str(score))
         ClientMultiSocket.send(str.encode(message))
-        res = ClientMultiSocket.recv(1024)
-        print(res.decode('utf-8'))
+    res = ClientMultiSocket.recv(1024)
+    print(res.decode('utf-8'))
 
 
 ClientMultiSocket.close()
