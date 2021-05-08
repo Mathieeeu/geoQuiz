@@ -1,6 +1,9 @@
 import sqlite3
 from random import *
+
 question=1
+
+
 class pays:
 
     def __init__(self,nom,capitale,population,point_culminant,superficie,frontieres,langue,continent,fuseaux,antarctique,tel,acces_mer,couleurs_drapeau,long_frontieres,long_cotes,mots):
@@ -204,7 +207,7 @@ def question(pays,attribut):
                     attribut == "frontieres_1"
                     break
             if attribut == "frontieres_2" and len(frontieres)==1:
-                return None
+                return "None"
             return frontieres
         else:
             return ("None")
@@ -331,7 +334,7 @@ def lancer_tirage():
     tirage=True
 
     nompays=random()
-    listeQ0=["initiale_nom_entre","initiale_capitale_entre","continent_2"]
+    listeQ0=["initiale_nom_entre","initiale_capitale_entre","continent_2","continent_1"]
     listeQ1=["initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2","point_culminant","couleurs_drapeau"]
     listeQ2=["superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2","fuseaux","point_culminant","mots","couleurs_drapeau"]
     listeQ3=["frontieres_1","superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","antarctique","fuseaux","point_culminant","mots","couleurs_drapeau"]
@@ -352,6 +355,9 @@ def lancer_tirage():
     liste_reponses=[]
     
 
+    
+
+    
     #print("______________________________________________________\n Le pays : "+str(nompays))
     pays1=AffichezDB(nompays)
     
@@ -453,7 +459,6 @@ def lancer_tirage():
             #print("étape :"+str(j+1))
             if j == 4 and len(issues) == 1 and valeur != None:
                 print(pays1.affichageinfos())
-
                 return liste_attributs, liste_valeurs, liste_reponses
         
 
