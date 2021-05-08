@@ -118,7 +118,7 @@ def question(pays,attribut):
                 return(liste[i],i1)
             
     elif attribut == "population_entre":
-        liste=[0,10000,100000,1000000,5000000,10000000,50000000,100000000] #0 10k 100k 1M 5M 10M 50M 100M
+        liste=[0,10000,100000,1000000,5000000,10000000,25000000,50000000,100000000] #0 10k 100k 1M 5M 10M 25M 50M 100M
         for i in range(len(liste)):
             try:
                 i1=liste[i+1]
@@ -128,7 +128,7 @@ def question(pays,attribut):
                 return(liste[i],i1)
             
     elif attribut == "population_sup":
-        liste=[0,10000,100000,1000000,5000000,10000000] #0 10k 100k 1M 5M 10M
+        liste=[0,10000,100000,1000000,5000000,10000000,25000000] #0 10k 100k 1M 5M 10M 25M
         random = randint(0,len(liste)-1)
         while liste[random] >= pays.population :
             random = randint(0,len(liste)-1)
@@ -136,7 +136,7 @@ def question(pays,attribut):
         
 
     elif attribut == "population_inf":
-        liste=[100000,1000000,5000000,10000000,50000000,100000000] #100k 1M 5M 10M 50M 100M
+        liste=[100000,1000000,5000000,10000000,50000000,25000000,100000000] #100k 1M 5M 10M 25M 50M 100M
         random = randint(0,len(liste)-1)
         while liste[random] <= pays.population :
             random = randint(0,len(liste)-1)
