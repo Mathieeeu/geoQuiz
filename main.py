@@ -48,6 +48,7 @@ def page2():
     t0 = time.time()
 
     is_multi.set(0)
+    temps_timer.set(0)
 
     bouton_retour = StringVar()
     bouton_retour=Button(jeu_solo, text='Retour', command=retour, font=police1)
@@ -230,14 +231,19 @@ def page7():
 
     t0 = time.time()
 
+    temps_timer.set(0)
+
     bouton_abandon = StringVar()
     bouton_abandon=Button(jeu_multi, text='Abandonner (à enlever après)', command=abandon, font=police1)
     bouton_abandon.place(x=int(longueur)-420,y=int(largeur)-60,width=200, height=50)
 
     #print('p2 appelé')
 
+    label_timer = Label(jeu_multi, textvariable=temps_timer, font=police2 , background = 'lightgrey', anchor='center')
+    label_timer.place(x=1250,y=600,width=100, height=70)
+
     textBoxReponse = Entry(jeu_multi, textvariable=var_reponse, width=40, font=police1, bg = 'yellow')
-    textBoxReponse.place(x=1050,y=600,width=200, height=70)
+    textBoxReponse.place(x=950,y=600,width=250, height=70)
 
     label_q1 = Label(jeu_multi, textvariable=question1, font=police2 , background = 'lightgrey', anchor='center')
     label_q1.place(x=100,y=100,width=800, height=70)
