@@ -40,14 +40,16 @@ try:
 except:
     score=0
 print("score="+str(score))
+
 while True:
-    choix=""
-    try:
-        res = ClientMultiSocket.recv(1024)
-        print(res.decode('utf-8'))
-    except: pass
-    choix=input("demande_lancer_partie")
-    if choix=="a":
+    choix="0"
+    res = ClientMultiSocket.recv(1024)
+    message_recu=res.decode('utf-8')
+    if message_recu == 'lancement':
+        print(message_recu)
+    #choix=input("demande_lancer_partie")
+    choix="recherche_de_partie"
+    if choix=="recherche_de_partie":
         message = (str(pseudo)+","+str(ip_client)+",demande_lancer_partie")
         ClientMultiSocket.send(str.encode(message))
     elif choix=="quitter":
@@ -55,7 +57,6 @@ while True:
         ClientMultiSocket.send(str.encode(message))
         ClientMultiSocket.close()
 
-        break
     #ERREUR : JE SAISPAS POURQUOI MAIS SI ON MET NI OUI NI QUITTER CA
     #TRANSFORME LE PROGRAMME EN LEGUME, MAIS PAS IMPORTANT
     #NOTER AUSSI QUE LA PAUSE IMPOSEE PAR LE INPUT DISPARAITRA DANS LE PROGRAMME

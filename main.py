@@ -460,7 +460,7 @@ def meme_reponse(key):
 
 
 def lancer_serveur():
-    os.startfile("serveur.py")
+    os.startfile("multi serveur.py")
 
 def new_envent_lobby():
     global nombre_personne

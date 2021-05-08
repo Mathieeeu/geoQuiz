@@ -47,13 +47,11 @@ supprimer le joueur ? ")=="oui":
                 None
     else:
         for joueurs in liste_joueurs:
-            try:
-               joueurs.client.sendall(str.encode(message))
-            except: None
+            joueurs.client.sendall(str.encode(message))
+
 
 
 def multi_threaded_client(connection):
-    global lancement_partie
     print(connection)
     connection.send(str.encode('Server is working:'))
     while True:
@@ -92,16 +90,7 @@ def multi_threaded_client(connection):
                     if joueurs.pseudo==data[0]:
                         liste_joueurs.pop(liste_joueurs.index(joueurs))
                         print(data[0]+" a quitté la partie.")
-
-            elif data[2]=="demande_lancer_partie":
-                if lancement_partie == 1 :
-                    lancement_partie = 0
-                    valeure = 'stp marche'
-                else :
-                    valeure = 'non'
-
-                message_a_tous(valeure)
-                
+ 
             else:
                 print("le joueur "+str(data[0])+" a "+str(data[2])+" points")
                 for joueurs in liste_joueurs:
@@ -115,24 +104,9 @@ def multi_threaded_client(connection):
             None
     connection.close()
 
-
-
-def page1():
-    global menu
-    menu.place(x=0, y=0)
-
-    hostname = socket.gethostname()
-    local_ip.set(socket.gethostbyname(hostname))
-    
-    bouton_jouer = StringVar()
-    bouton_jouer=Button(menu, text='Lancer la partie',command=lancer_partie, font=police1)
-    bouton_jouer.place(x=20,y=300,width=300, height=50)
-
-    label_ip = Label(menu, textvariable=local_ip, font=police1, background = 'lightgrey', anchor='center')
-    label_ip.place(x=0,y=100,width=400, height=70)
-
 def boucle():
     global client_recu, ServerSideSocket, multi_threaded_client, ThreadCount
+
     print('aaa')
     Client, address = ServerSideSocket.accept()
     client_recu=Client
@@ -144,12 +118,28 @@ def boucle():
 
 
 def lancer_partie():
-    #global lancement_partie
-    #lancement_partie = 1
-    message_a_tous("ljdslfj")
+    message_a_tous("lancement")
+  
 
-longueur = '450'
-largeur = '640'
+def page1():
+    global menu
+    menu.place(x=0, y=0)
+
+    hostname = socket.gethostname()
+    local_ip.set(socket.gethostbyname(hostname))
+    
+    bouton_jouer = StringVar()
+    bouton_jouer=Button(menu, text='Lancer la partie',command=lancer_partie, font=police2, background = 'green')
+    bouton_jouer.place(x=487,y=660,width=200, height=80)
+
+    label_ip = Label(menu, textvariable=local_ip, font=police2, background = 'lightgrey', anchor='center')
+    label_ip.place(x=37,y=68,width=232, height=35)
+
+
+longueur = '1440'
+largeur = '810'
+
+chargement=0
 
 fenetre = Tk()
 fenetre.geometry(longueur+'x'+largeur)
@@ -159,12 +149,26 @@ police2=tkFont.Font(family="MV Boli",size=16)
 
 menu = Canvas(fenetre, width=longueur, height=largeur)
 
+label_background = Label(menu, image="")
+file_background="images/lobby_multi_serveur.png"
+background = PhotoImage(file=file_background)
+label_background.configure(image=background)
+label_background.image = background
+label_background.place(x=0,y=0,width=longueur, height=largeur)
+    
+
+
 local_ip=StringVar()
 
+#os.startfile("multi client.py")
+
 page1()
-boucle()
+#boucle()
 
 
 menu.mainloop()
 
+
 ServerSideSocket.close()
+
+#lancer_partie-->creation question--> les questions --> message a tous renvoi au client
