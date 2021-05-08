@@ -114,7 +114,7 @@ def question(pays,attribut):
                 i1=liste[i+1]
             except:
                 i1=9999
-            if liste[i] <= pays.point_culminant and pays.point_culminant <= i1 :
+            if liste[i] <= int(pays.point_culminant) and int(pays.point_culminant) <= i1 :
                 return(liste[i],i1)
             
     elif attribut == "population_entre":
