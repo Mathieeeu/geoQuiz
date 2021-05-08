@@ -153,7 +153,6 @@ def crea_question():
     global liste_attributs, liste_valeurs, liste_reponses, liste_questions
 
     liste_attributs, liste_valeurs, liste_reponses = creation_questions.lancer_tirage()
-    print('Pssssst : '+ str(liste_reponses[4]))
 
     liste_questions=nommer_questions(liste_attributs,liste_valeurs)
 
@@ -254,6 +253,8 @@ def meme_reponse(key):
     if nb_reponse_juste.get()> 0:
         var_reponse.set(eval('reponse_entree'+str(nb_reponse_juste.get())).get())
         test_reponse()
+
+
 
 
 
