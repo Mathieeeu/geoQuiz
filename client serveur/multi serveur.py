@@ -3,10 +3,11 @@ import os
 from _thread import *
 
 class joueur:
-    def __init__(self,pseudo,ip):
+    def __init__(self,pseudo,ip,client):
         self.pseudo=pseudo
         self.ip=ip
         self.score=0
+        self.client=client
 
 ServerSideSocket = socket.socket()
 host = ''
@@ -29,30 +30,33 @@ def detect_parent(pseudo):
 liste_joueurs=[]
 def message_a_tous(message):
     if message=="deco_test":
-       for clients in liste_client:
+       for joueurs in liste_joueurs:
             try:
-                clients.sendall(str.encode(message))
+                joueurs.client.sendall(str.encode(message))
             except:
-                if input("le joueur "+str(liste_joueurs[liste_client.index(clients)].pseudo)+" s'est déconnecté.\n\
+                #ICI : POSSIBILITE DE DELETE UN JOUEUR EN CAS DE DECONNEXION
+                """
+                if input("le joueur "+str(joueurs.pseudo)+" s'est déconnecté.\n\
 supprimer le joueur ? ")=="oui":
-                    liste_joueurs.pop(liste_client.index(clients))
-                    liste_client.pop(liste_client.index(clients))
+                    liste_joueurs.pop(liste_joueurs.index(joueurs))
                     print("joueur supprimé.")
+                """
+                None
     else:
-        for clients in liste_client:
+        for joueurs in liste_joueurs:
             try:
-                clients.sendall(str.encode(message))
+               joueur.client.sendall(str.encode(message))
             except: None
 
 
 def multi_threaded_client(connection):
-    
     connection.send(str.encode('Server is working:'))
     while True:
+        global client_recu
         try:
             data = connection.recv(2048)
             data=(data.decode('utf-8')).split(",")
-            if data[-1]=="connexion":
+            if data[2]=="connexion":
                 reco=False
                 for joueurs in liste_joueurs:
                     if detect_parent(joueurs.pseudo)==detect_parent(data[0]):
@@ -67,7 +71,7 @@ def multi_threaded_client(connection):
                             else:
                                 data[0]+="(1)"
                 if reco==False:
-                    joueur1=joueur(data[0],data[1])
+                    joueur1=joueur(data[0],data[1],client_recu)
                     liste_joueurs.append(joueur1)
                     connection.sendall(str.encode(str("pseudo_update,"+data[0])))
                     print("\n"+str(data[0])+" s'est connecté(e).\n")
@@ -78,7 +82,12 @@ def multi_threaded_client(connection):
                 print("joueurs connectés :")
                 for joueurs in liste_joueurs:
                     print(str(joueurs.pseudo)+" - "+str(joueurs.score)+" pts - "+str(joueurs.ip))
-            else: 
+            elif data[2]=="quitter":
+                for joueurs in liste_joueurs:
+                    if joueurs.pseudo==data[0]:
+                        liste_joueurs.pop(liste_joueurs.index(joueurs))
+                        print(data[0]+" a quitté la partie.")
+            else:
                 print("le joueur "+str(data[0])+" a "+str(data[2])+" points")
                 for joueurs in liste_joueurs:
                     if joueurs.pseudo==data[0]:
@@ -92,15 +101,10 @@ def multi_threaded_client(connection):
             break
     connection.close()
 
-liste_client=[]
 while True:
-    reco=False
+    global client_recu
     Client, address = ServerSideSocket.accept()
-    for clients in liste_client:
-        if clients == Client:
-            reco=True
-    if reco==False:
-        liste_client.append(Client)
+    client_recu=Client
     #print('Connected to: ' + address[0] + ':' + str(address[1]))
     start_new_thread(multi_threaded_client, (Client, ))
     ThreadCount += 1
