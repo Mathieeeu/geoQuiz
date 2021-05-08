@@ -331,8 +331,8 @@ def lancer_tirage():
     tirage=True
 
     nompays=random()
-    listeQ0=["initiale_nom_entre","initiale_capitale_entre","continent_2","mots","couleurs_drapeau"]
-    listeQ1=["initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2","point_culminant","mots","couleurs_drapeau"]
+    listeQ0=["initiale_nom_entre","initiale_capitale_entre","continent_2"]
+    listeQ1=["initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2","point_culminant","couleurs_drapeau"]
     listeQ2=["superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2","fuseaux","point_culminant","mots","couleurs_drapeau"]
     listeQ3=["frontieres_1","superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","antarctique","fuseaux","point_culminant","mots","couleurs_drapeau"]
     listeQ4=["frontieres_1","frontieres_2","superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","antarctique","fuseaux","langue","point_culminant","mots","couleurs_drapeau"]
