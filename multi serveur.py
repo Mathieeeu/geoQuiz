@@ -1,3 +1,5 @@
+from tkinter import *
+import tkinter.font as tkFont
 import socket
 import os
 from _thread import *
@@ -29,6 +31,7 @@ def detect_parent(pseudo):
 
 liste_joueurs=[]
 def message_a_tous(message):
+    print(message)
     if message=="deco_test":
        for joueurs in liste_joueurs:
             try:
@@ -45,11 +48,13 @@ supprimer le joueur ? ")=="oui":
     else:
         for joueurs in liste_joueurs:
             try:
-               joueur.client.sendall(str.encode(message))
+               joueurs.client.sendall(str.encode(message))
             except: None
 
 
 def multi_threaded_client(connection):
+    global lancement_partie
+    print(connection)
     connection.send(str.encode('Server is working:'))
     while True:
         global client_recu
@@ -87,6 +92,16 @@ def multi_threaded_client(connection):
                     if joueurs.pseudo==data[0]:
                         liste_joueurs.pop(liste_joueurs.index(joueurs))
                         print(data[0]+" a quitté la partie.")
+
+            elif data[2]=="demande_lancer_partie":
+                if lancement_partie == 1 :
+                    lancement_partie = 0
+                    valeure = 'stp marche'
+                else :
+                    valeure = 'non'
+
+                message_a_tous(valeure)
+                
             else:
                 print("le joueur "+str(data[0])+" a "+str(data[2])+" points")
                 for joueurs in liste_joueurs:
@@ -97,16 +112,59 @@ def multi_threaded_client(connection):
                 break
             connection.sendall(str.encode(response))
         except:
-            message_a_tous("deco_test")
-            break
+            None
     connection.close()
 
-while True:
-    global client_recu
+
+
+def page1():
+    global menu
+    menu.place(x=0, y=0)
+
+    hostname = socket.gethostname()
+    local_ip.set(socket.gethostbyname(hostname))
+    
+    bouton_jouer = StringVar()
+    bouton_jouer=Button(menu, text='Lancer la partie',command=lancer_partie, font=police1)
+    bouton_jouer.place(x=20,y=300,width=300, height=50)
+
+    label_ip = Label(menu, textvariable=local_ip, font=police1, background = 'lightgrey', anchor='center')
+    label_ip.place(x=0,y=100,width=400, height=70)
+
+def boucle():
+    global client_recu, ServerSideSocket, multi_threaded_client, ThreadCount
+    print('aaa')
     Client, address = ServerSideSocket.accept()
     client_recu=Client
     #print('Connected to: ' + address[0] + ':' + str(address[1]))
     start_new_thread(multi_threaded_client, (Client, ))
     ThreadCount += 1
     #print('Thread Number: ' + str(ThreadCount) + '\n')
+
+
+
+def lancer_partie():
+    #global lancement_partie
+    #lancement_partie = 1
+    message_a_tous("ljdslfj")
+
+longueur = '450'
+largeur = '640'
+
+fenetre = Tk()
+fenetre.geometry(longueur+'x'+largeur)
+fenetre.title('GéoQuiz : Serveur')
+police1=tkFont.Font(family="MV Boli",size=20)
+police2=tkFont.Font(family="MV Boli",size=16)
+
+menu = Canvas(fenetre, width=longueur, height=largeur)
+
+local_ip=StringVar()
+
+page1()
+boucle()
+
+
+menu.mainloop()
+
 ServerSideSocket.close()

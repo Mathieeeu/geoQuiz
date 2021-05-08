@@ -1,5 +1,4 @@
 import socket
-import keyboard
 
 hostname = socket.gethostname()
 ip_client = socket.gethostbyname(hostname)
@@ -47,15 +46,15 @@ while True:
         res = ClientMultiSocket.recv(1024)
         print(res.decode('utf-8'))
     except: pass
-    choix=str(input("point(oui) ou quitter: "))
-    if choix=="oui":
-        score+=1
-        message = (str(pseudo)+","+str(ip_client)+","+str(score))
+    choix=input("demande_lancer_partie")
+    if choix=="a":
+        message = (str(pseudo)+","+str(ip_client)+",demande_lancer_partie")
         ClientMultiSocket.send(str.encode(message))
     elif choix=="quitter":
         message = (str(pseudo)+","+str(ip_client)+",quitter")
         ClientMultiSocket.send(str.encode(message))
         ClientMultiSocket.close()
+
         break
     #ERREUR : JE SAISPAS POURQUOI MAIS SI ON MET NI OUI NI QUITTER CA
     #TRANSFORME LE PROGRAMME EN LEGUME, MAIS PAS IMPORTANT
