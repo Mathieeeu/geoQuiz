@@ -13,7 +13,7 @@ class joueur:
 
 ServerSideSocket = socket.socket()
 host = ''
-port = 2003
+port = 2015
 ThreadCount = 0
 try:
     ServerSideSocket.bind((host, port))
@@ -163,7 +163,7 @@ local_ip=StringVar()
 #os.startfile("multi client.py")
 
 page1()
-#boucle()
+boucle()
 
 
 menu.mainloop()

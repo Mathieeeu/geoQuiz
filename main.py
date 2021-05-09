@@ -166,7 +166,7 @@ def page5():
 
 
     bouton_multi = StringVar()
-    bouton_multi=Button(choix_multi, text='Rejoindre partie',command=page6, font=police1)
+    bouton_multi=Button(choix_multi, text='Rejoindre partie',command=page9, font=police1)
     bouton_multi.place(x=(int(longueur)/2)-90,y=550,width=220, height=50)
 
     bouton_retour = StringVar()
@@ -295,6 +295,25 @@ def page8():
     bouton_rejouer=Button(gagne_multi, text='Retour au lobby', command=page6, font=police1)
     bouton_rejouer.place(x=(int(longueur)/2)-100,y=500,width=350, height=50)
 
+def page9():
+    global recherche_multi
+
+    reset()
+    recherche_multi.place(x=0, y=0)
+    
+    textBoxIp = Entry(recherche_multi, textvariable=recherche_ip, width=40, font=police1, bg = 'yellow')
+    textBoxIp.place(x=550,y=300,width=250, height=70)
+
+
+    bouton_rechercher = StringVar()
+    bouton_rechercher=Button(recherche_multi, text='Rechercher le serveur', command=page6, font=police1)
+    bouton_rechercher.place(x=850,y=300,width=350, height=50)
+
+    bouton_quit_retour = StringVar()
+    bouton_quit_retour=Button(recherche_multi, text='Retour au menu',command=retour, font=police1)
+    bouton_quit_retour.place(x=1190,y=735,width=220, height=50)
+
+
 
 def reset():
     global menu
@@ -305,6 +324,7 @@ def reset():
     global lobby_multi
     global selec_jeu
     global choix_multi
+    global recherche_multi
     global label_r1
     global label_r2
     global label_r3
@@ -321,6 +341,7 @@ def reset():
     lobby_multi.destroy()
     selec_jeu.destroy()
     choix_multi.destroy()
+    recherche_multi.destroy()
     menu = Canvas(fenetre, width=longueur, height=largeur)
     jeu_solo = Canvas(fenetre, width=longueur, height=largeur)
     gagne_solo = Canvas(fenetre, width=longueur, height=largeur)
@@ -329,6 +350,7 @@ def reset():
     jeu_multi = Canvas(fenetre, width=longueur, height=largeur)
     lobby_multi = Canvas(fenetre, width=longueur, height=largeur)
     gagne_multi = Canvas(fenetre, width=longueur, height=largeur)
+    recherche_multi = Canvas(fenetre, width=longueur, height=largeur)
 
     reponse_entree1.set('')
     reponse_entree2.set('')
@@ -497,6 +519,7 @@ choix_multi = Canvas(fenetre, width=longueur, height=largeur)
 jeu_multi = Canvas(fenetre, width=longueur, height=largeur)
 lobby_multi = Canvas(fenetre, width=longueur, height=largeur)
 gagne_multi = Canvas(fenetre, width=longueur, height=largeur)
+recherche_multi = Canvas(fenetre, width=longueur, height=largeur)
 
 fenetre.bind('<KeyPress>', callback)
 fenetre.bind('<Escape>', retour)
@@ -532,6 +555,8 @@ local_ip=StringVar()
 temps_timer=StringVar()
 
 is_multi = IntVar(0)
+
+recherche_ip=StringVar()
 
 page1(620,450)
 menu.mainloop()
