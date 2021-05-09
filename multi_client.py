@@ -1,22 +1,26 @@
 import socket
 from tkinter import *
 
-def connexion_client_multi():
-    global ClientMultiSocket, hostname, ip_client,pseudo,ip,ip_client,host,port,message 
+"""
+pseudo=input("\nPseudo : ")
+ip=input("IP de l'hôte : ")
+if ip == "":
+    ip="localhost"
+    ip_client="localhost"
+elif ip == "dev":
+    ip="localhost"
+    ip_client=input("IP du client : ")
+"""
+
+def connexion_client_multi(pseudo,ip):
+    global ClientMultiSocket, hostname, ip_client,ip_client,host,port,message 
     hostname = socket.gethostname()
     ip_client = socket.gethostbyname(hostname)
     print('Ton Adresse IP : {}'.format(ip_client))
 
     ClientMultiSocket = socket.socket()
 
-    pseudo=input("\nPseudo : ")
-    ip=input("IP de l'hôte : ")
-    if ip == "":
-        ip="localhost"
-        ip_client="localhost"
-    elif ip == "dev":
-        ip="localhost"
-        ip_client=input("IP du client : ")
+    
 
 
     print(pseudo,ip)
@@ -43,10 +47,9 @@ def connexion_client_multi():
     except:
         score=0
     print("score="+str(score))
-    boucle_client_multi()
 
-def boucle_client_multi():
-    global ClientMultiSocket, hostname, ip_client,pseudo,ip,ip_client,host,port,message 
+def boucle_client_multi(pseudo,ip):
+    global ClientMultiSocket, hostname, ip_client,ip_client,host,port,message 
     choix="0"
     print('update')
     res = ClientMultiSocket.recv(1024)
@@ -63,15 +66,6 @@ def boucle_client_multi():
         ClientMultiSocket.send(str.encode(message))
         ClientMultiSocket.close()
 
-
-
-connexion_client_multi()
-
-fenetre = Tk()
-print('aaa')
-boucle_client_multi()
-
-fenetre.mainloop()
     #ERREUR : JE SAISPAS POURQUOI MAIS SI ON MET NI OUI NI QUITTER CA
     #TRANSFORME LE PROGRAMME EN LEGUME, MAIS PAS IMPORTANT
     #NOTER AUSSI QUE LA PAUSE IMPOSEE PAR LE INPUT DISPARAITRA DANS LE PROGRAMME

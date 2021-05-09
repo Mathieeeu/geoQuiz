@@ -6,6 +6,7 @@ from nommer_questions import nommer_questions
 import time
 import os
 import socket
+from multi_client import connexion_client_multi,boucle_client_multi
 
 def page1(xx,yy):
     global menu
@@ -300,19 +301,46 @@ def page9():
 
     reset()
     recherche_multi.place(x=0, y=0)
-    
+
+    textBoxPseudo = Entry(recherche_multi, textvariable=recherche_pseudo, width=40, font=police1, bg = 'yellow')
+    textBoxPseudo.place(x=550,y=200,width=250, height=70)
     textBoxIp = Entry(recherche_multi, textvariable=recherche_ip, width=40, font=police1, bg = 'yellow')
     textBoxIp.place(x=550,y=300,width=250, height=70)
 
 
     bouton_rechercher = StringVar()
-    bouton_rechercher=Button(recherche_multi, text='Rechercher le serveur', command=page6, font=police1)
+    bouton_rechercher=Button(recherche_multi, text='Rechercher le serveur', command=avant_la_page10, font=police1)
     bouton_rechercher.place(x=850,y=300,width=350, height=50)
 
     bouton_quit_retour = StringVar()
     bouton_quit_retour=Button(recherche_multi, text='Retour au menu',command=retour, font=police1)
     bouton_quit_retour.place(x=1190,y=735,width=220, height=50)
 
+def avant_la_page10():
+    pseudo=recherche_pseudo.get()
+    ip=recherche_ip.get()
+    connexion_client_multi(pseudo,ip)
+    page10()
+    
+def page10():
+    global connexion_au_serveur,connecte
+    connecte=1
+    reset()
+    connexion_au_serveur.place(x=0, y=0)
+    
+    pseudo=recherche_pseudo.get()
+    ip=recherche_ip.get()
+    lancer_boucle()
+    
+    bouton_quit_retour = StringVar()
+    bouton_quit_retour=Button(connexion_au_serveur, text='Retour au menu',command=retour, font=police1)
+    bouton_quit_retour.place(x=1190,y=735,width=220, height=50)
+    fenetre.after(1000,page10)
+
+def lancer_boucle():
+    pseudo=recherche_pseudo.get()
+    ip=recherche_ip.get()
+    boucle_client_multi(pseudo,ip)
 
 
 def reset():
@@ -325,6 +353,7 @@ def reset():
     global selec_jeu
     global choix_multi
     global recherche_multi
+    global connexion_au_serveur
     global label_r1
     global label_r2
     global label_r3
@@ -342,6 +371,7 @@ def reset():
     selec_jeu.destroy()
     choix_multi.destroy()
     recherche_multi.destroy()
+    connexion_au_serveur.destroy
     menu = Canvas(fenetre, width=longueur, height=largeur)
     jeu_solo = Canvas(fenetre, width=longueur, height=largeur)
     gagne_solo = Canvas(fenetre, width=longueur, height=largeur)
@@ -351,6 +381,7 @@ def reset():
     lobby_multi = Canvas(fenetre, width=longueur, height=largeur)
     gagne_multi = Canvas(fenetre, width=longueur, height=largeur)
     recherche_multi = Canvas(fenetre, width=longueur, height=largeur)
+    connexion_au_serveur = Canvas(fenetre,width=longueur, height=largeur)
 
     reponse_entree1.set('')
     reponse_entree2.set('')
@@ -504,6 +535,7 @@ longueur = '1440'
 largeur = '810'
 
 nombre_personne=0
+connecte=0
 
 fenetre = Tk()
 fenetre.geometry(longueur+'x'+largeur)
@@ -520,6 +552,7 @@ jeu_multi = Canvas(fenetre, width=longueur, height=largeur)
 lobby_multi = Canvas(fenetre, width=longueur, height=largeur)
 gagne_multi = Canvas(fenetre, width=longueur, height=largeur)
 recherche_multi = Canvas(fenetre, width=longueur, height=largeur)
+connexion_au_serveur = Canvas(fenetre,width=longueur, height=largeur)
 
 fenetre.bind('<KeyPress>', callback)
 fenetre.bind('<Escape>', retour)
@@ -557,6 +590,8 @@ temps_timer=StringVar()
 is_multi = IntVar(0)
 
 recherche_ip=StringVar()
+recherche_pseudo=StringVar()
+
 
 page1(620,450)
 menu.mainloop()
