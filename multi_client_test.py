@@ -51,7 +51,7 @@ def connexion_client_multi(pseudo,ip):
 def boucle_client_multi(pseudo,ip):
     while True :
         choix="0"
-        print('update')
+        #print('update')
         res = ClientMultiSocket.recv(1024)
         message_recu=res.decode('utf-8')
         if message_recu == 'lancement':
@@ -65,6 +65,8 @@ def boucle_client_multi(pseudo,ip):
             message = (str(pseudo)+","+str(ip_client)+",quitter")
             ClientMultiSocket.send(str.encode(message))
             ClientMultiSocket.close()
+
+            #break
 
 connexion_client_multi("leandro","localhost")
 boucle_client_multi("leandro","localhost")

@@ -6,7 +6,7 @@ from nommer_questions import nommer_questions
 import time
 import os
 import socket
-from multi_client import connexion_client_multi,boucle_client_multi
+from multi_client import connexion_client_multi,boucle_client_multi, deconnexion_multi
 
 def page1(xx,yy):
     global menu
@@ -40,13 +40,13 @@ def page2():
     global label_r1,label_r2,label_r3,label_r4,label_r5
     global label_q1,label_q2,label_q3,label_q4,label_q5
     
-    global t0
+    global temps_0
     
     reset()
     crea_question()
     jeu_solo.place(x=0, y=0)
 
-    t0 = time.time()
+    temps_0 = time.time()
 
     is_multi.set(0)
     temps_timer.set(0)
@@ -98,14 +98,16 @@ def page2():
     label_r5 = Label(jeu_solo, textvariable=reponse_entree5, font=police1, background = 'grey', anchor='center')
     label_r5.place(x=950,y=500,width=400, height=70)
 
+    update_temps()
+
 
 def page3():
     global gagne_solo
-    global t0
-    global t1
+    global temps_0
+    global temps_1
 
-    t1 = time.time()
-    temps=t1-t0
+    temps_1 = time.time()
+    temps=temps_1-temps_0
 
     reset()
     gagne_solo.place(x=0, y=0)
@@ -128,7 +130,6 @@ def page3():
 
 def page4():
     global selec_jeu
-    print('aaaa')
     reset()
     selec_jeu.place(x=0, y=0)
     
@@ -159,7 +160,7 @@ def page5():
     choix_multi.place(x=0, y=0)
 
     is_multi.set(1)
-    print(is_multi.get())
+    print("multi? : "+str(is_multi.get()))
     
     bouton_solo = StringVar()
     bouton_solo=Button(choix_multi, text='Créer partie',command=lancer_serveur, font=police1)
@@ -167,7 +168,7 @@ def page5():
 
 
     bouton_multi = StringVar()
-    bouton_multi=Button(choix_multi, text='Rejoindre partie',command=page9, font=police1)
+    bouton_multi=Button(choix_multi, text='Rejoindre partie',command=page6, font=police1)
     bouton_multi.place(x=(int(longueur)/2)-90,y=550,width=220, height=50)
 
     bouton_retour = StringVar()
@@ -183,6 +184,29 @@ def page5():
     image_logo.place(x=440,y=150,width=624, height=240)
 
 def page6():
+    global recherche_multi
+
+    reset()
+    recherche_multi.place(x=0, y=0)
+
+    recherche_pseudo.set("Anonymous")
+
+    textBoxPseudo = Entry(recherche_multi, textvariable=recherche_pseudo, width=40, font=police1, bg = 'yellow')
+    textBoxPseudo.place(x=550,y=200,width=250, height=70)
+    textBoxIp = Entry(recherche_multi, textvariable=recherche_ip, width=40, font=police1, bg = 'yellow')
+    textBoxIp.place(x=550,y=300,width=250, height=70)
+
+
+    bouton_rechercher = StringVar()
+    bouton_rechercher=Button(recherche_multi, text='Rechercher le serveur', command=connexion_serveur, font=police1)
+    bouton_rechercher.place(x=850,y=300,width=350, height=50)
+
+    bouton_quit_retour = StringVar()
+    bouton_quit_retour=Button(recherche_multi, text='Retour au menu',command=retour, font=police1)
+    bouton_quit_retour.place(x=1190,y=735,width=220, height=50)
+    
+
+def page7():
     global lobby_multi
 
     hostname = socket.gethostname()
@@ -207,30 +231,37 @@ def page6():
     bouton_soloaaa.place(x=1000-90,y=450,width=220, height=50)
 
     bouton_jouer_multi = StringVar()
-    bouton_jouer_multi=Button(lobby_multi, text='Jouer',command=page7, font=police1)
+    bouton_jouer_multi=Button(lobby_multi, text='Jouer',command=page8, font=police1)
     bouton_jouer_multi.place(x=1000-90,y=350,width=220, height=50)
 
     bouton_quit_retour = StringVar()
-    bouton_quit_retour=Button(lobby_multi, text='Retour au menu',command=retour, font=police1)
+    bouton_quit_retour=Button(lobby_multi, text='Retour au menu',command=quitter_multi, font=police1)
     bouton_quit_retour.place(x=1190,y=735,width=220, height=50)
 
+    if etat_multi.get()=="aucun_serveur_accessible":
+        page5()
+    if etat_multi.get()=="lancement_partie":
+        page8()
+    else:
+        discussion_serveur()
 
 
-    new_envent_lobby()
 
 
-def page7():
+    #new_event_lobby()
+
+
+def page8():
     global jeu_multi
     global label_r1,label_r2,label_r3,label_r4,label_r5
     global label_q1,label_q2,label_q3,label_q4,label_q5
-    print('bbbb')
-    global t0
+    global temps_0
     
     reset()
     crea_question()
     jeu_multi.place(x=0, y=0)
 
-    t0 = time.time()
+    temps_0 = time.time()
 
     temps_timer.set(0)
 
@@ -277,14 +308,16 @@ def page7():
     label_r5 = Label(jeu_multi, textvariable=reponse_entree5, font=police1, background = 'grey', anchor='center')
     label_r5.place(x=950,y=500,width=400, height=70)
 
+    update_temps()
 
-def page8():
+
+def page9():
     global gagne_multi
-    global t0
-    global t1
+    global temps_0
+    global temps_1
 
-    t1 = time.time()
-    temps=t1-t0
+    temps_1 = time.time()
+    temps=temps_1-temps_0
 
     reset()
     gagne_multi.place(x=0, y=0)
@@ -293,54 +326,40 @@ def page8():
 
 
     bouton_rejouer = StringVar()
-    bouton_rejouer=Button(gagne_multi, text='Retour au lobby', command=page6, font=police1)
+    bouton_rejouer=Button(gagne_multi, text='Retour au lobby', command=page7, font=police1)
     bouton_rejouer.place(x=(int(longueur)/2)-100,y=500,width=350, height=50)
 
-def page9():
-    global recherche_multi
 
-    reset()
-    recherche_multi.place(x=0, y=0)
-
-    textBoxPseudo = Entry(recherche_multi, textvariable=recherche_pseudo, width=40, font=police1, bg = 'yellow')
-    textBoxPseudo.place(x=550,y=200,width=250, height=70)
-    textBoxIp = Entry(recherche_multi, textvariable=recherche_ip, width=40, font=police1, bg = 'yellow')
-    textBoxIp.place(x=550,y=300,width=250, height=70)
-
-
-    bouton_rechercher = StringVar()
-    bouton_rechercher=Button(recherche_multi, text='Rechercher le serveur', command=avant_la_page10, font=police1)
-    bouton_rechercher.place(x=850,y=300,width=350, height=50)
-
-    bouton_quit_retour = StringVar()
-    bouton_quit_retour=Button(recherche_multi, text='Retour au menu',command=retour, font=police1)
-    bouton_quit_retour.place(x=1190,y=735,width=220, height=50)
-
-def avant_la_page10():
+def connexion_serveur():
     pseudo=recherche_pseudo.get()
     ip=recherche_ip.get()
-    connexion_client_multi(pseudo,ip)
-    page10()
+    etat_multi.set(connexion_client_multi(pseudo,ip))
+    page7()
     
-def page10():
-    global connexion_au_serveur,connecte
-    connecte=1
-    reset()
-    connexion_au_serveur.place(x=0, y=0)
+def discussion_serveur():
+    if "aucun_serveur_accessible" in etat_multi.get():
+        page5()
+    else :
+        lancer_boucle()
     
-    pseudo=recherche_pseudo.get()
-    ip=recherche_ip.get()
-    lancer_boucle()
-    
-    bouton_quit_retour = StringVar()
-    bouton_quit_retour=Button(connexion_au_serveur, text='Retour au menu',command=retour, font=police1)
-    bouton_quit_retour.place(x=1190,y=735,width=220, height=50)
-    fenetre.after(1000,page10)
+
+    if etat_multi.get() == "lancement_partie":
+        print("lancement partie multi")
+        page8()
+    else :
+        fenetre.after(1000,discussion_serveur)
+
 
 def lancer_boucle():
     pseudo=recherche_pseudo.get()
     ip=recherche_ip.get()
-    boucle_client_multi(pseudo,ip)
+    etat_multi.set(boucle_client_multi(pseudo,ip))
+
+def quitter_multi():
+    pseudo=recherche_pseudo.get()
+    ip=recherche_ip.get()
+    deconnexion_multi(pseudo,ip)
+    retour()
 
 
 def reset():
@@ -422,8 +441,6 @@ def test_reponse():
 
     global liste_attributs, liste_valeurs, liste_reponses, liste_questions
 
-    update_temps()
-
     reponse_simp=simp(var_reponse.get())
 
     nb_reponse_juste_fct=nb_reponse_juste.get()
@@ -479,7 +496,7 @@ def test_reponse():
                 if is_multi.get() == 0 :
                     page3()
                 else :
-                    page8()
+                    page9()
                 
             var_reponse.set('')
             
@@ -513,7 +530,9 @@ def meme_reponse(key):
 
 
 def lancer_serveur():
-    os.startfile("multi serveur.py")
+    os.startfile("multi_serveur.py")
+    recherche_ip.set("localhost")
+    page6()
 
 def new_envent_lobby():
     global nombre_personne
@@ -525,10 +544,11 @@ def new_envent_lobby():
     label_score.place(x=450,y=50+(80*nombre_personne),width=100, height=70)
 
 def update_temps():
-    global t0
-    global t1
-    t1 = time.time()
-    temps_timer.set(round(t1-t0))
+    global temps_0
+    global temps_1
+    temps_1 = time.time()
+    temps_timer.set(round(temps_1-temps_0))
+    fenetre.after(1000,update_temps)
 
     
 longueur = '1440'
@@ -591,6 +611,8 @@ is_multi = IntVar(0)
 
 recherche_ip=StringVar()
 recherche_pseudo=StringVar()
+
+etat_multi=StringVar()
 
 
 page1(620,450)

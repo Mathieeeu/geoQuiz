@@ -13,14 +13,14 @@ class joueur:
 
 ServerSideSocket = socket.socket()
 host = ''
-port = 2015
+port = 5050
 ThreadCount = 0
 try:
     ServerSideSocket.bind((host, port))
 except socket.error as e:
     print(str(e))
 
-print('Socket is listening..')
+print('Recherche de clients ...')
 ServerSideSocket.listen(5)
 
 def detect_parent(pseudo):
@@ -31,7 +31,7 @@ def detect_parent(pseudo):
 
 liste_joueurs=[]
 def message_a_tous(message):
-    print(message)
+    print("le serveur envoie "+message)
     if message=="deco_test":
        for joueurs in liste_joueurs:
             try:
@@ -53,7 +53,7 @@ supprimer le joueur ? ")=="oui":
 
 def multi_threaded_client(connection):
     print(connection)
-    connection.send(str.encode('Server is working:'))
+    connection.send(str.encode('Le serveur fonctionne !'))
     while True:
         global client_recu
         try:
@@ -73,12 +73,16 @@ def multi_threaded_client(connection):
                                 print(data[0]+" après")
                             else:
                                 data[0]+="(1)"
+
+            #if data[2]=="deconnexion":
+                #mettre le code ici pour prendre en compte qu'une personne s'est deco
+                
                 if reco==False:
                     joueur1=joueur(data[0],data[1],client_recu)
                     liste_joueurs.append(joueur1)
                     connection.sendall(str.encode(str("pseudo_update,"+data[0])))
                     print("\n"+str(data[0])+" s'est connecté(e).\n")
-                    message_a_tous("\n"+str(data[0])+" s'est connecté(e).\n")
+                    #message_a_tous("\n"+str(data[0])+" s'est connecté(e).\n")
                 else:
                     print("\n"+str(data[0])+" s'est reconnecté(e).\n")
                     message_a_tous("\n"+str(data[0])+" s'est reconnecté(e).\n")
@@ -96,45 +100,45 @@ def multi_threaded_client(connection):
                 for joueurs in liste_joueurs:
                     if joueurs.pseudo==data[0]:
                         joueurs.score=data[2]
-            response = 'Server message: ' + str(",".join(data))
-            if not data:
-                break
-            connection.sendall(str.encode(response))
         except:
             None
     connection.close()
 
-def boucle():
+def ajout_clients():
     global client_recu, ServerSideSocket, multi_threaded_client, ThreadCount
-
-    print('aaa')
     Client, address = ServerSideSocket.accept()
     client_recu=Client
-    #print('Connected to: ' + address[0] + ':' + str(address[1]))
     start_new_thread(multi_threaded_client, (Client, ))
     ThreadCount += 1
-    #print('Thread Number: ' + str(ThreadCount) + '\n')
-
 
 
 def lancer_partie():
-    message_a_tous("lancement")
+    message_a_tous("lancement_partie")
+
   
 
-def page1():
+def page_menu():
     global menu
     menu.place(x=0, y=0)
 
     hostname = socket.gethostname()
     local_ip.set(socket.gethostbyname(hostname))
     
-    bouton_jouer = StringVar()
-    bouton_jouer=Button(menu, text='Lancer la partie',command=lancer_partie, font=police2, background = 'green')
-    bouton_jouer.place(x=487,y=660,width=200, height=80)
+    bouton_lancer = StringVar()
+    bouton_lancer=Button(menu, text='Lancer la partie',command=lancer_partie, font=police2, background = 'green')
+    bouton_lancer.place(x=487,y=660,width=200, height=80)
 
     label_ip = Label(menu, textvariable=local_ip, font=police2, background = 'lightgrey', anchor='center')
     label_ip.place(x=37,y=68,width=232, height=35)
 
+    fenetre.after(1000,en_attente)
+
+    # Toutes les secondes la page menu est rafraichi ce qui envoi en attente au client
+    #Si le client ne recoit rien tt les secondes il freeze
+
+def en_attente():
+    message_a_tous("en_attente")
+    page_menu()
 
 longueur = '1440'
 largeur = '810'
@@ -162,8 +166,8 @@ local_ip=StringVar()
 
 #os.startfile("multi client.py")
 
-page1()
-boucle()
+page_menu()
+ajout_clients()
 
 
 menu.mainloop()
