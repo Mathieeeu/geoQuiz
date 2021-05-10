@@ -238,12 +238,6 @@ def page7():
     bouton_quit_retour=Button(lobby_multi, text='Retour au menu',command=quitter_multi, font=police1)
     bouton_quit_retour.place(x=1190,y=735,width=220, height=50)
 
-    if etat_multi.get()=="aucun_serveur_accessible":
-        page5()
-    if etat_multi.get()=="lancement_partie":
-        page8()
-    else:
-        discussion_serveur()
 
 
 
@@ -334,27 +328,31 @@ def connexion_serveur():
     pseudo=recherche_pseudo.get()
     ip=recherche_ip.get()
     etat_multi.set(connexion_client_multi(pseudo,ip))
+    
+    if etat_multi.get()=="aucun_serveur_accessible":
+        page5()
+    else:
+        discussion_serveur()
     page7()
     
 def discussion_serveur():
     if "aucun_serveur_accessible" in etat_multi.get():
         page5()
     else :
-        lancer_boucle()
+        pseudo=recherche_pseudo.get()
+        ip=recherche_ip.get()
+        etat_multi.set(boucle_client_multi(pseudo,ip))
     
 
     if "lancement_partie" in etat_multi.get() :
-        print("lancement partie multi")
         page8()
-    else :
-        print('uppp')
-        fenetre.after(1000,discussion_serveur)
+
+    #print('update toutes les secondes ...')
+    fenetre.after(1000,discussion_serveur)
 
 
-def lancer_boucle():
-    pseudo=recherche_pseudo.get()
-    ip=recherche_ip.get()
-    etat_multi.set(boucle_client_multi(pseudo,ip))
+#def lancer_boucle():
+
 
 def quitter_multi():
     pseudo=recherche_pseudo.get()
@@ -442,64 +440,67 @@ def test_reponse():
 
     global liste_attributs, liste_valeurs, liste_reponses, liste_questions
 
-    reponse_simp=simp(var_reponse.get())
+    try :
+        
+        reponse_simp=simp(var_reponse.get())
 
-    nb_reponse_juste_fct=nb_reponse_juste.get()
+        nb_reponse_juste_fct=nb_reponse_juste.get()
 
-    liste_reponses_simp=simp_liste_p3(liste_reponses)
-    
-    for i in range (len(liste_reponses[nb_reponse_juste_fct])):
-       
-        if str(reponse_simp) == liste_reponses_simp[nb_reponse_juste_fct][i][0]:
-                          
-            nb_reponse_juste.set(nb_reponse_juste.get()+1)
+        liste_reponses_simp=simp_liste_p3(liste_reponses)
+        
+        for i in range (len(liste_reponses[nb_reponse_juste_fct])):
+           
+            if str(reponse_simp) == liste_reponses_simp[nb_reponse_juste_fct][i][0]:
+                              
+                nb_reponse_juste.set(nb_reponse_juste.get()+1)
 
-            if nb_reponse_juste.get() == 1:
-                
-                reponse_entree1.set(liste_reponses[nb_reponse_juste_fct][i][0])
-                label_r1.configure(textvariable=reponse_entree1,background ='lightgreen')
-                label_r2.configure(textvariable=var_reponse,background ='lightgrey')
-                label_q1.configure(background ='lightgreen')
-                label_q2.configure(background ='lightgrey')
-                question2.set(liste_questions[1])
+                if nb_reponse_juste.get() == 1:
+                    
+                    reponse_entree1.set(liste_reponses[nb_reponse_juste_fct][i][0])
+                    label_r1.configure(textvariable=reponse_entree1,background ='lightgreen')
+                    label_r2.configure(textvariable=var_reponse,background ='lightgrey')
+                    label_q1.configure(background ='lightgreen')
+                    label_q2.configure(background ='lightgrey')
+                    question2.set(liste_questions[1])
+                    var_reponse.set('')
+                    
+                if nb_reponse_juste.get() == 2:
+                    reponse_entree2.set(liste_reponses[nb_reponse_juste_fct][i][0])
+                    label_r2.configure(textvariable=reponse_entree2,background ='lightgreen')
+                    label_r3.configure(textvariable=var_reponse,background ='lightgrey')
+                    label_q2.configure(background ='lightgreen')
+                    label_q3.configure(background ='lightgrey')
+                    question3.set(liste_questions[2])
+                    
+                if nb_reponse_juste.get() == 3:
+                    reponse_entree3.set(liste_reponses[nb_reponse_juste_fct][i][0])
+                    label_r3.configure(textvariable=reponse_entree3,background ='lightgreen')
+                    label_r4.configure(textvariable=var_reponse,background ='lightgrey')
+                    label_q3.configure(background ='lightgreen')
+                    label_q4.configure(background ='lightgrey')
+                    question4.set(liste_questions[3])
+                    
+                if nb_reponse_juste.get() == 4:
+                    reponse_entree4.set(liste_reponses[nb_reponse_juste_fct][i][0])
+                    label_r4.configure(textvariable=reponse_entree4,background ='lightgreen')
+                    label_r5.configure(textvariable=var_reponse,background ='lightgrey')
+                    label_q4.configure(background ='lightgreen')
+                    label_q5.configure(background ='lightgrey')
+                    question5.set(liste_questions[4])
+                    
+                if nb_reponse_juste.get() == 5:
+                    reponse_entree5.set(liste_reponses[nb_reponse_juste_fct][i][0])
+                    label_r5.configure(textvariable=reponse_entree5,background ='lightgreen')
+                    label_q5.configure(background ='lightgreen')
+
+                    print(is_multi.get())
+                    if is_multi.get() == 0 :
+                        page3()
+                    else :
+                        page9()
+                    
                 var_reponse.set('')
-                
-            if nb_reponse_juste.get() == 2:
-                reponse_entree2.set(liste_reponses[nb_reponse_juste_fct][i][0])
-                label_r2.configure(textvariable=reponse_entree2,background ='lightgreen')
-                label_r3.configure(textvariable=var_reponse,background ='lightgrey')
-                label_q2.configure(background ='lightgreen')
-                label_q3.configure(background ='lightgrey')
-                question3.set(liste_questions[2])
-                
-            if nb_reponse_juste.get() == 3:
-                reponse_entree3.set(liste_reponses[nb_reponse_juste_fct][i][0])
-                label_r3.configure(textvariable=reponse_entree3,background ='lightgreen')
-                label_r4.configure(textvariable=var_reponse,background ='lightgrey')
-                label_q3.configure(background ='lightgreen')
-                label_q4.configure(background ='lightgrey')
-                question4.set(liste_questions[3])
-                
-            if nb_reponse_juste.get() == 4:
-                reponse_entree4.set(liste_reponses[nb_reponse_juste_fct][i][0])
-                label_r4.configure(textvariable=reponse_entree4,background ='lightgreen')
-                label_r5.configure(textvariable=var_reponse,background ='lightgrey')
-                label_q4.configure(background ='lightgreen')
-                label_q5.configure(background ='lightgrey')
-                question5.set(liste_questions[4])
-                
-            if nb_reponse_juste.get() == 5:
-                reponse_entree5.set(liste_reponses[nb_reponse_juste_fct][i][0])
-                label_r5.configure(textvariable=reponse_entree5,background ='lightgreen')
-                label_q5.configure(background ='lightgreen')
-
-                print(is_multi.get())
-                if is_multi.get() == 0 :
-                    page3()
-                else :
-                    page9()
-                
-            var_reponse.set('')
+    except:None
             
 
 
