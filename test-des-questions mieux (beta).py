@@ -137,15 +137,13 @@ def question(pays,attribut):
         mot = mot.replace("é","e")
         mot = mot.replace("î","i")
         mot=mot.upper()
-        bornes=[]
-        bornes.append(listealpha.index(mot[0])-randint(0,5))
-        bornes.append(listealpha.index(mot[0])+randint(0,5))
-        for i in range(2):
-            if bornes[i]>25:
-                bornes[i]=25
-            if bornes[i]<0:
-                bornes[i]=0
-        return listealpha[bornes[0]],listealpha[bornes[1]]
+        if (listealpha.index(mot[0]) > 6) and (listealpha.index(mot[0]) < 17 ):
+            selecteur=randint((listealpha.index(mot[0])-7),listealpha.index(mot[0]))
+        elif (listealpha.index(mot[0]) <= 6) :
+            selecteur=randint(0,listealpha.index(mot[0]))
+        elif (listealpha.index(mot[0]) >= 16):
+            selecteur=17
+        return listealpha[selecteur],listealpha[selecteur+8]
         
     elif attribut == "initiale_capitale":
         mot=pays.capitale[0]
@@ -161,15 +159,13 @@ def question(pays,attribut):
         mot = mot.replace("é","e")
         mot = mot.replace("î","i")
         mot=mot.upper()
-        bornes=[]
-        bornes.append(listealpha.index(mot[0])-randint(0,5))
-        bornes.append(listealpha.index(mot[0])+randint(0,5))
-        for i in range(2):
-            if bornes[i]>25:
-                bornes[i]=25
-            if bornes[i]<0:
-                bornes[i]=0
-        return listealpha[bornes[0]],listealpha[bornes[1]]
+        if (listealpha.index(mot[0]) > 6) and (listealpha.index(mot[0]) < 17 ):
+            selecteur=randint((listealpha.index(mot[0])-7),listealpha.index(mot[0]))
+        elif (listealpha.index(mot[0]) <= 6) :
+            selecteur=randint(0,listealpha.index(mot[0]))
+        elif (listealpha.index(mot[0]) >= 16):
+            selecteur=17
+        return listealpha[selecteur],listealpha[selecteur+8]
           
         
     elif attribut == "frontieres_1" or attribut =="frontieres_2":
@@ -184,13 +180,9 @@ def question(pays,attribut):
                 except:
                     attribut == "frontieres_1"
                     break
-            if attribut == "frontieres_2" and len(frontieres)==1:
-                return None
             return frontieres
         else:
             return None
-        
-
         
     elif attribut.startswith("continent_"):
         if attribut == "continent_1":
@@ -211,15 +203,13 @@ def calcul(valeur,attribut):
     global commandeSQL
 
     #print("attribut recherché : "+str(attribut))
-
-    liste_temp=[]
     
     if attribut == "initiale_nom" or attribut == "initiale_capitale" or attribut == "initiale_nom_entre" or attribut == "initiale_capitale_entre" :   # POUR LES LETTRE
         attribut=attribut.replace("initiale_","")
         if attribut.endswith("_entre"):
             attribut=attribut.replace("_entre","")
-            condition="("            
-            for i in range (int(listealpha.index(valeur[1]))-int(listealpha.index(valeur[0]))+1):
+            condition="("
+            for i in range (9):
                 condition +=(attribut + " like \'"+listealpha[listealpha.index(valeur[0])+i]+"%' or ")
             condition += "nettoyeur)"
             condition = condition.replace(" or nettoyeur","")
@@ -261,11 +251,7 @@ def calcul(valeur,attribut):
     cursor.execute(commandeSQL)
     #on place tout les enregistrements dans une variable record
     record = cursor.fetchall()
-    for row in record :
-        #print(list(row))
-        liste_temp.append(list(row))
-    return(liste_temp)
-
+    return(record)
 
 
 def lancer_tirage():
@@ -364,16 +350,20 @@ def lancer_tirage():
             liste_reponses.append(issues)
 
             
-            if ((len(issues) <= 30 and j == 0) or (len(issues) <= 12 and j == 1) or (len(issues) <= 7 and j == 2)  or (len(issues) <= 3  and j ==3) or (len(issues)!=1  and j ==4) or valeur== None):                            #recherche manouelle
+            if ((len(issues) <= 30 and j == 0) or (len(issues) <= 12 and j == 1) or (len(issues) <= 7 and j == 2)  or (len(issues) <= 3  and j ==3) or (len(issues)!=1  and j ==4)):                            #recherche manouelle
                 tirage=False
-
+                    
             #print("étape :"+str(j+1))
-            if j == 4 and len(issues) == 1 and valeur != None:
-                return liste_attributs, liste_valeurs, liste_reponses
-
+            if j == 4 and len(issues) == 1:
+                #print("le résultat final est : attributs : "+str(liste_attributs) +" valeurs : " + str(liste_valeurs) + " reponses :" + str(liste_reponses))
+                print([liste_attributs,liste_valeurs,liste_reponses])
+                
 
     if tirage==False:
-        return lancer_tirage()
+        lancer_tirage()
 
 
+
+        
+    
 lancer_tirage()
