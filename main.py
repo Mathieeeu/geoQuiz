@@ -343,10 +343,11 @@ def discussion_serveur():
         lancer_boucle()
     
 
-    if etat_multi.get() == "lancement_partie":
+    if "lancement_partie" in etat_multi.get() :
         print("lancement partie multi")
         page8()
     else :
+        print('uppp')
         fenetre.after(1000,discussion_serveur)
 
 
