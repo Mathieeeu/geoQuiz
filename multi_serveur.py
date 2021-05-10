@@ -20,7 +20,7 @@ try:
 except socket.error as e:
     print(str(e))
 
-print('Recherche de clients ...')
+print('Recherche de clients ... \n')
 ServerSideSocket.listen(5)
 
 def detect_parent(pseudo):
@@ -31,7 +31,7 @@ def detect_parent(pseudo):
 
 liste_joueurs=[]
 def message_a_tous(message):
-    print("le serveur envoie "+message)
+    #print("le serveur envoie "+message)
     if message=="deco_test":
        for joueurs in liste_joueurs:
             try:
@@ -52,20 +52,18 @@ supprimer le joueur ? ")=="oui":
 
 
 def multi_threaded_client(connection):
-    print(connection)
     connection.send(str.encode('Le serveur fonctionne !'))
     while True:
         global client_recu
         try:
             data = connection.recv(2048)
             data=(data.decode('utf-8')).split(",")
+            
             if data[2]=="connexion":
-                reco=False
                 for joueurs in liste_joueurs:
                     if detect_parent(joueurs.pseudo)==detect_parent(data[0]):
                         if joueurs.ip==data[1]:
                             connection.sendall(str.encode(str(joueurs.score)))
-                            reco=True
                         else:
                             if joueurs.pseudo[-3]=="(" and joueurs.pseudo[-1]==")":
                                 print(data[0]+" avant")
@@ -73,46 +71,41 @@ def multi_threaded_client(connection):
                                 print(data[0]+" après")
                             else:
                                 data[0]+="(1)"
+                                
+                joueur1=joueur(data[0],data[1],client_recu)
+                liste_joueurs.append(joueur1)
+                connection.sendall(str.encode(str("pseudo_update,"+data[0])))
+                print(str(data[0])+" s'est connecté(e).\n")
+                #message_a_tous("\n"+str(data[0])+" s'est connecté(e).\n")
 
-            #if data[2]=="deconnexion":
-                #mettre le code ici pour prendre en compte qu'une personne s'est deco
-                
-                if reco==False:
-                    joueur1=joueur(data[0],data[1],client_recu)
-                    liste_joueurs.append(joueur1)
-                    connection.sendall(str.encode(str("pseudo_update,"+data[0])))
-                    print("\n"+str(data[0])+" s'est connecté(e).\n")
-                    #message_a_tous("\n"+str(data[0])+" s'est connecté(e).\n")
-                else:
-                    print("\n"+str(data[0])+" s'est reconnecté(e).\n")
-                    message_a_tous("\n"+str(data[0])+" s'est reconnecté(e).\n")
-                print("joueurs connectés :")
                 for joueurs in liste_joueurs:
-                    print(str(joueurs.pseudo)+" - "+str(joueurs.score)+" pts - "+str(joueurs.ip))
-            elif data[2]=="quitter":
+                    print(str(joueurs.pseudo)+" - "+str(joueurs.score)+" pts - "+str(joueurs.ip+"\n"))
+
+            elif data[2]=="deconnexion":
+                #mettre le code ici pour prendre en compte qu'une personne s'est deco
                 for joueurs in liste_joueurs:
                     if joueurs.pseudo==data[0]:
                         liste_joueurs.pop(liste_joueurs.index(joueurs))
-                        print(data[0]+" a quitté la partie.")
- 
-            else:
-                print("le joueur "+str(data[0])+" a "+str(data[2])+" points")
-                for joueurs in liste_joueurs:
-                    if joueurs.pseudo==data[0]:
-                        joueurs.score=data[2]
+                        print(data[0]+" s'est déconnecté(e).\n")
+                        
+                    
         except:
             None
     connection.close()
 
 def ajout_clients():
     global client_recu, ServerSideSocket, multi_threaded_client, ThreadCount
-    Client, address = ServerSideSocket.accept()
-    client_recu=Client
-    start_new_thread(multi_threaded_client, (Client, ))
-    ThreadCount += 1
+    try :
+        ServerSideSocket.settimeout(0.1)
+        Client, address = ServerSideSocket.accept()
+        client_recu=Client
+        start_new_thread(multi_threaded_client, (Client, ))
+        ThreadCount += 1
+    except  : None
 
 
 def lancer_partie():
+    print("Lancement de la partie\n")
     message_a_tous("lancement_partie")
 
   
@@ -131,14 +124,15 @@ def page_menu():
     label_ip = Label(menu, textvariable=local_ip, font=police2, background = 'lightgrey', anchor='center')
     label_ip.place(x=37,y=68,width=232, height=35)
 
-    fenetre.after(1000,en_attente)
+    
 
     # Toutes les secondes la page menu est rafraichi ce qui envoi en attente au client
     #Si le client ne recoit rien tt les secondes il freeze
 
 def en_attente():
     message_a_tous("en_attente")
-    page_menu()
+    ajout_clients()
+    fenetre.after(1000,en_attente)
 
 longueur = '1440'
 largeur = '810'
@@ -157,17 +151,11 @@ label_background = Label(menu, image="")
 file_background="images/lobby_multi_serveur.png"
 background = PhotoImage(file=file_background)
 label_background.configure(image=background)
-label_background.image = background
 label_background.place(x=0,y=0,width=longueur, height=largeur)
-    
-
-
 local_ip=StringVar()
 
-#os.startfile("multi client.py")
-
 page_menu()
-ajout_clients()
+en_attente()
 
 
 menu.mainloop()

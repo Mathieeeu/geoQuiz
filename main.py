@@ -12,6 +12,14 @@ def page1(xx,yy):
     global menu
     reset()
     menu.place(x=0, y=0)
+
+    label_background = Label(menu, image="")
+    file_background="images/menu.png"
+    background = PhotoImage(file=file_background)
+    label_background.configure(image=background)
+    label_background.image = background
+    label_background.place(x=0,y=0,width=longueur, height=largeur)
+    
     
     bouton_jouer = StringVar()
     bouton_jouer=Button(menu, text='Jouer',command=page4, font=police1)
@@ -22,12 +30,6 @@ def page1(xx,yy):
     bouton_quit=Button(menu, text='Quitter',command=quitter, font=police1)
     bouton_quit.place(x=(int(longueur)/2)-100,y=550,width=200, height=50)
 
-    image_logo = Label(menu, image="")
-    file_logo="logo.png"
-    logo = PhotoImage(file=file_logo)
-    image_logo.configure(image=logo)
-    image_logo.image = logo
-    image_logo.place(x=440,y=150,width=624, height=240)
     
     #print('p1 appelé')
 
@@ -336,19 +338,23 @@ def connexion_serveur():
     page7()
     
 def discussion_serveur():
-    if "aucun_serveur_accessible" in etat_multi.get():
-        page5()
-    else :
-        pseudo=recherche_pseudo.get()
-        ip=recherche_ip.get()
-        etat_multi.set(boucle_client_multi(pseudo,ip))
-    
 
-    if "lancement_partie" in etat_multi.get() :
-        page8()
+    if is_multi.get()==1:
 
-    #print('update toutes les secondes ...')
-    fenetre.after(1000,discussion_serveur)
+        if "aucun_serveur_accessible" in etat_multi.get():
+            page5()
+        else :
+            pseudo=recherche_pseudo.get()
+            ip=recherche_ip.get()
+            etat_multi.set(boucle_client_multi(pseudo,ip))
+        
+
+        if "lancement_partie" in etat_multi.get() :
+            page8()
+
+
+        #print('update toutes les secondes ...')
+        fenetre.after(1000,discussion_serveur)
 
 
 #def lancer_boucle():
@@ -358,6 +364,7 @@ def quitter_multi():
     pseudo=recherche_pseudo.get()
     ip=recherche_ip.get()
     deconnexion_multi(pseudo,ip)
+    is_multi.set(0)
     retour()
 
 
