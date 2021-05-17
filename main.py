@@ -7,6 +7,7 @@ import time
 import os
 import socket
 from multi_client import connexion_client_multi,boucle_client_multi, deconnexion_multi
+import ast
 
 def page1(xx,yy):
     global menu
@@ -350,6 +351,7 @@ def discussion_serveur():
         
 
         if "lancement_partie" in etat_multi.get() :
+            liste_question_du_serveur.set(str(etat_multi.get()).replace("lancement_partie",""))
             page8()
 
 
@@ -427,7 +429,12 @@ def crea_question():
 
     global liste_attributs, liste_valeurs, liste_reponses, liste_questions
 
-    liste_attributs, liste_valeurs, liste_reponses = creation_questions.lancer_tirage()
+    if is_multi.get()==0:
+
+        liste_attributs, liste_valeurs, liste_reponses = creation_questions.lancer_tirage()
+
+    else :
+        liste_attributs, liste_valeurs, liste_reponses = ast.literal_eval(liste_question_du_serveur.get())
 
     liste_questions=nommer_questions(liste_attributs,liste_valeurs)
 
@@ -622,6 +629,8 @@ recherche_ip=StringVar()
 recherche_pseudo=StringVar()
 
 etat_multi=StringVar()
+
+liste_question_du_serveur=StringVar()
 
 
 page1(620,450)

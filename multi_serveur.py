@@ -3,6 +3,8 @@ import tkinter.font as tkFont
 import socket
 import os
 from _thread import *
+import creation_questions
+
 
 class joueur:
     def __init__(self,pseudo,ip,client):
@@ -106,7 +108,10 @@ def ajout_clients():
 
 def lancer_partie():
     print("Lancement de la partie\n")
-    message_a_tous("lancement_partie")
+    liste_reponse=creation_questions.lancer_tirage()
+    print(str(liste_reponse))
+    message_a_tous(str("lancement_partie "+str(liste_reponse)))
+    
 
   
 
