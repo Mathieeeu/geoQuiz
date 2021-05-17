@@ -8,6 +8,7 @@ import os
 import socket
 from multi_client import connexion_client_multi,boucle_client_multi, deconnexion_multi
 import ast
+from random import *
 
 def page1(xx,yy):
     global menu
@@ -351,7 +352,9 @@ def discussion_serveur():
         
 
         if "lancement_partie" in etat_multi.get() :
-            liste_question_du_serveur.set(str(etat_multi.get()).replace("lancement_partie",""))
+            etat_multi.set(str(etat_multi.get()).replace("lancement_partie",""))
+            etat_multi.set(str(etat_multi.get()).replace("en_attente",""))
+            seed_serveur.set(int(etat_multi.get()))
             page8()
 
 
@@ -429,12 +432,16 @@ def crea_question():
 
     global liste_attributs, liste_valeurs, liste_reponses, liste_questions
 
+
+
     if is_multi.get()==0:
 
-        liste_attributs, liste_valeurs, liste_reponses = creation_questions.lancer_tirage()
+
+        liste_attributs, liste_valeurs, liste_reponses = creation_questions.lancer_tirage(randint(1,1000000))
 
     else :
-        liste_attributs, liste_valeurs, liste_reponses = ast.literal_eval(liste_question_du_serveur.get())
+        print('la seed est :'+seed_serveur.get())
+        liste_attributs, liste_valeurs, liste_reponses = creation_questions.lancer_tirage(seed_serveur.get())
 
     liste_questions=nommer_questions(liste_attributs,liste_valeurs)
 
@@ -630,7 +637,7 @@ recherche_pseudo=StringVar()
 
 etat_multi=StringVar()
 
-liste_question_du_serveur=StringVar()
+seed_serveur=StringVar()
 
 
 page1(620,450)

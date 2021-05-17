@@ -4,6 +4,7 @@ import socket
 import os
 from _thread import *
 import creation_questions
+from random import *
 
 
 class joueur:
@@ -15,7 +16,7 @@ class joueur:
 
 ServerSideSocket = socket.socket()
 host = ''
-port = 5050
+port = 5051
 ThreadCount = 0
 try:
     ServerSideSocket.bind((host, port))
@@ -108,9 +109,7 @@ def ajout_clients():
 
 def lancer_partie():
     print("Lancement de la partie\n")
-    liste_reponse=creation_questions.lancer_tirage()
-    print(str(liste_reponse))
-    message_a_tous(str("lancement_partie "+str(liste_reponse)))
+    message_a_tous(str("lancement_partie "+str(randint(1,1000000))))
     
 
   

@@ -6,7 +6,7 @@ def connexion_client_multi(pseudo,ip):
     ClientMultiSocket = socket.socket()
     
     host = ip
-    port = 5050
+    port = 5051
     serveur_trouver=0
 
     print('En attente du serveur ...')

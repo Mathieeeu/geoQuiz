@@ -268,9 +268,10 @@ def calcul(valeur,attribut):
 
 
 
-def lancer_tirage():
+def lancer_tirage(la_seed):
     global commandeSQL ,tirage, nompays, listeQ, pays1, attribut, valeur, issues, listealpha, questions
-    
+
+    seed(la_seed)
     
     listealpha=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
     etape = 5
@@ -373,7 +374,7 @@ def lancer_tirage():
 
 
     if tirage==False:
-        return lancer_tirage()
+        return lancer_tirage(randint(1,1000000))
 
 
-lancer_tirage()
+#lancer_tirage()
