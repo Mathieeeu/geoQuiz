@@ -229,7 +229,7 @@ def page7():
 
     label_ip = Label(lobby_multi, textvariable=local_ip, font=police1, background = 'lightgrey', anchor='center')
     label_ip.place(x=860,y=715,width=300, height=70)
-  
+    """
     bouton_soloaaa = StringVar()
     bouton_soloaaa=Button(lobby_multi, text='Créer partie',command=new_envent_lobby, font=police1)
     bouton_soloaaa.place(x=1000-90,y=450,width=220, height=50)
@@ -237,7 +237,7 @@ def page7():
     bouton_jouer_multi = StringVar()
     bouton_jouer_multi=Button(lobby_multi, text='Jouer',command=page8, font=police1)
     bouton_jouer_multi.place(x=1000-90,y=350,width=220, height=50)
-
+    """
     bouton_quit_retour = StringVar()
     bouton_quit_retour=Button(lobby_multi, text='Retour au menu',command=quitter_multi, font=police1)
     bouton_quit_retour.place(x=1190,y=735,width=220, height=50)
@@ -262,11 +262,11 @@ def page8():
     temps_0 = time.time()
 
     temps_timer.set(0)
-
+    """
     bouton_abandon = StringVar()
     bouton_abandon=Button(jeu_multi, text='Abandonner (à enlever après)', command=abandon, font=police1)
     bouton_abandon.place(x=int(longueur)-420,y=int(largeur)-60,width=200, height=50)
-
+    """
     #print('p2 appelé')
 
     label_timer = Label(jeu_multi, textvariable=temps_timer, font=police2 , background = 'lightgrey', anchor='center')
