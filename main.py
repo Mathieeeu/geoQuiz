@@ -256,14 +256,6 @@ def page7():
     label_ip = Label(lobby_multi, textvariable=local_ip, font=police1, background = 'lightgrey', anchor='center')
     label_ip.place(x=860,y=715,width=300, height=70)
   
-    bouton_soloaaa = StringVar()
-    bouton_soloaaa=Button(lobby_multi, text='Créer partie',command=new_envent_lobby, font=police1)
-    bouton_soloaaa.place(x=1000-90,y=450,width=220, height=50)
-
-    bouton_jouer_multi = StringVar()
-    bouton_jouer_multi=Button(lobby_multi, text='Jouer',command=page8, font=police1)
-    bouton_jouer_multi.place(x=1000-90,y=350,width=220, height=50)
-
     bouton_quit_retour = StringVar()
     bouton_quit_retour=Button(lobby_multi, text='Retour au menu',command=quitter_multi, font=police1)
     bouton_quit_retour.place(x=1190,y=735,width=220, height=50)
@@ -351,9 +343,16 @@ def page9():
     temps_1 = time.time()
     temps=temps_1-temps_0
 
+    label_background = Label(jeu_multi, image="")
+    file_background="images/fin_multi.png"
+    background = PhotoImage(file=file_background)
+    label_background.configure(image=background)
+    label_background.image = background
+    label_background.place(x=0,y=0,width=longueur, height=largeur)
+
     reset()
     gagne_multi.place(x=0, y=0)
-    label_q1 = Label(gagne_multi, text='Bien-joué tu as mis : '+str(round(temps))+'s', font=police1 , background = 'grey', anchor='center')
+    label_q1 = Label(gagne_multi, text=str(round(temps))+'s', font=police1 , background = 'grey', anchor='center')
     label_q1.place(x=(int(longueur)/2)-250,y=200,width=500, height=70)
 
 
