@@ -1,5 +1,20 @@
 def simp(mot):
+    
     mot = mot.lower()
+    mot+=","
+    mot = mot.replace("top1","irak")
+    mot = mot.replace("usa","etats unis")
+    mot = mot.replace("rdc","republique democratique du congo")
+    mot = mot.replace("bosnie,","bosnie herzegovine")
+    mot = mot.replace("emirats,","emirats arabes unis")
+    mot = mot.replace("timor,","timor oriental")
+    mot = mot.replace("antigua,","antigua et barbuda")
+    mot = mot.replace("papouasie,","papouasie nouvelle guinee")
+    mot = mot.replace("macedoine,","macedoine du nord")
+    mot = mot.replace("saint christophe,","saint christophe et nieves")
+    mot = mot.replace("saint vincent,","saint vincent et les grenadines")
+    mot = mot.replace("sao tome,","sao tome et principe")
+    mot = mot.replace("trinite,","trinite et tobago")
     mot = mot.replace("-"," ")
     mot = mot.replace("'"," ")
     mot = mot.replace("é","e")
@@ -17,13 +32,7 @@ def simp(mot):
     mot = mot.replace("ü","u")
     mot = mot.replace("æ","ae")
     mot = mot.replace("œ","oe")
-    mot = mot.replace("ç","c") 
-    mot = mot.replace("dz","algerie")
-    mot = mot.replace("baguette","france")
-    mot = mot.replace("top1","irak")
-    mot = mot.replace("usa","etats unis")
-    mot = mot.replace("rdc","republique democratique du congo")
-    mot = mot.replace("bosnie","bosnie herzegovine")
+    mot = mot.replace(",","")
     return(mot)
 
 def simp_liste(liste):
