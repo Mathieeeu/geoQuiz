@@ -24,8 +24,12 @@ def page1(xx,yy):
     
     
     bouton_jouer = StringVar()
-    bouton_jouer=Button(menu, text='Jouer',command=page4, font=police1)
+    bouton_jouer=Button(menu,command=page4, font=police1)
     bouton_jouer.place(x=xx,y=yy,width=200, height=50)
+    file_bouton_jouer="images/boutons/bouton_jouer.png"
+    image_bouton_jouer = PhotoImage(file=file_bouton_jouer)
+    bouton_jouer.configure(image=image_bouton_jouer)
+    bouton_jouer.image = image_bouton_jouer
 
 
     bouton_quit = StringVar()
