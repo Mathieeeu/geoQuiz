@@ -128,8 +128,51 @@ def page_menu():
     label_ip = Label(menu, textvariable=local_ip, font=police2, background = 'lightgrey', anchor='center')
     label_ip.place(x=37,y=68,width=232, height=35)
 
+    textBoxTemps = Entry(menu,width=20,bg = 'gray89')
+    textBoxTemps.place(x=455,y=352,width=50, height=30)
+
+    bouton_mode_geoquiz = StringVar()
+    bouton_mode_geoquiz=Button(menu,command=wip, font=police1)
+    bouton_mode_geoquiz.place(x=768,y=212,width=198, height=148)
+    file_bouton_mode_geoquiz="images/boutons/bouton_mode_geoquiz.png"
+    image_bouton_mode_geoquiz = PhotoImage(file=file_bouton_mode_geoquiz)
+    bouton_mode_geoquiz.configure(image=image_bouton_mode_geoquiz)
+    bouton_mode_geoquiz.image = image_bouton_mode_geoquiz
+
+    bouton_mode_aveugle = StringVar()
+    bouton_mode_aveugle=Button(menu,command=wip, font=police1)
+    bouton_mode_aveugle.place(x=974,y=212,width=198, height=148)
+    file_bouton_mode_aveugle="images/boutons/bouton_mode_aveugle.png"
+    image_bouton_mode_aveugle = PhotoImage(file=file_bouton_mode_aveugle)
+    bouton_mode_aveugle.configure(image=image_bouton_mode_aveugle)
+    bouton_mode_aveugle.image = image_bouton_mode_aveugle
+
+    bouton_mode_chrono = StringVar()
+    bouton_mode_chrono=Button(menu,command=wip, font=police1)
+    bouton_mode_chrono.place(x=1180,y=212,width=198, height=148)
+    file_bouton_mode_chrono="images/boutons/bouton_mode_chrono.png"
+    image_bouton_mode_chrono = PhotoImage(file=file_bouton_mode_chrono)
+    bouton_mode_chrono.configure(image=image_bouton_mode_chrono)
+    bouton_mode_chrono.image = image_bouton_mode_chrono
+
+    bouton_mode_br = StringVar()
+    bouton_mode_br=Button(menu,command=wip, font=police1)
+    bouton_mode_br.place(x=768,y=455,width=198, height=148)
+    file_bouton_mode_br="images/boutons/bouton_mode_br.png"
+    image_bouton_mode_br = PhotoImage(file=file_bouton_mode_br)
+    bouton_mode_br.configure(image=image_bouton_mode_br)
+    bouton_mode_br.image = image_bouton_mode_br
+
+    bouton_mode_blitz = StringVar()
+    bouton_mode_blitz=Button(menu,command=wip, font=police1)
+    bouton_mode_blitz.place(x=974,y=455,width=198, height=148)
+    file_bouton_mode_blitz="images/boutons/bouton_mode_blitz.png"
+    image_bouton_mode_blitz = PhotoImage(file=file_bouton_mode_blitz)
+    bouton_mode_blitz.configure(image=image_bouton_mode_blitz)
+    bouton_mode_blitz.image = image_bouton_mode_blitz
     
 
+    
     # Toutes les secondes la page menu est rafraichi ce qui envoi en attente au client
     #Si le client ne recoit rien tt les secondes il freeze
 
@@ -137,6 +180,9 @@ def en_attente():
     message_a_tous("en_attente")
     ajout_clients()
     fenetre.after(1000,en_attente)
+
+def wip():
+    print("Pas encore ajouté")
 
 longueur = '1440'
 largeur = '810'
@@ -168,3 +214,4 @@ menu.mainloop()
 ServerSideSocket.close()
 
 #lancer_partie-->creation question--> les questions --> message a tous renvoi au client
+

@@ -25,16 +25,28 @@ def page1(xx,yy):
     
     bouton_jouer = StringVar()
     bouton_jouer=Button(menu,command=page4, font=police1)
-    bouton_jouer.place(x=xx,y=yy,width=200, height=50)
+    bouton_jouer.place(x=505,y=289,width=429, height=97)
     file_bouton_jouer="images/boutons/bouton_jouer.png"
     image_bouton_jouer = PhotoImage(file=file_bouton_jouer)
     bouton_jouer.configure(image=image_bouton_jouer)
     bouton_jouer.image = image_bouton_jouer
 
+    bouton_regles = StringVar()
+    bouton_regles=Button(menu,command=page4, font=police1)
+    bouton_regles.place(x=506,y=422,width=429, height=97)
+    file_bouton_regles="images/boutons/bouton_regles.png"
+    image_bouton_regles = PhotoImage(file=file_bouton_regles)
+    bouton_regles.configure(image=image_bouton_regles)
+    bouton_regles.image = image_bouton_regles
 
-    bouton_quit = StringVar()
-    bouton_quit=Button(menu, text='Quitter',command=quitter, font=police1)
-    bouton_quit.place(x=(int(longueur)/2)-100,y=550,width=200, height=50)
+
+    bouton_quitter = StringVar()
+    bouton_quitter=Button(menu,command=quitter, font=police1)
+    bouton_quitter.place(x=506,y=548,width=429, height=97)
+    file_bouton_quitter="images/boutons/bouton_quitter.png"
+    image_bouton_quitter = PhotoImage(file=file_bouton_quitter)
+    bouton_quitter.configure(image=image_bouton_quitter)
+    bouton_quitter.image = image_bouton_quitter
 
     
     #print('p1 appelé')
@@ -68,12 +80,12 @@ def page2():
 
 
     bouton_abandon = StringVar()
-    bouton_abandon=Button(jeu_solo, text='Abandonner', command=abandon, font=police1)
+    bouton_abandon=Button(jeu_solo, text='Abandonner', command=abandon, font=police1 ,bg = 'gray89')
     bouton_abandon.place(x=1204,y=740,width=200, height=50)
 
     #print('p2 appelé')
 
-    textBoxReponse = Entry(jeu_solo, textvariable=var_reponse, width=40, font=police1, bg = 'yellow')
+    textBoxReponse = Entry(jeu_solo, textvariable=var_reponse, width=40, font=police1, bg = 'gray89')
     textBoxReponse.place(x=924,y=590,width=250, height=70)
 
     label_timer = Label(jeu_solo, textvariable=temps_timer, font=police2 , background = 'lightgrey', anchor='center')
@@ -136,15 +148,15 @@ def page3():
 
 
     bouton_rejouer = StringVar()
-    bouton_rejouer=Button(gagne_solo, text='Rejouer', command=page2, font=police1)
+    bouton_rejouer=Button(gagne_solo, text='Rejouer', command=page2, font=police1 ,bg = 'gray89')
     bouton_rejouer.place(x=1200,y=400,width=200, height=50)
 
     bouton_menu = StringVar()
-    bouton_menu=Button(gagne_solo, text='Menu', command=retour, font=police1)
+    bouton_menu=Button(gagne_solo, text='Menu', command=retour, font=police1 ,bg = 'gray89')
     bouton_menu.place(x=1200,y=475,width=200, height=50)
 
     bouton_quitter = StringVar()
-    bouton_quitter=Button(gagne_solo, text='Quitter', command=quitter, font=police1)
+    bouton_quitter=Button(gagne_solo, text='Quitter', command=quitter, font=police1 ,bg = 'gray89')
     bouton_quitter.place(x=1200,y=550,width=200, height=50)
 
     
@@ -159,19 +171,31 @@ def page4():
     label_background.configure(image=background)
     label_background.image = background
     label_background.place(x=0,y=0,width=longueur, height=largeur)
-    
-    bouton_solo = StringVar()
-    bouton_solo=Button(selec_jeu, text='Solo',command=page2, font=police1)
-    bouton_solo.place(x=(int(longueur)/2)-100,y=450,width=200, height=50)
 
+    bouton_solo = StringVar()
+    bouton_solo=Button(selec_jeu,command=page2, font=police1)
+    bouton_solo.place(x=506,y=360,width=429, height=97)
+    file_bouton_solo="images/boutons/bouton_un_joueur.png"
+    image_bouton_solo = PhotoImage(file=file_bouton_solo)
+    bouton_solo.configure(image=image_bouton_solo)
+    bouton_solo.image = image_bouton_solo
 
     bouton_multi = StringVar()
-    bouton_multi=Button(selec_jeu, text='Multijoueur',command=page5, font=police1)
-    bouton_multi.place(x=(int(longueur)/2)-100,y=550,width=200, height=50)
+    bouton_multi=Button(selec_jeu,command=page5, font=police1)
+    bouton_multi.place(x=506,y=491,width=429, height=97)
+    file_bouton_multi="images/boutons/bouton_multi.png"
+    image_bouton_multi = PhotoImage(file=file_bouton_multi)
+    bouton_multi.configure(image=image_bouton_multi)
+    bouton_multi.image = image_bouton_multi
 
     bouton_retour = StringVar()
-    bouton_retour=Button(selec_jeu, text='Retour',command=retour, font=police1)
-    bouton_retour.place(x=(int(longueur)/2)-100,y=650,width=200, height=50)
+    bouton_retour=Button(selec_jeu,command=retour, font=police1)
+    bouton_retour.place(x=507,y=619,width=429, height=97)
+    file_bouton_retour="images/boutons/bouton_retour.png"
+    image_bouton_retour = PhotoImage(file=file_bouton_retour)
+    bouton_retour.configure(image=image_bouton_retour)
+    bouton_retour.image = image_bouton_retour
+
     
 
 def page5():
@@ -188,19 +212,30 @@ def page5():
 
     is_multi.set(1)
     print("multi? : "+str(is_multi.get()))
-    
-    bouton_solo = StringVar()
-    bouton_solo=Button(choix_multi, text='Créer partie',command=lancer_serveur, font=police1)
-    bouton_solo.place(x=(int(longueur)/2)-90,y=450,width=220, height=50)
 
+    bouton_solo = StringVar()
+    bouton_solo=Button(choix_multi,command=lancer_serveur, font=police1)
+    bouton_solo.place(x=506,y=360,width=429, height=97)
+    file_bouton_solo="images/boutons/bouton_heberger.png"
+    image_bouton_solo = PhotoImage(file=file_bouton_solo)
+    bouton_solo.configure(image=image_bouton_solo)
+    bouton_solo.image = image_bouton_solo
 
     bouton_multi = StringVar()
-    bouton_multi=Button(choix_multi, text='Rejoindre partie',command=page6, font=police1)
-    bouton_multi.place(x=(int(longueur)/2)-90,y=550,width=220, height=50)
+    bouton_multi=Button(choix_multi,command=page6, font=police1)
+    bouton_multi.place(x=506,y=492,width=429, height=97)
+    file_bouton_multi="images/boutons/bouton_rejoindre.png"
+    image_bouton_multi = PhotoImage(file=file_bouton_multi)
+    bouton_multi.configure(image=image_bouton_multi)
+    bouton_multi.image = image_bouton_multi
 
     bouton_retour = StringVar()
-    bouton_retour=Button(choix_multi, text='Retour',command=retour, font=police1)
-    bouton_retour.place(x=(int(longueur)/2)-90,y=650,width=220, height=50)
+    bouton_retour=Button(choix_multi,command=retour, font=police1)
+    bouton_retour.place(x=507,y=619,width=429, height=97)
+    file_bouton_retour="images/boutons/bouton_retour.png"
+    image_bouton_retour = PhotoImage(file=file_bouton_retour)
+    bouton_retour.configure(image=image_bouton_retour)
+    bouton_retour.image = image_bouton_retour
 
     
 def page6():
@@ -218,19 +253,23 @@ def page6():
 
     recherche_pseudo.set("Anonymous")
 
-    textBoxPseudo = Entry(recherche_multi, textvariable=recherche_pseudo, width=40, font=police1, bg = 'yellow')
-    textBoxPseudo.place(x=550,y=200,width=250, height=70)
-    textBoxIp = Entry(recherche_multi, textvariable=recherche_ip, width=40, font=police1, bg = 'yellow')
-    textBoxIp.place(x=550,y=300,width=250, height=70)
+    textBoxPseudo = Entry(recherche_multi, textvariable=recherche_pseudo, width=40, font=police1, bg = 'gray89')
+    textBoxPseudo.place(x=525,y=397,width=396, height=60)
+    textBoxIp = Entry(recherche_multi, textvariable=recherche_ip, width=40, font=police1, bg = 'gray89')
+    textBoxIp.place(x=525,y=522,width=396, height=60)
 
-
-    bouton_rechercher = StringVar()
-    bouton_rechercher=Button(recherche_multi, text='Rechercher le serveur', command=connexion_serveur, font=police1)
-    bouton_rechercher.place(x=850,y=300,width=350, height=50)
 
     bouton_quit_retour = StringVar()
-    bouton_quit_retour=Button(recherche_multi, text='Retour au menu',command=retour, font=police1)
+    bouton_quit_retour=Button(recherche_multi, text='Retour au menu',command=retour, font=police1 ,bg = 'gray89')
     bouton_quit_retour.place(x=1190,y=735,width=220, height=50)
+
+    bouton_retour = StringVar()
+    bouton_retour=Button(recherche_multi,command=connexion_serveur, font=police1)
+    bouton_retour.place(x=507,y=619,width=429, height=97)
+    file_bouton_retour="images/boutons/bouton_rejoindre.png"
+    image_bouton_retour = PhotoImage(file=file_bouton_retour)
+    bouton_retour.configure(image=image_bouton_retour)
+    bouton_retour.image = image_bouton_retour
     
 
 def page7():
