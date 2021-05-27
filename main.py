@@ -136,8 +136,8 @@ def page3():
     label_background.place(x=0,y=0,width=longueur, height=largeur)
     
     gagne_solo.place(x=0, y=0)
-    label_q1 = Label(gagne_solo, text=str(round(temps))+'s', font=police1 , background = 'gray', anchor='center')
-    label_q1.place(x=500,y=200,width=500, height=70)
+    label_q1 = Label(gagne_solo, text=str(round(temps))+'s', font=police1 , background = '#BBBBBB', anchor='w')
+    label_q1.place(x=730,y=117,width=100, height=40)
 
 
     bouton_rejouer = StringVar()
@@ -380,13 +380,13 @@ def page9():
     label_background.place(x=0,y=0,width=longueur, height=largeur)
 
 
-    label_q1 = Label(gagne_multi, text=str(round(temps))+'s', font=police1 , background = 'grey', anchor='center')
-    label_q1.place(x=(int(longueur)/2)-250,y=200,width=500, height=70)
+    label_q1 = Label(gagne_multi, text='Bravo vous avez mis '+str(round(temps))+'s', font=police1 , background = 'grey', anchor='center')
+    label_q1.place(x=670,y=650,width=500, height=70)
 
 
     bouton_rejouer = StringVar()
     bouton_rejouer=Button(gagne_multi, text='Retour au lobby', command=page7, font=police1)
-    bouton_rejouer.place(x=(int(longueur)/2)-100,y=500,width=350, height=50)
+    bouton_rejouer.place(x=740,y=730,width=350, height=50)
 
 
 def page10():
@@ -524,6 +524,8 @@ def crea_question():
         liste_attributs, liste_valeurs, liste_reponses = creation_questions.lancer_tirage(seed_serveur.get())
 
     liste_questions=nommer_questions(liste_attributs,liste_valeurs)
+
+    print(liste_reponses[4])
 
     question1.set(liste_questions[0])
     
