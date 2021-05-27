@@ -10,7 +10,7 @@ from multi_client import connexion_client_multi,boucle_client_multi, deconnexion
 import ast
 from random import *
 
-def page1(xx,yy):
+def page1():
     global menu
     reset()
     menu.place(x=0, y=0)
@@ -32,7 +32,7 @@ def page1(xx,yy):
     bouton_jouer.image = image_bouton_jouer
 
     bouton_regles = StringVar()
-    bouton_regles=Button(menu,command=page4, font=police1,relief=FLAT)
+    bouton_regles=Button(menu,command=page10, font=police1,relief=FLAT)
     bouton_regles.place(x=506,y=422,width=429, height=97)
     file_bouton_regles="images/boutons/bouton_regles.png"
     image_bouton_regles = PhotoImage(file=file_bouton_regles)
@@ -47,13 +47,6 @@ def page1(xx,yy):
     image_bouton_quitter = PhotoImage(file=file_bouton_quitter)
     bouton_quitter.configure(image=image_bouton_quitter)
     bouton_quitter.image = image_bouton_quitter
-
-    
-    #print('p1 appelé')
-
-    menu.bind('<Motion>', motion)
-
-
 
 def page2():
     global jeu_solo
@@ -143,8 +136,8 @@ def page3():
     label_background.place(x=0,y=0,width=longueur, height=largeur)
     
     gagne_solo.place(x=0, y=0)
-    label_q1 = Label(gagne_solo, text='Bien-joué tu as mis : '+str(round(temps))+'s', font=police1 , background = 'grey', anchor='center')
-    label_q1.place(x=(int(longueur)/2)-250,y=200,width=500, height=70)
+    label_q1 = Label(gagne_solo, text=str(round(temps))+'s', font=police1 , background = 'gray', anchor='center')
+    label_q1.place(x=500,y=200,width=500, height=70)
 
 
     bouton_rejouer = StringVar()
@@ -211,7 +204,7 @@ def page5():
     label_background.place(x=0,y=0,width=longueur, height=largeur)
 
     is_multi.set(1)
-    print("multi? : "+str(is_multi.get()))
+    #print("multi? : "+str(is_multi.get()))
 
     bouton_solo = StringVar()
     bouton_solo=Button(choix_multi,command=lancer_serveur, font=police1,relief=FLAT)
@@ -376,15 +369,17 @@ def page9():
     temps_1 = time.time()
     temps=temps_1-temps_0
 
-    label_background = Label(jeu_multi, image="")
+    reset()
+    gagne_multi.place(x=0, y=0)
+
+    label_background = Label(gagne_multi, image="")
     file_background="images/fin_multi.png"
     background = PhotoImage(file=file_background)
     label_background.configure(image=background)
     label_background.image = background
     label_background.place(x=0,y=0,width=longueur, height=largeur)
 
-    reset()
-    gagne_multi.place(x=0, y=0)
+
     label_q1 = Label(gagne_multi, text=str(round(temps))+'s', font=police1 , background = 'grey', anchor='center')
     label_q1.place(x=(int(longueur)/2)-250,y=200,width=500, height=70)
 
@@ -392,6 +387,25 @@ def page9():
     bouton_rejouer = StringVar()
     bouton_rejouer=Button(gagne_multi, text='Retour au lobby', command=page7, font=police1)
     bouton_rejouer.place(x=(int(longueur)/2)-100,y=500,width=350, height=50)
+
+
+def page10():
+    global menu_regle
+
+    reset()
+    menu_regle.place(x=0, y=0)
+    
+    label_background = Label(menu_regle, image="")
+    file_background="images/regles.png"
+    background = PhotoImage(file=file_background)
+    label_background.configure(image=background)
+    label_background.image = background
+    label_background.place(x=0,y=0,width=longueur, height=largeur)
+    
+    bouton_retour = StringVar()
+    bouton_retour=Button(menu_regle, text='Retour', command=retour, font=police1 ,bg = 'gray89')
+    bouton_retour.place(x=1215,y=740,width=200, height=50)
+
 
 
 def connexion_serveur():
@@ -449,7 +463,7 @@ def reset():
     global selec_jeu
     global choix_multi
     global recherche_multi
-    global connexion_au_serveur
+    global menu_regle
     global label_r1
     global label_r2
     global label_r3
@@ -467,7 +481,7 @@ def reset():
     selec_jeu.destroy()
     choix_multi.destroy()
     recherche_multi.destroy()
-    connexion_au_serveur.destroy
+    menu_regle.destroy
     menu = Canvas(fenetre, width=longueur, height=largeur)
     jeu_solo = Canvas(fenetre, width=longueur, height=largeur)
     gagne_solo = Canvas(fenetre, width=longueur, height=largeur)
@@ -477,7 +491,7 @@ def reset():
     lobby_multi = Canvas(fenetre, width=longueur, height=largeur)
     gagne_multi = Canvas(fenetre, width=longueur, height=largeur)
     recherche_multi = Canvas(fenetre, width=longueur, height=largeur)
-    connexion_au_serveur = Canvas(fenetre,width=longueur, height=largeur)
+    menu_regle = Canvas(fenetre,width=longueur, height=largeur)
 
     reponse_entree1.set('')
     reponse_entree2.set('')
@@ -506,7 +520,7 @@ def crea_question():
         liste_attributs, liste_valeurs, liste_reponses = creation_questions.lancer_tirage(randint(1,1000000))
 
     else :
-        print('la seed est :'+seed_serveur.get())
+        #print('la seed est :'+seed_serveur.get())
         liste_attributs, liste_valeurs, liste_reponses = creation_questions.lancer_tirage(seed_serveur.get())
 
     liste_questions=nommer_questions(liste_attributs,liste_valeurs)
@@ -580,7 +594,7 @@ def test_reponse():
                     label_r5.configure(textvariable=reponse_entree5,background ='lightgreen')
                     label_q5.configure(background ='lightgreen')
 
-                    print(is_multi.get())
+                    #print(is_multi.get())
                     if is_multi.get() == 0 :
                         page3()
                     else :
@@ -595,22 +609,10 @@ def echap(key):
     retour()
     
 def retour():
-    page1(620,450)
+    page1()
 
 def abandon():
     var_reponse.set(str(liste_reponses[4][0][0]))
-
-def f_follow(key):
-    if follow.get()!='1':
-        follow.set('1')
-    else :
-        follow.set('0')
-
-
-def motion(event):
-    xx, yy = event.x, event.y
-    if follow.get()=='1':
-        page1((xx-100),(yy-25))
 
 def meme_reponse(key):
     if nb_reponse_juste.get()> 0:
@@ -661,11 +663,10 @@ jeu_multi = Canvas(fenetre, width=longueur, height=largeur)
 lobby_multi = Canvas(fenetre, width=longueur, height=largeur)
 gagne_multi = Canvas(fenetre, width=longueur, height=largeur)
 recherche_multi = Canvas(fenetre, width=longueur, height=largeur)
-connexion_au_serveur = Canvas(fenetre,width=longueur, height=largeur)
+menu_regle = Canvas(fenetre,width=longueur, height=largeur)
 
 fenetre.bind('<KeyPress>', callback)
 fenetre.bind('<Escape>', retour)
-fenetre.bind('<Control-*>', f_follow)
 fenetre.bind('<Control_L>', meme_reponse)
 
 
@@ -706,5 +707,5 @@ etat_multi=StringVar()
 seed_serveur=StringVar()
 
 
-page1(620,450)
+page1()
 menu.mainloop()

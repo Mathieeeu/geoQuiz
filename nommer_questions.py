@@ -81,14 +81,12 @@ def nommer_questions(liste_attributs,liste_valeurs):
                 liste_questions.append("Le plus haut point de ce pays est entre " + str(nb1) + " et " + str(nb2) + " mètres")
 
         elif liste_attributs[i] == ("mots"):
-            print(liste_valeurs[i])
             if int(liste_valeurs[i]) == 1:
                 liste_questions.append("Le nom de ce pays est composé d'un seul mot")
             else :
                 liste_questions.append("Le nom de ce pays est composé de "+str(liste_valeurs[i])+" mots")
 
         elif liste_attributs[i] == ("couleurs_drapeau"):
-            print(liste_valeurs[i])
             if int(liste_valeurs[i]) == 1:
                 liste_questions.append("Le fond du drapeau de ce pays est composé d'une seule couleur")
             else :
