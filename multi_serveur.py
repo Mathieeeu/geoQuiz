@@ -132,7 +132,7 @@ def page_menu():
     textBoxTemps.place(x=455,y=352,width=50, height=30)
 
     bouton_mode_geoquiz = StringVar()
-    bouton_mode_geoquiz=Button(menu,command=wip, font=police1)
+    bouton_mode_geoquiz=Button(menu,command=wip, font=police1,relief=FLAT)
     bouton_mode_geoquiz.place(x=768,y=212,width=198, height=148)
     file_bouton_mode_geoquiz="images/boutons/bouton_mode_geoquiz.png"
     image_bouton_mode_geoquiz = PhotoImage(file=file_bouton_mode_geoquiz)
@@ -140,7 +140,7 @@ def page_menu():
     bouton_mode_geoquiz.image = image_bouton_mode_geoquiz
 
     bouton_mode_aveugle = StringVar()
-    bouton_mode_aveugle=Button(menu,command=wip, font=police1)
+    bouton_mode_aveugle=Button(menu,command=wip, font=police1,relief=FLAT)
     bouton_mode_aveugle.place(x=974,y=212,width=198, height=148)
     file_bouton_mode_aveugle="images/boutons/bouton_mode_aveugle.png"
     image_bouton_mode_aveugle = PhotoImage(file=file_bouton_mode_aveugle)
@@ -148,7 +148,7 @@ def page_menu():
     bouton_mode_aveugle.image = image_bouton_mode_aveugle
 
     bouton_mode_chrono = StringVar()
-    bouton_mode_chrono=Button(menu,command=wip, font=police1)
+    bouton_mode_chrono=Button(menu,command=wip, font=police1,relief=FLAT)
     bouton_mode_chrono.place(x=1180,y=212,width=198, height=148)
     file_bouton_mode_chrono="images/boutons/bouton_mode_chrono.png"
     image_bouton_mode_chrono = PhotoImage(file=file_bouton_mode_chrono)
@@ -156,7 +156,7 @@ def page_menu():
     bouton_mode_chrono.image = image_bouton_mode_chrono
 
     bouton_mode_br = StringVar()
-    bouton_mode_br=Button(menu,command=wip, font=police1)
+    bouton_mode_br=Button(menu,command=wip, font=police1,relief=FLAT)
     bouton_mode_br.place(x=768,y=455,width=198, height=148)
     file_bouton_mode_br="images/boutons/bouton_mode_br.png"
     image_bouton_mode_br = PhotoImage(file=file_bouton_mode_br)
@@ -164,7 +164,7 @@ def page_menu():
     bouton_mode_br.image = image_bouton_mode_br
 
     bouton_mode_blitz = StringVar()
-    bouton_mode_blitz=Button(menu,command=wip, font=police1)
+    bouton_mode_blitz=Button(menu,command=wip, font=police1,relief=FLAT)
     bouton_mode_blitz.place(x=974,y=455,width=198, height=148)
     file_bouton_mode_blitz="images/boutons/bouton_mode_blitz.png"
     image_bouton_mode_blitz = PhotoImage(file=file_bouton_mode_blitz)
