@@ -18,8 +18,7 @@
 
 Pour lancer le programme du jeu, il suffit de lancer main.py, les règles précises sont ensuite expliquer en cliquant sur le bouton "regles" du menu.
 
-/!\ Pour jouer en multijoueur, il est recommandé de désactiver le pare-feu "réseau avec domaine" et des fois "réseau privé" sinon il se peut que le programme crash
-
+/!\ En multijoueur il est recommandé de désactiver le pare-feu "réseau avec domaine" (ou "réseau privé" si cela ne fonctionne pas)
 
 ********* CLIENT SERVEUR ***********************************************************
 
