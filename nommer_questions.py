@@ -1,4 +1,4 @@
-def nommer_questions(liste_attributs,liste_valeurs):
+def nommer_questions(liste_attributs,liste_valeurs): # la fonction permet de nommer les questions ( Ex : La capitale est Paris) avec les attributs (ex : capitale) et les valeurs (ex : Paris)
 
     liste_questions=[]
 
@@ -68,12 +68,10 @@ def nommer_questions(liste_attributs,liste_valeurs):
                 nb1,nb2=espace_zero(int(liste_valeurs[i][0])),espace_zero(int(liste_valeurs[i][1]))
                 liste_questions.append("Ce pays possède entre " + str(nb1) + " et " + str(nb2) + " fuseaux horaires")
             
-
         elif liste_attributs[i] == ("langue"):
             liste_questions.append("Les habitants de ce pays parlent "+str(liste_valeurs[i]))
 
-
-        if liste_attributs[i]=="point_culminant":
+        elif liste_attributs[i]=="point_culminant":
             nb1,nb2=espace_zero(int(liste_valeurs[i][0])),espace_zero(int(liste_valeurs[i][1]))
             if liste_valeurs[i][1] == 9999:
                 liste_questions.append("Le plus haut point de ce pays est supérieur à " +str(nb1)+ " mètres")
@@ -92,11 +90,12 @@ def nommer_questions(liste_attributs,liste_valeurs):
             else :
                 liste_questions.append("Le fond du drapeau de ce pays est composé de "+str(liste_valeurs[i])+" couleurs")
 
-
                 
-    return liste_questions
+    return liste_questions # renvoi la liste complete des questions à main
 
-def espace_zero(nombre):
+
+
+def espace_zero(nombre): # la fonction permet d'ajouter des espaces à chaque centaines d'un nombre pour que les chiffres soit + lisible (ex : 1000000 devient 1 000 000)
     nombre_espace=str(nombre)
     if nombre>999:
         nombre_espace=nombre_espace[0:-3]+' '+nombre_espace[-3:]

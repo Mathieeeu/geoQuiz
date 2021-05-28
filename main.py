@@ -3,16 +3,18 @@ import tkinter.font as tkFont
 from simplificateur import simp, simp_liste, simp_liste_p2, simp_liste_p3
 import creation_questions
 from nommer_questions import nommer_questions
+from multi_client import connexion_client_multi,boucle_client_multi, deconnexion_multi
+from random import *
 import time
 import os
 import socket
-from multi_client import connexion_client_multi,boucle_client_multi, deconnexion_multi
 import ast
-from random import *
 
-def page1():
+#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX Initialisation des pages XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+def page1(): # la page menu où l'on peut cliquer sur jouer, regle ou quitter
     global menu
-    reset()
+    reset() #permet de supprimer tout ce qu'il y avait dans l'ancienne page pour recrer une nouvelle page
     menu.place(x=0, y=0)
 
     label_background = Label(menu, image="")
@@ -21,7 +23,6 @@ def page1():
     label_background.configure(image=background)
     label_background.image = background
     label_background.place(x=0,y=0,width=longueur, height=largeur)
-    
     
     bouton_jouer = StringVar()
     bouton_jouer=Button(menu,command=page4, font=police1,relief=FLAT)
@@ -39,7 +40,6 @@ def page1():
     bouton_regles.configure(image=image_bouton_regles)
     bouton_regles.image = image_bouton_regles
 
-
     bouton_quitter = StringVar()
     bouton_quitter=Button(menu,command=quitter, font=police1,relief=FLAT)
     bouton_quitter.place(x=506,y=548,width=429, height=97)
@@ -48,12 +48,12 @@ def page1():
     bouton_quitter.configure(image=image_bouton_quitter)
     bouton_quitter.image = image_bouton_quitter
 
-def page2():
+
+def page2(): #la page de jeu en solo
     global jeu_solo
-    global label_r1,label_r2,label_r3,label_r4,label_r5
-    global label_q1,label_q2,label_q3,label_q4,label_q5
-    
-    global temps_0
+    global label_r1,label_r2,label_r3,label_r4,label_r5 #les labels des réponses
+    global label_q1,label_q2,label_q3,label_q4,label_q5 #les labels des questions
+    global temps_0,temps_1 #pour calculer le temps 
     
     reset()
     crea_question()
@@ -68,15 +68,12 @@ def page2():
     
     temps_0 = time.time()
 
-    is_multi.set(0)
+    is_multi.set(0) #variable qui défini si le joueur joue en multijoueur (0=solo, 1=multi)
     temps_timer.set(0)
-
 
     bouton_abandon = StringVar()
     bouton_abandon=Button(jeu_solo, text='Abandonner', command=abandon, font=police1 ,bg = 'gray89')
     bouton_abandon.place(x=1204,y=740,width=200, height=50)
-
-    #print('p2 appelé')
 
     textBoxReponse = Entry(jeu_solo, textvariable=var_reponse, width=40, font=police1, bg = 'gray89')
     textBoxReponse.place(x=924,y=590,width=250, height=70)
@@ -115,16 +112,15 @@ def page2():
     label_r5 = Label(jeu_solo, textvariable=reponse_entree5, font=police1, background = 'grey', anchor='center')
     label_r5.place(x=924,y=490,width=400, height=70)
 
-    update_temps()
+    update_temps() #lance le timer qui va se mettre a jour ensuite toutes les secondes
 
 
-def page3():
+def page3(): # la page qui s'ouvre lorsque une partie est gagné en solo
     global gagne_solo
-    global temps_0
-    global temps_1
+    global temps_0,temps_1
 
     temps_1 = time.time()
-    temps=temps_1-temps_0
+    temps=temps_1-temps_0 #calcul du temps mis par le joueur
 
     reset()
 
@@ -139,7 +135,6 @@ def page3():
     label_q1 = Label(gagne_solo, text=str(round(temps))+'s', font=police1 , background = '#BBBBBB', anchor='w')
     label_q1.place(x=730,y=117,width=100, height=40)
 
-
     bouton_rejouer = StringVar()
     bouton_rejouer=Button(gagne_solo, text='Rejouer', command=page2, font=police1 ,bg = 'gray89')
     bouton_rejouer.place(x=1200,y=400,width=200, height=50)
@@ -153,7 +148,7 @@ def page3():
     bouton_quitter.place(x=1200,y=550,width=200, height=50)
 
     
-def page4():
+def page4(): # la page de séléction entre le jeu solo et le jeu multi
     global selec_jeu
     reset()
     selec_jeu.place(x=0, y=0)
@@ -190,11 +185,12 @@ def page4():
     bouton_retour.image = image_bouton_retour
 
     
-
-def page5():
+def page5(): #la page de choix entre héberger et rejoindre une parti en multi
     global choix_multi
     reset()
     choix_multi.place(x=0, y=0)
+    
+    is_multi.set(1) # défini que le joueur est en multi
 
     label_background = Label(choix_multi, image="")
     file_background="images/menu_jouer_multi.png"
@@ -202,9 +198,6 @@ def page5():
     label_background.configure(image=background)
     label_background.image = background
     label_background.place(x=0,y=0,width=longueur, height=largeur)
-
-    is_multi.set(1)
-    #print("multi? : "+str(is_multi.get()))
 
     bouton_solo = StringVar()
     bouton_solo=Button(choix_multi,command=lancer_serveur, font=police1,relief=FLAT)
@@ -231,7 +224,7 @@ def page5():
     bouton_retour.image = image_bouton_retour
 
     
-def page6():
+def page6(): # la page qui permet de rejoindre un serveur multi
     global recherche_multi
 
     reset()
@@ -248,40 +241,37 @@ def page6():
 
     textBoxPseudo = Entry(recherche_multi, textvariable=recherche_pseudo, width=40, font=police1, bg = 'gray89')
     textBoxPseudo.place(x=525,y=397,width=396, height=60)
+    
     textBoxIp = Entry(recherche_multi, textvariable=recherche_ip, width=40, font=police1, bg = 'gray89')
     textBoxIp.place(x=525,y=522,width=396, height=60)
-
 
     bouton_quit_retour = StringVar()
     bouton_quit_retour=Button(recherche_multi, text='Retour au menu',command=retour, font=police1 ,bg = 'gray89')
     bouton_quit_retour.place(x=1190,y=735,width=220, height=50)
 
-    bouton_retour = StringVar()
-    bouton_retour=Button(recherche_multi,command=connexion_serveur, font=police1,relief=FLAT)
-    bouton_retour.place(x=507,y=619,width=429, height=97)
-    file_bouton_retour="images/boutons/bouton_rejoindre.png"
-    image_bouton_retour = PhotoImage(file=file_bouton_retour)
-    bouton_retour.configure(image=image_bouton_retour)
-    bouton_retour.image = image_bouton_retour
+    bouton_rejoindre = StringVar()
+    bouton_rejoindre=Button(recherche_multi,command=connexion_serveur, font=police1,relief=FLAT)
+    bouton_rejoindre.place(x=507,y=619,width=429, height=97)
+    file_bouton_rejoindre="images/boutons/bouton_rejoindre.png"
+    image_bouton_rejoindre = PhotoImage(file=file_bouton_rejoindre)
+    bouton_rejoindre.configure(image=image_bouton_rejoindre)
+    bouton_rejoindre.image = image_bouton_rejoindre
     
 
-def page7():
-    global lobby_multi
-
-    hostname = socket.gethostname()
-    local_ip.set(socket.gethostbyname(hostname))
-    
+def page7(): # page qui s'affiche lorsqu'on est connecté au serveur en attendant que le serveur lance la partie
+    global lobby_multi  
     reset()
     lobby_multi.place(x=0, y=0)
 
-    
+    hostname = socket.gethostname()
+    local_ip.set(socket.gethostbyname(hostname)) #permet d'afficher son ip
+
     label_background = Label(lobby_multi, image="")
     file_background="images/lobby_multi_client.png"
     background = PhotoImage(file=file_background)
     label_background.configure(image=background)
     label_background.image = background
     label_background.place(x=0,y=0,width=longueur, height=largeur)
-
 
     label_ip = Label(lobby_multi, textvariable=local_ip, font=police1, background = 'lightgrey', anchor='center')
     label_ip.place(x=860,y=715,width=300, height=70)
@@ -291,28 +281,18 @@ def page7():
     bouton_quit_retour.place(x=1190,y=735,width=220, height=50)
 
 
-    #new_event_lobby()
-
-
-def page8():
+def page8(): #page du jeu en mode multijoueur
     global jeu_multi
     global label_r1,label_r2,label_r3,label_r4,label_r5
     global label_q1,label_q2,label_q3,label_q4,label_q5
-    global temps_0
+    global temps_0,temps_1
     
     reset()
     crea_question()
     jeu_multi.place(x=0, y=0)
 
     temps_0 = time.time()
-
     temps_timer.set(0)
-    """
-    bouton_abandon = StringVar()
-    bouton_abandon=Button(jeu_multi, text='Abandonner (à enlever après)', command=abandon, font=police1)
-    bouton_abandon.place(x=int(longueur)-420,y=int(largeur)-60,width=200, height=50)
-    """
-    #print('p2 appelé')
 
     label_background = Label(jeu_multi, image="")
     file_background="images/fond_jeu.png"
@@ -361,10 +341,9 @@ def page8():
     update_temps()
 
 
-def page9():
+def page9(): # page qui s'affiche lorsqu'une personne gagne en multijoueur
     global gagne_multi
-    global temps_0
-    global temps_1
+    global temps_0, temps_1
 
     temps_1 = time.time()
     temps=temps_1-temps_0
@@ -379,19 +358,16 @@ def page9():
     label_background.image = background
     label_background.place(x=0,y=0,width=longueur, height=largeur)
 
-
     label_q1 = Label(gagne_multi, text='Bravo vous avez mis '+str(round(temps))+'s', font=police1 , background = 'grey', anchor='center')
     label_q1.place(x=670,y=650,width=500, height=70)
 
+    bouton_retour = StringVar()
+    bouton_retour=Button(gagne_multi, text='Retour au lobby', command=page7, font=police1)
+    bouton_retour.place(x=740,y=730,width=350, height=50)
 
-    bouton_rejouer = StringVar()
-    bouton_rejouer=Button(gagne_multi, text='Retour au lobby', command=page7, font=police1)
-    bouton_rejouer.place(x=740,y=730,width=350, height=50)
 
-
-def page10():
+def page10(): #page des regles
     global menu_regle
-
     reset()
     menu_regle.place(x=0, y=0)
     
@@ -408,157 +384,49 @@ def page10():
 
 
 
-def connexion_serveur():
-    pseudo=recherche_pseudo.get()
-    ip=recherche_ip.get()
-    etat_multi.set(connexion_client_multi(pseudo,ip))
-    
-    if etat_multi.get()=="aucun_serveur_accessible":
-        page5()
-    else:
-        discussion_serveur()
-    page7()
-    
-def discussion_serveur():
-
-    if is_multi.get()==1:
-
-        if "aucun_serveur_accessible" in etat_multi.get():
-            page5()
-        else :
-            pseudo=recherche_pseudo.get()
-            ip=recherche_ip.get()
-            etat_multi.set(boucle_client_multi(pseudo,ip))
-        
-
-        if "lancement_partie" in etat_multi.get() :
-            etat_multi.set(str(etat_multi.get()).replace("lancement_partie",""))
-            etat_multi.set(str(etat_multi.get()).replace("en_attente",""))
-            seed_serveur.set(int(etat_multi.get()))
-            page8()
 
 
-        #print('update toutes les secondes ...')
-        fenetre.after(1000,discussion_serveur)
-
-
-#def lancer_boucle():
-
-
-def quitter_multi():
-    pseudo=recherche_pseudo.get()
-    ip=recherche_ip.get()
-    deconnexion_multi(pseudo,ip)
-    is_multi.set(0)
-    retour()
-
-
-def reset():
-    global menu
-    global jeu_solo
-    global jeu_multi
-    global gagne_solo
-    global gagne_multi
-    global lobby_multi
-    global selec_jeu
-    global choix_multi
-    global recherche_multi
-    global menu_regle
-    global label_r1
-    global label_r2
-    global label_r3
-    global label_r4
-    global label_r5
-    global nombre_personne
-
-    
-    menu.destroy()
-    jeu_solo.destroy()
-    jeu_multi.destroy()
-    gagne_solo.destroy()
-    gagne_multi.destroy()
-    lobby_multi.destroy()
-    selec_jeu.destroy()
-    choix_multi.destroy()
-    recherche_multi.destroy()
-    menu_regle.destroy
-    menu = Canvas(fenetre, width=longueur, height=largeur)
-    jeu_solo = Canvas(fenetre, width=longueur, height=largeur)
-    gagne_solo = Canvas(fenetre, width=longueur, height=largeur)
-    selec_jeu = Canvas(fenetre, width=longueur, height=largeur)
-    choix_multi = Canvas(fenetre, width=longueur, height=largeur)
-    jeu_multi = Canvas(fenetre, width=longueur, height=largeur)
-    lobby_multi = Canvas(fenetre, width=longueur, height=largeur)
-    gagne_multi = Canvas(fenetre, width=longueur, height=largeur)
-    recherche_multi = Canvas(fenetre, width=longueur, height=largeur)
-    menu_regle = Canvas(fenetre,width=longueur, height=largeur)
-
-    reponse_entree1.set('')
-    reponse_entree2.set('')
-    reponse_entree3.set('')
-    reponse_entree4.set('')
-    reponse_entree5.set('')
-    var_reponse.set('')
-    question2.set('')
-    question3.set('')
-    question4.set('')
-    question5.set('')
-    nb_reponse_juste.set(0)
-
-    nombre_personne=0
+#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX Initialisation des fonctions qui servent pour la création du jeu XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 
 def crea_question():
 
-    global liste_attributs, liste_valeurs, liste_reponses, liste_questions
+    global liste_attributs, liste_valeurs, liste_reponses, liste_questions # récupère les listes des questions et réponses à générer
 
+    if is_multi.get()==0: # si la personne joue en solo, la seed est générer maintenant
+        liste_attributs, liste_valeurs, liste_reponses = creation_questions.lancer_tirage(randint(1,1000000)) #envoi de la seed au programme creations_questions qui va ensuite lui renvoyer la liste des questions (themes + valeurs) et la liste des réponses 
 
-
-    if is_multi.get()==0:
-
-
-        liste_attributs, liste_valeurs, liste_reponses = creation_questions.lancer_tirage(randint(1,1000000))
-
-    else :
+    else : # si la personne joue en multi, récupere la seed envoyé par le serveur
         #print('la seed est :'+seed_serveur.get())
         liste_attributs, liste_valeurs, liste_reponses = creation_questions.lancer_tirage(seed_serveur.get())
+        print('Psssst : Monsieur, la réponse est : '+str(liste_reponses[4]))
 
-    liste_questions=nommer_questions(liste_attributs,liste_valeurs)
+    liste_questions=nommer_questions(liste_attributs,liste_valeurs) #permet de nommer les questions (ex: La capitale est Paris) avec la liste des attributs (ex: capitale) et la liste des valeurs (ex : Paris)
 
-    print(liste_reponses[4])
+    question1.set(liste_questions[0]) # defini le premiere question
 
-    question1.set(liste_questions[0])
     
 
-def quitter():   #fermer la fenetre
-    fenetre.destroy()
 
-def callback(key):
-    test_reponse()
 
-def recherche():
-    print(str(var_entree.get()))
-
-def test_reponse():
+def test_reponse(): # teste si la réponse entré est juste (à chaque touche du clavier appuyé), cela permet de ne pas avoir à appuyer sur un bouton pour valider sa réponse
 
     global liste_attributs, liste_valeurs, liste_reponses, liste_questions
 
     try :
         
-        reponse_simp=simp(var_reponse.get())
-
-        nb_reponse_juste_fct=nb_reponse_juste.get()
-
-        liste_reponses_simp=simp_liste_p3(liste_reponses)
+        reponse_simp=simp(var_reponse.get()) # simplifie la reponse
+        nb_reponse_juste_fct=nb_reponse_juste.get() #recupere le nombre de réponses deja justes
+        liste_reponses_simp=simp_liste_p3(liste_reponses) # siplifie la liste des reponses
         
-        for i in range (len(liste_reponses[nb_reponse_juste_fct])):
+        for i in range (len(liste_reponses[nb_reponse_juste_fct])): # test si la reponse entrée est la meme qu'une dans la liste des reponses justes
            
-            if str(reponse_simp) == liste_reponses_simp[nb_reponse_juste_fct][i][0]:
+            if str(reponse_simp) == liste_reponses_simp[nb_reponse_juste_fct][i][0]: # si la reponses est justes
                               
                 nb_reponse_juste.set(nb_reponse_juste.get()+1)
 
+                # changement des couleurs des labels en fonctions du nombres de réponses justes
                 if nb_reponse_juste.get() == 1:
-                    
                     reponse_entree1.set(liste_reponses[nb_reponse_juste_fct][i][0])
                     label_r1.configure(textvariable=reponse_entree1,background ='lightgreen')
                     label_r2.configure(textvariable=var_reponse,background ='lightgrey')
@@ -591,64 +459,169 @@ def test_reponse():
                     label_q5.configure(background ='lightgrey')
                     question5.set(liste_questions[4])
                     
-                if nb_reponse_juste.get() == 5:
+                if nb_reponse_juste.get() == 5: #gagné
                     reponse_entree5.set(liste_reponses[nb_reponse_juste_fct][i][0])
                     label_r5.configure(textvariable=reponse_entree5,background ='lightgreen')
                     label_q5.configure(background ='lightgreen')
 
-                    #print(is_multi.get())
-                    if is_multi.get() == 0 :
+                    if is_multi.get() == 0 : #si le joueur joue en solo, envoi vers l'écran de victoire solo
                         page3()
-                    else :
+                    else : # si en multi, envoi vers l'écran de victoire multi
                         page9()
                     
                 var_reponse.set('')
     except:None
-            
 
 
-def echap(key):
-    retour()
-    
-def retour():
-    page1()
 
-def abandon():
+#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX Initialisation des fonctions qui servent pour le jeu XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+     
+def abandon(): # affiche la reponse dans la textbox reponse en solo lorsque le bouton abandon est cliqué (plus tard la fonction revoira à une page d'abandon)
     var_reponse.set(str(liste_reponses[4][0][0]))
 
-def meme_reponse(key):
-    if nb_reponse_juste.get()> 0:
-        var_reponse.set(eval('reponse_entree'+str(nb_reponse_juste.get())).get())
-        test_reponse()
+
+def update_temps(): # met à jour le timer toutes les secondes
+    global temps_0, temps_1
+    temps_1 = time.time()
+    temps_timer.set(round(temps_1-temps_0))
+    fenetre.after(1000,update_temps)
+    
 
 
-def lancer_serveur():
+
+#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX Initialisation des fonctions qui servent pour le client/serveur XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+
+def lancer_serveur(): #lorsque que le bouton hebergé est cliqué, le programme serveur est lancé et la page rejoindre serveur en localhost aussi
     os.startfile("multi_serveur.py")
     recherche_ip.set("localhost")
     page6()
 
-def new_envent_lobby():
+def connexion_serveur(): #fonction qui essaye de connecter le client au serveur en en voyant l'ip et le pseudo au serveur, si il existe
+    pseudo=recherche_pseudo.get()
+    ip=recherche_ip.get()
+    etat_multi.set(connexion_client_multi(pseudo,ip)) # la variable etat multi contient l'esnsemble des donnees transmises par/pour le serveur
+    
+    if etat_multi.get()=="aucun_serveur_accessible":
+        page5()
+    else:
+        discussion_serveur()
+    page7()
+    
+
+def discussion_serveur(): # fonction répété chaque seconde pour essayer de connecter le client au serveur et de détecter les ordres comme le lancement de la partie ...
+
+    if is_multi.get()==1: # si le joueur est en multi
+        if "aucun_serveur_accessible" in etat_multi.get(): # si il n'y a pas de serveur
+            page5()
+        else :
+            pseudo=recherche_pseudo.get()
+            ip=recherche_ip.get()
+            etat_multi.set(boucle_client_multi(pseudo,ip))
+
+        if "lancement_partie" in etat_multi.get() : #si le serveur envoi l'ordre de lancer la partie
+            etat_multi.set(str(etat_multi.get()).replace("lancement_partie",""))
+            etat_multi.set(str(etat_multi.get()).replace("en_attente",""))
+            seed_serveur.set(int(etat_multi.get())) #récupere la seed apres avoir enlevé les ordres dans la variables
+            page8() #lance la page de jeu multi
+
+        #print('update toutes les secondes ...')
+        fenetre.after(1000,discussion_serveur)
+
+
+def quitter_multi(): # fonction qui permet de quitter proprement le multijoueur en envoyant un message au serveur pour qu'il ne crash pas 
+    pseudo=recherche_pseudo.get()
+    ip=recherche_ip.get()
+    deconnexion_multi(pseudo,ip)
+    is_multi.set(0)
+    retour()
+
+
+
+
+
+#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX Initialisation des fonctions qui servent pour l'infrastructure XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+
+def reset(): # permet de supprimer tout ce qu'il y a dans la fenetre tkinter afin de créer une nouvelle page
+    global menu,jeu_solo,jeu_multi,gagne_solo,gagne_multi,lobby_multi,selec_jeu,choix_multi,recherche_multi,menu_regle # appel global de chaque page
+    global label_r1,label_r2,label_r3,label_r4,label_r5 # appel global des labels réponses
+    global nombre_personne
+
+    # destruction de toute les pages
+    menu.destroy()
+    jeu_solo.destroy()
+    jeu_multi.destroy()
+    gagne_solo.destroy()
+    gagne_multi.destroy()
+    lobby_multi.destroy()
+    selec_jeu.destroy()
+    choix_multi.destroy()
+    recherche_multi.destroy()
+    menu_regle.destroy()
+    
+    # definition de toutes les pages (au cas ou)
+    menu = Canvas(fenetre, width=longueur, height=largeur)
+    jeu_solo = Canvas(fenetre, width=longueur, height=largeur)
+    gagne_solo = Canvas(fenetre, width=longueur, height=largeur)
+    selec_jeu = Canvas(fenetre, width=longueur, height=largeur)
+    choix_multi = Canvas(fenetre, width=longueur, height=largeur)
+    jeu_multi = Canvas(fenetre, width=longueur, height=largeur)
+    lobby_multi = Canvas(fenetre, width=longueur, height=largeur)
+    gagne_multi = Canvas(fenetre, width=longueur, height=largeur)
+    recherche_multi = Canvas(fenetre, width=longueur, height=largeur)
+    menu_regle = Canvas(fenetre,width=longueur, height=largeur)
+
+    #reset de chaque valeur entree
+    reponse_entree1.set('')
+    reponse_entree2.set('')
+    reponse_entree3.set('')
+    reponse_entree4.set('')
+    reponse_entree5.set('')
+    var_reponse.set('')
+    question2.set('')
+    question3.set('')
+    question4.set('')
+    question5.set('')
+    nb_reponse_juste.set(0) #remet le compteur de reponses justes à 0
+
+    nombre_personne=0 #remet le compteur de personne connecté en multi à 0
+
+
+def new_envent_lobby(): # PAS ENCORE IMPLEMENTE (permettra d'avoir la liste des joueurs connecté en multi sur le lobby et leur nombre de points)
     global nombre_personne
     nombre_personne=nombre_personne+1
-    liste_personne=["Léandro","Dionys","Estéban","Mathieu","Kylian"]
+    liste_personne=[]
     label_personne = Label(lobby_multi, text=liste_personne[nombre_personne-1], font=police2, background = 'grey', anchor='center')
     label_personne.place(x=50,y=50+(80*nombre_personne),width=400, height=70)
     label_score = Label(lobby_multi, text='0', font=police2, background = 'lightgrey', anchor='center')
     label_score.place(x=450,y=50+(80*nombre_personne),width=100, height=70)
 
-def update_temps():
-    global temps_0
-    global temps_1
-    temps_1 = time.time()
-    temps_timer.set(round(temps_1-temps_0))
-    fenetre.after(1000,update_temps)
 
+def callback(key): # lorsqu'une touche est appuyé, appel la focntion qui va tester si la reponse entré est juste
+    test_reponse()
+
+def echap(key): # lorsque le touche echap est appuyé, cela fait revenir au menu principal
+    retour()
     
+def retour(): # revient à la page 1, (plus tard cela fera revenir juste à la page précédante grace à une pile)
+    page1()
+
+def meme_reponse(key): # lorsque la touche control est appuyé, remet la derniere reponse juste dans la textbox et test si c'est encore juste
+    if nb_reponse_juste.get()> 0:
+        var_reponse.set(eval('reponse_entree'+str(nb_reponse_juste.get())).get())
+        test_reponse()
+
+def quitter():   #fermer proprement la fenetre geoquizz
+    fenetre.destroy()
+
+
+
+#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX Création de la fenetre tkinter XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
 longueur = '1440'
 largeur = '810'
-
-nombre_personne=0
-connecte=0
 
 fenetre = Tk()
 fenetre.geometry(longueur+'x'+largeur)
@@ -667,15 +640,21 @@ gagne_multi = Canvas(fenetre, width=longueur, height=largeur)
 recherche_multi = Canvas(fenetre, width=longueur, height=largeur)
 menu_regle = Canvas(fenetre,width=longueur, height=largeur)
 
+
+# permet d'associer la touche d'une touche du clavier à une fonction :
+
 fenetre.bind('<KeyPress>', callback)
-fenetre.bind('<Escape>', retour)
+fenetre.bind('<Escape>', echap)
 fenetre.bind('<Control_L>', meme_reponse)
 
+nombre_personne=0 # ne sert pas encore
+
+
+
+#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX Définition de toutes les variables StringVar (permet d'éviter de mettre des globals) XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 var_reponse = StringVar()
 nb_reponse_juste = IntVar(0)
-
-follow = StringVar()
 
 reponse_entree1=StringVar()
 reponse_entree2=StringVar()
@@ -704,10 +683,11 @@ is_multi = IntVar(0)
 recherche_ip=StringVar()
 recherche_pseudo=StringVar()
 
-etat_multi=StringVar()
+etat_multi=StringVar() # La variable contient les données transmises par le serveur, il peut y avoir la seed, le lancement de la partie, une personne qui se déconnecte/connecte ...
 
 seed_serveur=StringVar()
 
+#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX Lancement du jeu (ENFIN !) XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 page1()
 menu.mainloop()

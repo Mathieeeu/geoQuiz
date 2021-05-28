@@ -1,5 +1,5 @@
-def simp(mot):
-    # La fonction permet de simplifier chaque pays de la base et chaque mot tapé pour éviter les erreurs d'accents et les pays trop compliqué ...
+def simp(mot): # La fonction permet de simplifier chaque pays de la base et chaque mot tapé pour éviter les erreurs d'accents et les pays trop compliqué ...
+    # il suffit d'écrire par exemple usa pour etats unis# il suffit d'écrire
     # Une virgule est ajouté à la fin du pays pour éviter que emirats arabes unis se transforme en emirats emirats arabes unis
     mot = mot.lower()
     mot+=","
@@ -36,22 +36,19 @@ def simp(mot):
     mot = mot.replace(",","")
     return(mot)
 
-def simp_liste(liste):
-    # permet de simplifier toute la liste des pays réponses
+def simp_liste(liste): # permet de simplifier toute la liste des pays réponses
     liste2=[]
     for i in range(len(liste)):
         liste2.append(simp(liste[i]))
     return liste2
 
-def simp_liste_p2(liste):
-    # permet de simplifier une liste dans une liste
+def simp_liste_p2(liste): # permet de simplifier une liste dans une liste
     liste2=[]
     for i in range(len(liste)):
         liste2.append(simp_liste(liste[i]))
     return liste2
 
-def simp_liste_p3(liste):
-    #permet de simplifier une liste, dans une liste, dans une liste
+def simp_liste_p3(liste): #permet de simplifier une liste, dans une liste, dans une liste
     liste2=[]
     for i in range(len(liste)):
         liste2.append(simp_liste_p2(liste[i]))
