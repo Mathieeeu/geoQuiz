@@ -48,7 +48,6 @@ def page1(): # la page menu où l'on peut cliquer sur jouer, regle ou quitter
     bouton_quitter.configure(image=image_bouton_quitter)
     bouton_quitter.image = image_bouton_quitter
 
-
 def page2(): #la page de jeu en solo
     global jeu_solo
     global label_r1,label_r2,label_r3,label_r4,label_r5 #les labels des réponses
@@ -146,7 +145,43 @@ def page3(): # la page qui s'ouvre lorsque une partie est gagné en solo
     bouton_quitter = StringVar()
     bouton_quitter=Button(gagne_solo, text='Quitter', command=quitter, font=police1 ,bg = 'gray89')
     bouton_quitter.place(x=1200,y=550,width=200, height=50)
+    
+    
+    value_label_nom = StringVar()
+    value_label_nom.set(str("nom"))
+    champ_label_nom=Label(gagne_solo,textvariable=value_label_nom,bg="#BBBBBB")
+    champ_label_nom.place(x=626,y=194,width=392, height=57)
 
+    value_label_nom = StringVar()
+    value_label_nom.set(str("capitale"))
+    champ_label_nom=Label(gagne_solo,textvariable=value_label_nom,bg="#BBBBBB")
+    champ_label_nom.place(x=626,y=254,width=392, height=57)
+
+    value_label_nom = StringVar()
+    value_label_nom.set(str("continent"))
+    champ_label_nom=Label(gagne_solo,textvariable=value_label_nom,bg="#BBBBBB")
+    champ_label_nom.place(x=626,y=315,width=392, height=57)
+
+
+    value_label_nom = StringVar()
+    value_label_nom.set(str("population"))
+    champ_label_nom=Label(gagne_solo,textvariable=value_label_nom,bg="#BBBBBB")
+    champ_label_nom.place(x=626,y=385,width=392, height=57)
+
+    value_label_nom = StringVar()
+    value_label_nom.set(str("superficie"))
+    champ_label_nom=Label(gagne_solo,textvariable=value_label_nom,bg="#BBBBBB")
+    champ_label_nom.place(x=626,y=445,width=392, height=57)
+
+    value_label_nom = StringVar()
+    value_label_nom.set(str("perimetre"))
+    champ_label_nom=Label(gagne_solo,textvariable=value_label_nom,bg="#BBBBBB")
+    champ_label_nom.place(x=626,y=506,width=392, height=57)
+
+    value_label_nom = StringVar()
+    value_label_nom.set(str("langue"))
+    champ_label_nom=Label(gagne_solo,textvariable=value_label_nom,bg="#BBBBBB")
+    champ_label_nom.place(x=626,y=566,width=392, height=57)
     
 def page4(): # la page de séléction entre le jeu solo et le jeu multi
     global selec_jeu
@@ -269,7 +304,7 @@ def page7(): # page qui s'affiche lorsqu'on est connecté au serveur en attendan
     label_background = Label(lobby_multi, image="")
     file_background="images/lobby_multi_client.png"
     background = PhotoImage(file=file_background)
-    label_background.configure(image=background)
+     label_background.configure(image=background)
     label_background.image = background
     label_background.place(x=0,y=0,width=longueur, height=largeur)
 
@@ -365,6 +400,7 @@ def page9(): # page qui s'affiche lorsqu'une personne gagne en multijoueur
     bouton_retour=Button(gagne_multi, text='Retour au lobby', command=page7, font=police1)
     bouton_retour.place(x=740,y=730,width=350, height=50)
 
+    print(creation_questions.infos())
 
 def page10(): #page des regles
     global menu_regle

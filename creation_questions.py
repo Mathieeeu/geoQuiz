@@ -44,7 +44,8 @@ def deconnexion(sqliteConnection): # déconnexion à la base de données pays
             sqliteConnection.close()
             print("The SQLite connection is closed")
 
-
+def infos():
+    return str(pays.affichageinfos())
 
 def random(): # genere un nombre aléatoire et l'associe à une pays
     chiffre=randint(1,199)
