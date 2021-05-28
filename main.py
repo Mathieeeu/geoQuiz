@@ -2,7 +2,7 @@ from tkinter import *
 import tkinter.font as tkFont
 from simplificateur import simp, simp_liste, simp_liste_p2, simp_liste_p3
 import creation_questions
-from nommer_questions import nommer_questions
+from nommer_questions import nommer_questions,espace_zero
 from multi_client import connexion_client_multi,boucle_client_multi, deconnexion_multi
 from random import *
 import time
@@ -169,6 +169,27 @@ def page4(): # la page qui s'ouvre lorsque une partie est gagné en solo
     bouton_quitter.place(x=1200,y=550,width=200, height=50)
 
 
+    champ_label_nom=Label(gagne_solo,textvariable=value_label_nom,bg="#BBBBBB", font=police1)
+    champ_label_nom.place(x=626,y=194,width=392, height=57)
+
+    champ_label_capitale=Label(gagne_solo,textvariable=value_label_capitale,bg="#BBBBBB", font=police1)
+    champ_label_capitale.place(x=626,y=254,width=392, height=57)
+
+    champ_label_continent=Label(gagne_solo,textvariable=value_label_continent,bg="#BBBBBB", font=police1)
+    champ_label_continent.place(x=626,y=315,width=392, height=57)
+
+    champ_label_population=Label(gagne_solo,textvariable=value_label_population,bg="#BBBBBB", font=police1)
+    champ_label_population.place(x=626,y=385,width=392, height=57)
+
+    champ_label_superficie=Label(gagne_solo,textvariable=value_label_superficie,bg="#BBBBBB", font=police1)
+    champ_label_superficie.place(x=626,y=445,width=392, height=57)
+
+    champ_label_perimetre=Label(gagne_solo,textvariable=value_label_perimetre,bg="#BBBBBB", font=police1)
+    champ_label_perimetre.place(x=626,y=506,width=392, height=57)
+
+    champ_label_langue=Label(gagne_solo,textvariable=value_label_langue,bg="#BBBBBB", font=police1)
+    champ_label_langue.place(x=626,y=566,width=392, height=57)
+    
 
 def page5(): # page qui s'affiche lorsqu'une personne abandonne en solo
     global perd_solo
@@ -206,22 +227,22 @@ def page5(): # page qui s'affiche lorsqu'une personne abandonne en solo
     champ_label_nom=Label(perd_solo,textvariable=value_label_nom,bg="#BBBBBB", font=police1)
     champ_label_nom.place(x=626,y=194,width=392, height=57)
 
-    champ_label_capitale=Label(perd_solo,textvariable=value_label_nom,bg="#BBBBBB", font=police1)
+    champ_label_capitale=Label(perd_solo,textvariable=value_label_capitale,bg="#BBBBBB", font=police1)
     champ_label_capitale.place(x=626,y=254,width=392, height=57)
 
-    champ_label_continent=Label(perd_solo,textvariable=value_label_nom,bg="#BBBBBB", font=police1)
+    champ_label_continent=Label(perd_solo,textvariable=value_label_continent,bg="#BBBBBB", font=police1)
     champ_label_continent.place(x=626,y=315,width=392, height=57)
 
-    champ_label_population=Label(perd_solo,textvariable=value_label_nom,bg="#BBBBBB", font=police1)
+    champ_label_population=Label(perd_solo,textvariable=value_label_population,bg="#BBBBBB", font=police1)
     champ_label_population.place(x=626,y=385,width=392, height=57)
 
-    champ_label_superficie=Label(perd_solo,textvariable=value_label_nom,bg="#BBBBBB", font=police1)
+    champ_label_superficie=Label(perd_solo,textvariable=value_label_superficie,bg="#BBBBBB", font=police1)
     champ_label_superficie.place(x=626,y=445,width=392, height=57)
 
-    champ_label_perimetre=Label(perd_solo,textvariable=value_label_nom,bg="#BBBBBB", font=police1)
+    champ_label_perimetre=Label(perd_solo,textvariable=value_label_perimetre,bg="#BBBBBB", font=police1)
     champ_label_perimetre.place(x=626,y=506,width=392, height=57)
 
-    champ_label_langue=Label(perd_solo,textvariable=value_label_nom,bg="#BBBBBB", font=police1)
+    champ_label_langue=Label(perd_solo,textvariable=value_label_langue,bg="#BBBBBB", font=police1)
     champ_label_langue.place(x=626,y=566,width=392, height=57)
 
 
@@ -451,7 +472,26 @@ def page11(): # page qui s'affiche lorsqu'une personne gagne en multijoueur
     bouton_retour=Button(gagne_multi, text='Retour au lobby', command=page9, font=police1)
     bouton_retour.place(x=740,y=730,width=350, height=50)
 
+    champ_label_nom=Label(gagne_multi,textvariable=value_label_nom,bg="#BBBBBB", font=police1)
+    champ_label_nom.place(x=835,y=204,width=392, height=57)
 
+    champ_label_capitale=Label(gagne_multi,textvariable=value_label_capitale,bg="#BBBBBB", font=police1)
+    champ_label_capitale.place(x=835,y=264,width=392, height=57)
+
+    champ_label_continent=Label(gagne_multi,textvariable=value_label_continent,bg="#BBBBBB", font=police1)
+    champ_label_continent.place(x=835,y=325,width=392, height=57)
+
+    champ_label_population=Label(gagne_multi,textvariable=value_label_population,bg="#BBBBBB", font=police1)
+    champ_label_population.place(x=835,y=392,width=392, height=57)
+
+    champ_label_superficie=Label(gagne_multi,textvariable=value_label_superficie,bg="#BBBBBB", font=police1)
+    champ_label_superficie.place(x=835,y=453,width=392, height=57)
+
+    champ_label_perimetre=Label(gagne_multi,textvariable=value_label_perimetre,bg="#BBBBBB", font=police1)
+    champ_label_perimetre.place(x=835,y=514,width=392, height=57)
+
+    champ_label_langue=Label(gagne_multi,textvariable=value_label_langue,bg="#BBBBBB", font=police1)
+    champ_label_langue.place(x=835,y=575,width=392, height=57)
 
 
 #XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX Initialisation des fonctions qui servent pour la création du jeu XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -459,27 +499,27 @@ def page11(): # page qui s'affiche lorsqu'une personne gagne en multijoueur
 
 def crea_question():
 
-    global liste_attributs, liste_valeurs, liste_reponses, liste_questions # récupère les listes des questions et réponses à générer
+    global liste_attributs, liste_valeurs, liste_reponses, liste_questions, liste_infos # récupère les listes des questions et réponses à générer
 
     if is_multi.get()==0: # si la personne joue en solo, la seed est générer maintenant
-        liste_attributs, liste_valeurs, liste_reponses = creation_questions.lancer_tirage(randint(1,1000000)) #envoi de la seed au programme creations_questions qui va ensuite lui renvoyer la liste des questions (themes + valeurs) et la liste des réponses 
+        liste_attributs, liste_valeurs, liste_reponses,liste_infos = creation_questions.lancer_tirage(randint(1,1000000)) #envoi de la seed au programme creations_questions qui va ensuite lui renvoyer la liste des questions (themes + valeurs) et la liste des réponses 
 
     else : # si la personne joue en multi, récupere la seed envoyé par le serveur
         #print('la seed est :'+seed_serveur.get())
-        liste_attributs, liste_valeurs, liste_reponses = creation_questions.lancer_tirage(seed_serveur.get())
+        liste_attributs, liste_valeurs, liste_reponses, liste_infos = creation_questions.lancer_tirage(seed_serveur.get())
 
     liste_questions=nommer_questions(liste_attributs,liste_valeurs) #permet de nommer les questions (ex: La capitale est Paris) avec la liste des attributs (ex: capitale) et la liste des valeurs (ex : Paris)
 
     question1.set(liste_questions[0]) # defini le premiere question
 
-    value_label_nom.set(liste_reponses[4])
-    value_label_capitale.set(liste_reponses[4])
-    value_label_continent.set(liste_reponses[4])
-    value_label_population.set(liste_reponses[4])
-    value_label_superficie.set(liste_reponses[4])
-    value_label_perimetre.set(liste_reponses[4])
-    value_label_langue.set(liste_reponses[4])
-
+    # défini les infos du pays gagnant
+    value_label_nom.set(liste_infos[0])
+    value_label_capitale.set(liste_infos[1])
+    value_label_continent.set(liste_infos[2])
+    value_label_population.set(str(espace_zero(liste_infos[3]))+' hab')
+    value_label_superficie.set(str(espace_zero(liste_infos[4]))+' m²')
+    value_label_perimetre.set(str(espace_zero(liste_infos[5]))+' m')
+    value_label_langue.set(liste_infos[6])
 
 
 

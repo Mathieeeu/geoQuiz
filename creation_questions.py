@@ -60,17 +60,27 @@ def random(): # genere un nombre aléatoire et l'associe à une pays
     record= record[0][0]
     return record
 
-def AffichezDB(nom): # donne tous les attributs du pays selctionné
+def AffichezDB(nom_pays): # donne tous les attributs du pays selectionné
     sqliteConnection = connexion()
     cursor = sqliteConnection.cursor()
-    #ecriture de la requéte, on récupére le contenu de la listeDeroulante avec la fonction .get()
-    sqlite_select_Query = ("select * from pays where nom=\""+str(nom)+"\"")
+    sqlite_select_Query = ("select * from pays where nom=\""+str(nom_pays)+"\"")
     #execution de la requéte
     cursor.execute(sqlite_select_Query)
     #on place tout les enregistrements dans une variable record
     record = cursor.fetchall()
     pays1 = pays(record[0][1],record[0][2],record[0][3],record[0][4],record[0][5],record[0][6],record[0][7],record[0][8],record[0][9],record[0][10],record[0][11],record[0][12],record[0][13],record[0][14],record[0][15],record[0][16],)
     return pays1
+
+
+def donne_infos_pays(nom_pays): # permet de renvoyer toutes les informations du pays
+    sqliteConnection = connexion()
+    cursor = sqliteConnection.cursor()
+    sqlite_select_Query = ("select * from pays where nom=\""+str(nom_pays)+"\"")
+    #execution de la requéte
+    cursor.execute(sqlite_select_Query)
+    #on place tout les enregistrements dans une variable record
+    record = cursor.fetchall()
+    return record
 
 
       
@@ -353,7 +363,6 @@ def lancer_tirage(la_seed): # focntion qui teste si le pays et les attributs for
     
     pays1=AffichezDB(nompays)
 
-
     for etape_en_cours in range(etape):
         if tirage==True:
             attribut = listeQ[etape_en_cours][randint(0,len(listeQ[etape_en_cours])-1)]
@@ -441,9 +450,13 @@ def lancer_tirage(la_seed): # focntion qui teste si le pays et les attributs for
             if ((len(issues) <= 30 and etape_en_cours == 0) or (len(issues) <= 12 and etape_en_cours == 1) or (len(issues) <= 7 and etape_en_cours == 2)  or (len(issues) <= 3  and etape_en_cours ==3) or (len(issues)!=1  and etape_en_cours ==4) or valeur== None):                            #recherche manouelle
                 tirage=False
 
+            infos_pays=donne_infos_pays(nompays)
+            # defini une liste d'info qui va etre affiché lorsque le joueur gagne une partie
+            liste_infos=[infos_pays[0][1],infos_pays[0][2],infos_pays[0][8],infos_pays[0][3],infos_pays[0][5],int(int(infos_pays[0][14])+int(infos_pays[0][15])),infos_pays[0][7]]
+
             # si tout est bon le pays est gardé et les listes sont transmises
             if etape_en_cours == 4 and len(issues) == 1 and valeur != None:
-                return liste_attributs, liste_valeurs, liste_reponses
+                return liste_attributs, liste_valeurs, liste_reponses, liste_infos
 
 
     if tirage==False: # le tirage est relancé
