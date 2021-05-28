@@ -304,7 +304,7 @@ def page7(): # page qui s'affiche lorsqu'on est connecté au serveur en attendan
     label_background = Label(lobby_multi, image="")
     file_background="images/lobby_multi_client.png"
     background = PhotoImage(file=file_background)
-     label_background.configure(image=background)
+    label_background.configure(image=background)
     label_background.image = background
     label_background.place(x=0,y=0,width=longueur, height=largeur)
 
