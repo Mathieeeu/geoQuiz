@@ -1,0 +1,9 @@
+Pour lancer le programme, il suffit de lancer main
+- explication client serveur
+- explication génération liste mot
+- explication database
+- explication LA FEUILLE  ?
+- explication de chaque programme
+
+
+lancer_partie-->creation question--> les questions --> message a tous renvoi au client

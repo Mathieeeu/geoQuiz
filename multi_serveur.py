@@ -3,8 +3,12 @@ import tkinter.font as tkFont
 import socket
 import os
 from _thread import *
+import creation_questions
+from random import *
 
-class joueur:
+#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX Initialisation des fonctions serveurs XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+class joueur: # classe qui permet de définir toutes les variables des joueurs
     def __init__(self,pseudo,ip,client):
         self.pseudo=pseudo
         self.ip=ip
@@ -13,31 +17,33 @@ class joueur:
 
 ServerSideSocket = socket.socket()
 host = ''
-port = 5050
+port = 5051
 ThreadCount = 0
 try:
     ServerSideSocket.bind((host, port))
 except socket.error as e:
     print(str(e))
 
-print('Recherche de clients ...')
+print('Recherche de clients ... \n')
 ServerSideSocket.listen(5)
 
-def detect_parent(pseudo):
+def detect_parent(pseudo): # permet de détecter si plusieurs joueurs ont le meme pseudo (car il y a ecrit joueur(2))
     if pseudo[-3]=="(" and pseudo[-1]==")":
         return pseudo[0:-3]
     else:
         return pseudo
 
 liste_joueurs=[]
-def message_a_tous(message):
-    print("le serveur envoie "+message)
+
+
+def message_a_tous(message): # la focntion permet d'envoyer un message à tout les houers (ex : lancement partie)
+    #print("le serveur envoie "+message)
     if message=="deco_test":
        for joueurs in liste_joueurs:
             try:
                 joueurs.client.sendall(str.encode(message))
             except:
-                #ICI : POSSIBILITE DE DELETE UN JOUEUR EN CAS DE DECONNEXION
+                #ICI : POSSIBILITE DE DELETE UN JOUEUR EN CAS DE DECONNEXION (MARCHE PAS ENCORE)
                 """
                 if input("le joueur "+str(joueurs.pseudo)+" s'est déconnecté.\n\
 supprimer le joueur ? ")=="oui":
@@ -51,21 +57,19 @@ supprimer le joueur ? ")=="oui":
 
 
 
-def multi_threaded_client(connection):
-    print(connection)
+def multi_threaded_client(connection): # la fonction permet de gerer la connexion avec plusieurs client en meme temps
     connection.send(str.encode('Le serveur fonctionne !'))
     while True:
         global client_recu
         try:
             data = connection.recv(2048)
             data=(data.decode('utf-8')).split(",")
+            
             if data[2]=="connexion":
-                reco=False
                 for joueurs in liste_joueurs:
                     if detect_parent(joueurs.pseudo)==detect_parent(data[0]):
                         if joueurs.ip==data[1]:
                             connection.sendall(str.encode(str(joueurs.score)))
-                            reco=True
                         else:
                             if joueurs.pseudo[-3]=="(" and joueurs.pseudo[-1]==")":
                                 print(data[0]+" avant")
@@ -73,51 +77,58 @@ def multi_threaded_client(connection):
                                 print(data[0]+" après")
                             else:
                                 data[0]+="(1)"
+                                
+                joueur1=joueur(data[0],data[1],client_recu)
+                liste_joueurs.append(joueur1)
+                connection.sendall(str.encode(str("pseudo_update,"+data[0])))
+                print(str(data[0])+" s'est connecté(e).\n")
+                #message_a_tous("\n"+str(data[0])+" s'est connecté(e).\n")
 
-            #if data[2]=="deconnexion":
-                #mettre le code ici pour prendre en compte qu'une personne s'est deco
-                
-                if reco==False:
-                    joueur1=joueur(data[0],data[1],client_recu)
-                    liste_joueurs.append(joueur1)
-                    connection.sendall(str.encode(str("pseudo_update,"+data[0])))
-                    print("\n"+str(data[0])+" s'est connecté(e).\n")
-                    #message_a_tous("\n"+str(data[0])+" s'est connecté(e).\n")
-                else:
-                    print("\n"+str(data[0])+" s'est reconnecté(e).\n")
-                    message_a_tous("\n"+str(data[0])+" s'est reconnecté(e).\n")
-                print("joueurs connectés :")
                 for joueurs in liste_joueurs:
-                    print(str(joueurs.pseudo)+" - "+str(joueurs.score)+" pts - "+str(joueurs.ip))
-            elif data[2]=="quitter":
+                    print(str(joueurs.pseudo)+" - "+str(joueurs.score)+" pts - "+str(joueurs.ip+"\n"))
+
+            elif data[2]=="deconnexion":
+                #PAS ENCORE MIS AU POINT
                 for joueurs in liste_joueurs:
                     if joueurs.pseudo==data[0]:
                         liste_joueurs.pop(liste_joueurs.index(joueurs))
-                        print(data[0]+" a quitté la partie.")
- 
-            else:
-                print("le joueur "+str(data[0])+" a "+str(data[2])+" points")
-                for joueurs in liste_joueurs:
-                    if joueurs.pseudo==data[0]:
-                        joueurs.score=data[2]
+                        print(data[0]+" s'est déconnecté(e).\n")
+                        
+                    
         except:
             None
     connection.close()
 
-def ajout_clients():
+def ajout_clients(): # permet d'ajouter un nouveau client en ajoutant un nouveau thread
     global client_recu, ServerSideSocket, multi_threaded_client, ThreadCount
-    Client, address = ServerSideSocket.accept()
-    client_recu=Client
-    start_new_thread(multi_threaded_client, (Client, ))
-    ThreadCount += 1
+    try :
+        ServerSideSocket.settimeout(0.1)
+        Client, address = ServerSideSocket.accept()
+        client_recu=Client
+        start_new_thread(multi_threaded_client, (Client, ))
+        ThreadCount += 1
+    except  : None
 
 
-def lancer_partie():
-    message_a_tous("lancement_partie")
+def lancer_partie(): # lancement de la partie quand le bouton est cliqué
+    print("Lancement de la partie\n")
+    message_a_tous(str("lancement_partie "+str(randint(1,1000000)))) #une seed est envoyé pour que tout les clients ait la meme seed et donc les memes questions
 
+
+def en_attente(): # si aucune action est demandé alors le serveur envoi toute les secondes en attentes aux clients
+    message_a_tous("en_attente")
+    ajout_clients()
+    fenetre.after(1000,en_attente)
+
+
+def wip(): # Work In Progress
+    print("Pas encore ajouté")
+
+    
+#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX Initialisation de l'interface graphique XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
   
 
-def page_menu():
+def page_menu(): # la seule page pour l'instant où le serveur peut lancer la partie (plus tard, le serveur poura choisir le mode de jeu, la duree ...
     global menu
     menu.place(x=0, y=0)
 
@@ -131,14 +142,50 @@ def page_menu():
     label_ip = Label(menu, textvariable=local_ip, font=police2, background = 'lightgrey', anchor='center')
     label_ip.place(x=37,y=68,width=232, height=35)
 
-    fenetre.after(1000,en_attente)
+    textBoxTemps = Entry(menu,width=20,bg = 'gray89')
+    textBoxTemps.place(x=455,y=352,width=50, height=30)
 
-    # Toutes les secondes la page menu est rafraichi ce qui envoi en attente au client
-    #Si le client ne recoit rien tt les secondes il freeze
+    bouton_mode_geoquiz = StringVar()
+    bouton_mode_geoquiz=Button(menu,command=wip, font=police1,relief=FLAT)
+    bouton_mode_geoquiz.place(x=768,y=212,width=198, height=148)
+    file_bouton_mode_geoquiz="images/boutons/bouton_mode_geoquiz.png"
+    image_bouton_mode_geoquiz = PhotoImage(file=file_bouton_mode_geoquiz)
+    bouton_mode_geoquiz.configure(image=image_bouton_mode_geoquiz)
+    bouton_mode_geoquiz.image = image_bouton_mode_geoquiz
 
-def en_attente():
-    message_a_tous("en_attente")
-    page_menu()
+    bouton_mode_aveugle = StringVar()
+    bouton_mode_aveugle=Button(menu,command=wip, font=police1,relief=FLAT)
+    bouton_mode_aveugle.place(x=974,y=212,width=198, height=148)
+    file_bouton_mode_aveugle="images/boutons/bouton_mode_aveugle.png"
+    image_bouton_mode_aveugle = PhotoImage(file=file_bouton_mode_aveugle)
+    bouton_mode_aveugle.configure(image=image_bouton_mode_aveugle)
+    bouton_mode_aveugle.image = image_bouton_mode_aveugle
+
+    bouton_mode_chrono = StringVar()
+    bouton_mode_chrono=Button(menu,command=wip, font=police1,relief=FLAT)
+    bouton_mode_chrono.place(x=1180,y=212,width=198, height=148)
+    file_bouton_mode_chrono="images/boutons/bouton_mode_chrono.png"
+    image_bouton_mode_chrono = PhotoImage(file=file_bouton_mode_chrono)
+    bouton_mode_chrono.configure(image=image_bouton_mode_chrono)
+    bouton_mode_chrono.image = image_bouton_mode_chrono
+
+    bouton_mode_br = StringVar()
+    bouton_mode_br=Button(menu,command=wip, font=police1,relief=FLAT)
+    bouton_mode_br.place(x=768,y=455,width=198, height=148)
+    file_bouton_mode_br="images/boutons/bouton_mode_br.png"
+    image_bouton_mode_br = PhotoImage(file=file_bouton_mode_br)
+    bouton_mode_br.configure(image=image_bouton_mode_br)
+    bouton_mode_br.image = image_bouton_mode_br
+
+    bouton_mode_blitz = StringVar()
+    bouton_mode_blitz=Button(menu,command=wip, font=police1,relief=FLAT)
+    bouton_mode_blitz.place(x=974,y=455,width=198, height=148)
+    file_bouton_mode_blitz="images/boutons/bouton_mode_blitz.png"
+    image_bouton_mode_blitz = PhotoImage(file=file_bouton_mode_blitz)
+    bouton_mode_blitz.configure(image=image_bouton_mode_blitz)
+    bouton_mode_blitz.image = image_bouton_mode_blitz
+
+
 
 longueur = '1440'
 largeur = '810'
@@ -157,22 +204,15 @@ label_background = Label(menu, image="")
 file_background="images/lobby_multi_serveur.png"
 background = PhotoImage(file=file_background)
 label_background.configure(image=background)
-label_background.image = background
 label_background.place(x=0,y=0,width=longueur, height=largeur)
-    
-
 
 local_ip=StringVar()
 
-#os.startfile("multi client.py")
-
 page_menu()
-ajout_clients()
+en_attente()
 
 
 menu.mainloop()
 
 
 ServerSideSocket.close()
-
-#lancer_partie-->creation question--> les questions --> message a tous renvoi au client

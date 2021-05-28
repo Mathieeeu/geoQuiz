@@ -1,12 +1,12 @@
 import socket
 
-def connexion_client_multi(pseudo,ip):
+def connexion_client_multi(pseudo,ip): # connexion du client au serveur en LAN
     global ClientMultiSocket,host,port,message
 
     ClientMultiSocket = socket.socket()
     
     host = ip
-    port = 5050
+    port = 5051
     serveur_trouver=0
 
     print('En attente du serveur ...')
@@ -25,7 +25,7 @@ def connexion_client_multi(pseudo,ip):
         res = ClientMultiSocket.recv(1024)
         if res.decode('utf-8').startswith('pseudo_update,'):
             pseudo=res.decode('utf-8').replace('pseudo_update,','')
-            print("votre pseudo est maintenant {}".format(pseudo))
+            print("Vous êtes connécté au serveur avec le pseudo {}".format(pseudo))
 
         return "en_attente"
 
@@ -33,16 +33,16 @@ def connexion_client_multi(pseudo,ip):
         print("Il n'y a pas de serveur accessible")
         return "aucun_serveur_accessible"
 
-def boucle_client_multi(pseudo,ip):
-    global ClientMultiSocket, hostname, ip_client,ip_client,host,port,message 
+def boucle_client_multi(pseudo,ip): # fonction appelé toute les secondes pour tester si le serveur à envoyé un message
+    global ClientMultiSocket, hostname,host,port,message 
     res = ClientMultiSocket.recv(1024)
     message_recu=res.decode('utf-8')
     return message_recu
         
 
-def deconnexion_multi(pseudo,ip):
-    global ClientMultiSocket
-    message = (str(pseudo)+","+str(ip_client)+",deconnexion")
+def deconnexion_multi(pseudo,ip): # fonction qui permet de se deconnecter proprement du serveur
+    global ClientMultiSocket, hostname,host,port,message
+    message = (str(pseudo)+","+str(ip)+",deconnexion")
     ClientMultiSocket.send(str.encode(message))
     ClientMultiSocket.close()
 
