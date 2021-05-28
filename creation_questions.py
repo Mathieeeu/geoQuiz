@@ -51,7 +51,6 @@ def random(): # genere un nombre aléatoire et l'associe à une pays
     chiffre=randint(1,199)
     sqliteConnection = connexion()
     cursor = sqliteConnection.cursor()
-    #ecriture de la requéte, on récupére le contenu de la listeDeroulante avec la fonction .get()
     sqlite_select_Query = ("select nom from pays where idPays="+str(chiffre))
     #execution de la requéte
     cursor.execute(sqlite_select_Query)
@@ -327,7 +326,7 @@ def calcul(valeur,attribut): # fonction qui va ajouter pour chaque questions le 
 
 
 
-def lancer_tirage(la_seed): # focntion qui teste si le pays et les attributs forme 5 questions qui marche 
+def lancer_tirage(la_seed): # fonction qui teste si le pays et les attributs forme 5 questions qui marche 
     global commandeSQL ,tirage, nompays, listeQ, pays1, attribut, valeur, issues, listealpha, questions
 
     seed(la_seed)
