@@ -12,6 +12,7 @@ import ast
 
 #XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX Initialisation des pages XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
+
 def page1(): # la page menu où l'on peut cliquer sur jouer, regle ou quitter
     global menu
     reset() #permet de supprimer tout ce qu'il y avait dans l'ancienne page pour recrer une nouvelle page
@@ -25,7 +26,7 @@ def page1(): # la page menu où l'on peut cliquer sur jouer, regle ou quitter
     label_background.place(x=0,y=0,width=longueur, height=largeur)
     
     bouton_jouer = StringVar()
-    bouton_jouer=Button(menu,command=page4, font=police1,relief=FLAT)
+    bouton_jouer=Button(menu,command=page6, font=police1,relief=FLAT)
     bouton_jouer.place(x=505,y=289,width=429, height=97)
     file_bouton_jouer="images/boutons/bouton_jouer.png"
     image_bouton_jouer = PhotoImage(file=file_bouton_jouer)
@@ -33,7 +34,7 @@ def page1(): # la page menu où l'on peut cliquer sur jouer, regle ou quitter
     bouton_jouer.image = image_bouton_jouer
 
     bouton_regles = StringVar()
-    bouton_regles=Button(menu,command=page10, font=police1,relief=FLAT)
+    bouton_regles=Button(menu,command=page2, font=police1,relief=FLAT)
     bouton_regles.place(x=506,y=422,width=429, height=97)
     file_bouton_regles="images/boutons/bouton_regles.png"
     image_bouton_regles = PhotoImage(file=file_bouton_regles)
@@ -48,7 +49,27 @@ def page1(): # la page menu où l'on peut cliquer sur jouer, regle ou quitter
     bouton_quitter.configure(image=image_bouton_quitter)
     bouton_quitter.image = image_bouton_quitter
 
-def page2(): #la page de jeu en solo
+
+
+def page2(): #page des regles
+    global menu_regle
+    reset()
+    menu_regle.place(x=0, y=0)
+    
+    label_background = Label(menu_regle, image="")
+    file_background="images/regles.png"
+    background = PhotoImage(file=file_background)
+    label_background.configure(image=background)
+    label_background.image = background
+    label_background.place(x=0,y=0,width=longueur, height=largeur)
+    
+    bouton_retour = StringVar()
+    bouton_retour=Button(menu_regle, text='Retour', command=retour, font=police1 ,bg = 'gray89')
+    bouton_retour.place(x=1215,y=740,width=200, height=50)
+
+
+
+def page3(): #la page de jeu en solo
     global jeu_solo
     global label_r1,label_r2,label_r3,label_r4,label_r5 #les labels des réponses
     global label_q1,label_q2,label_q3,label_q4,label_q5 #les labels des questions
@@ -71,7 +92,7 @@ def page2(): #la page de jeu en solo
     temps_timer.set(0)
 
     bouton_abandon = StringVar()
-    bouton_abandon=Button(jeu_solo, text='Abandonner', command=abandon, font=police1 ,bg = 'gray89')
+    bouton_abandon=Button(jeu_solo, text='Abandonner', command=page5, font=police1 ,bg = 'gray89')
     bouton_abandon.place(x=1204,y=740,width=200, height=50)
 
     textBoxReponse = Entry(jeu_solo, textvariable=var_reponse, width=40, font=police1, bg = 'gray89')
@@ -114,7 +135,8 @@ def page2(): #la page de jeu en solo
     update_temps() #lance le timer qui va se mettre a jour ensuite toutes les secondes
 
 
-def page3(): # la page qui s'ouvre lorsque une partie est gagné en solo
+
+def page4(): # la page qui s'ouvre lorsque une partie est gagné en solo
     global gagne_solo
     global temps_0,temps_1
 
@@ -135,7 +157,7 @@ def page3(): # la page qui s'ouvre lorsque une partie est gagné en solo
     label_q1.place(x=730,y=117,width=100, height=40)
 
     bouton_rejouer = StringVar()
-    bouton_rejouer=Button(gagne_solo, text='Rejouer', command=page2, font=police1 ,bg = 'gray89')
+    bouton_rejouer=Button(gagne_solo, text='Rejouer', command=page3, font=police1 ,bg = 'gray89')
     bouton_rejouer.place(x=1200,y=400,width=200, height=50)
 
     bouton_menu = StringVar()
@@ -145,45 +167,66 @@ def page3(): # la page qui s'ouvre lorsque une partie est gagné en solo
     bouton_quitter = StringVar()
     bouton_quitter=Button(gagne_solo, text='Quitter', command=quitter, font=police1 ,bg = 'gray89')
     bouton_quitter.place(x=1200,y=550,width=200, height=50)
+
+
+
+def page5(): # page qui s'affiche lorsqu'une personne abandonne en solo
+    global perd_solo
+    global temps_0, temps_1
+
+    temps_1 = time.time()
+    temps=temps_1-temps_0
+
+    reset()
+    perd_solo.place(x=0, y=0)
+
+    label_background = Label(perd_solo, image="")
+    file_background="images/fin_solo_abandon.png"
+    background = PhotoImage(file=file_background)
+    label_background.configure(image=background)
+    label_background.image = background
+    label_background.place(x=0,y=0,width=longueur, height=largeur)
+
+    label_temps = Label(perd_solo, text=str(round(temps))+'s', font=police1 , background = '#BBBBBB', anchor='w')
+    label_temps.place(x=730,y=117,width=100, height=40)
+
+    bouton_rejouer = StringVar()
+    bouton_rejouer=Button(perd_solo, text='Rejouer', command=page3, font=police1 ,bg = 'gray89')
+    bouton_rejouer.place(x=1200,y=400,width=200, height=50)
+
+    bouton_menu = StringVar()
+    bouton_menu=Button(perd_solo, text='Menu', command=retour, font=police1 ,bg = 'gray89')
+    bouton_menu.place(x=1200,y=475,width=200, height=50)
+
+    bouton_quitter = StringVar()
+    bouton_quitter=Button(perd_solo, text='Quitter', command=quitter, font=police1 ,bg = 'gray89')
+    bouton_quitter.place(x=1200,y=550,width=200, height=50)
     
     
-    value_label_nom = StringVar()
-    value_label_nom.set(str("nom"))
-    champ_label_nom=Label(gagne_solo,textvariable=value_label_nom,bg="#BBBBBB")
+    champ_label_nom=Label(perd_solo,textvariable=value_label_nom,bg="#BBBBBB", font=police1)
     champ_label_nom.place(x=626,y=194,width=392, height=57)
 
-    value_label_nom = StringVar()
-    value_label_nom.set(str("capitale"))
-    champ_label_nom=Label(gagne_solo,textvariable=value_label_nom,bg="#BBBBBB")
-    champ_label_nom.place(x=626,y=254,width=392, height=57)
+    champ_label_capitale=Label(perd_solo,textvariable=value_label_nom,bg="#BBBBBB", font=police1)
+    champ_label_capitale.place(x=626,y=254,width=392, height=57)
 
-    value_label_nom = StringVar()
-    value_label_nom.set(str("continent"))
-    champ_label_nom=Label(gagne_solo,textvariable=value_label_nom,bg="#BBBBBB")
-    champ_label_nom.place(x=626,y=315,width=392, height=57)
+    champ_label_continent=Label(perd_solo,textvariable=value_label_nom,bg="#BBBBBB", font=police1)
+    champ_label_continent.place(x=626,y=315,width=392, height=57)
+
+    champ_label_population=Label(perd_solo,textvariable=value_label_nom,bg="#BBBBBB", font=police1)
+    champ_label_population.place(x=626,y=385,width=392, height=57)
+
+    champ_label_superficie=Label(perd_solo,textvariable=value_label_nom,bg="#BBBBBB", font=police1)
+    champ_label_superficie.place(x=626,y=445,width=392, height=57)
+
+    champ_label_perimetre=Label(perd_solo,textvariable=value_label_nom,bg="#BBBBBB", font=police1)
+    champ_label_perimetre.place(x=626,y=506,width=392, height=57)
+
+    champ_label_langue=Label(perd_solo,textvariable=value_label_nom,bg="#BBBBBB", font=police1)
+    champ_label_langue.place(x=626,y=566,width=392, height=57)
 
 
-    value_label_nom = StringVar()
-    value_label_nom.set(str("population"))
-    champ_label_nom=Label(gagne_solo,textvariable=value_label_nom,bg="#BBBBBB")
-    champ_label_nom.place(x=626,y=385,width=392, height=57)
-
-    value_label_nom = StringVar()
-    value_label_nom.set(str("superficie"))
-    champ_label_nom=Label(gagne_solo,textvariable=value_label_nom,bg="#BBBBBB")
-    champ_label_nom.place(x=626,y=445,width=392, height=57)
-
-    value_label_nom = StringVar()
-    value_label_nom.set(str("perimetre"))
-    champ_label_nom=Label(gagne_solo,textvariable=value_label_nom,bg="#BBBBBB")
-    champ_label_nom.place(x=626,y=506,width=392, height=57)
-
-    value_label_nom = StringVar()
-    value_label_nom.set(str("langue"))
-    champ_label_nom=Label(gagne_solo,textvariable=value_label_nom,bg="#BBBBBB")
-    champ_label_nom.place(x=626,y=566,width=392, height=57)
     
-def page4(): # la page de séléction entre le jeu solo et le jeu multi
+def page6(): # la page de séléction entre le jeu solo et le jeu multi
     global selec_jeu
     reset()
     selec_jeu.place(x=0, y=0)
@@ -196,7 +239,7 @@ def page4(): # la page de séléction entre le jeu solo et le jeu multi
     label_background.place(x=0,y=0,width=longueur, height=largeur)
 
     bouton_solo = StringVar()
-    bouton_solo=Button(selec_jeu,command=page2, font=police1,relief=FLAT)
+    bouton_solo=Button(selec_jeu,command=page3, font=police1,relief=FLAT)
     bouton_solo.place(x=506,y=360,width=429, height=97)
     file_bouton_solo="images/boutons/bouton_un_joueur.png"
     image_bouton_solo = PhotoImage(file=file_bouton_solo)
@@ -204,7 +247,7 @@ def page4(): # la page de séléction entre le jeu solo et le jeu multi
     bouton_solo.image = image_bouton_solo
 
     bouton_multi = StringVar()
-    bouton_multi=Button(selec_jeu,command=page5, font=police1,relief=FLAT)
+    bouton_multi=Button(selec_jeu,command=page8, font=police1,relief=FLAT)
     bouton_multi.place(x=506,y=491,width=429, height=97)
     file_bouton_multi="images/boutons/bouton_multi.png"
     image_bouton_multi = PhotoImage(file=file_bouton_multi)
@@ -219,47 +262,9 @@ def page4(): # la page de séléction entre le jeu solo et le jeu multi
     bouton_retour.configure(image=image_bouton_retour)
     bouton_retour.image = image_bouton_retour
 
-    
-def page5(): #la page de choix entre héberger et rejoindre une parti en multi
-    global choix_multi
-    reset()
-    choix_multi.place(x=0, y=0)
-    
-    is_multi.set(1) # défini que le joueur est en multi
 
-    label_background = Label(choix_multi, image="")
-    file_background="images/menu_jouer_multi.png"
-    background = PhotoImage(file=file_background)
-    label_background.configure(image=background)
-    label_background.image = background
-    label_background.place(x=0,y=0,width=longueur, height=largeur)
 
-    bouton_solo = StringVar()
-    bouton_solo=Button(choix_multi,command=lancer_serveur, font=police1,relief=FLAT)
-    bouton_solo.place(x=506,y=360,width=429, height=97)
-    file_bouton_solo="images/boutons/bouton_heberger.png"
-    image_bouton_solo = PhotoImage(file=file_bouton_solo)
-    bouton_solo.configure(image=image_bouton_solo)
-    bouton_solo.image = image_bouton_solo
-
-    bouton_multi = StringVar()
-    bouton_multi=Button(choix_multi,command=page6, font=police1,relief=FLAT)
-    bouton_multi.place(x=506,y=492,width=429, height=97)
-    file_bouton_multi="images/boutons/bouton_rejoindre.png"
-    image_bouton_multi = PhotoImage(file=file_bouton_multi)
-    bouton_multi.configure(image=image_bouton_multi)
-    bouton_multi.image = image_bouton_multi
-
-    bouton_retour = StringVar()
-    bouton_retour=Button(choix_multi,command=retour, font=police1,relief=FLAT)
-    bouton_retour.place(x=507,y=619,width=429, height=97)
-    file_bouton_retour="images/boutons/bouton_retour.png"
-    image_bouton_retour = PhotoImage(file=file_bouton_retour)
-    bouton_retour.configure(image=image_bouton_retour)
-    bouton_retour.image = image_bouton_retour
-
-    
-def page6(): # la page qui permet de rejoindre un serveur multi
+def page7(): # la page qui permet de rejoindre un serveur multi
     global recherche_multi
 
     reset()
@@ -291,9 +296,50 @@ def page6(): # la page qui permet de rejoindre un serveur multi
     image_bouton_rejoindre = PhotoImage(file=file_bouton_rejoindre)
     bouton_rejoindre.configure(image=image_bouton_rejoindre)
     bouton_rejoindre.image = image_bouton_rejoindre
-    
 
-def page7(): # page qui s'affiche lorsqu'on est connecté au serveur en attendant que le serveur lance la partie
+    
+  
+def page8(): #la page de choix entre héberger et rejoindre une parti en multi
+    global choix_multi
+    reset()
+    choix_multi.place(x=0, y=0)
+    
+    is_multi.set(1) # défini que le joueur est en multi
+
+    label_background = Label(choix_multi, image="")
+    file_background="images/menu_jouer_multi.png"
+    background = PhotoImage(file=file_background)
+    label_background.configure(image=background)
+    label_background.image = background
+    label_background.place(x=0,y=0,width=longueur, height=largeur)
+
+    bouton_solo = StringVar()
+    bouton_solo=Button(choix_multi,command=lancer_serveur, font=police1,relief=FLAT)
+    bouton_solo.place(x=506,y=360,width=429, height=97)
+    file_bouton_solo="images/boutons/bouton_heberger.png"
+    image_bouton_solo = PhotoImage(file=file_bouton_solo)
+    bouton_solo.configure(image=image_bouton_solo)
+    bouton_solo.image = image_bouton_solo
+
+    bouton_multi = StringVar()
+    bouton_multi=Button(choix_multi,command=page7, font=police1,relief=FLAT)
+    bouton_multi.place(x=506,y=492,width=429, height=97)
+    file_bouton_multi="images/boutons/bouton_rejoindre.png"
+    image_bouton_multi = PhotoImage(file=file_bouton_multi)
+    bouton_multi.configure(image=image_bouton_multi)
+    bouton_multi.image = image_bouton_multi
+
+    bouton_retour = StringVar()
+    bouton_retour=Button(choix_multi,command=retour, font=police1,relief=FLAT)
+    bouton_retour.place(x=507,y=619,width=429, height=97)
+    file_bouton_retour="images/boutons/bouton_retour.png"
+    image_bouton_retour = PhotoImage(file=file_bouton_retour)
+    bouton_retour.configure(image=image_bouton_retour)
+    bouton_retour.image = image_bouton_retour
+
+
+    
+def page9(): # page qui s'affiche lorsqu'on est connecté au serveur en attendant que le serveur lance la partie
     global lobby_multi  
     reset()
     lobby_multi.place(x=0, y=0)
@@ -304,7 +350,7 @@ def page7(): # page qui s'affiche lorsqu'on est connecté au serveur en attendan
     label_background = Label(lobby_multi, image="")
     file_background="images/lobby_multi_client.png"
     background = PhotoImage(file=file_background)
-     label_background.configure(image=background)
+    label_background.configure(image=background)
     label_background.image = background
     label_background.place(x=0,y=0,width=longueur, height=largeur)
 
@@ -316,7 +362,8 @@ def page7(): # page qui s'affiche lorsqu'on est connecté au serveur en attendan
     bouton_quit_retour.place(x=1190,y=735,width=220, height=50)
 
 
-def page8(): #page du jeu en mode multijoueur
+
+def page10(): #page du jeu en mode multijoueur
     global jeu_multi
     global label_r1,label_r2,label_r3,label_r4,label_r5
     global label_q1,label_q2,label_q3,label_q4,label_q5
@@ -335,6 +382,10 @@ def page8(): #page du jeu en mode multijoueur
     label_background.configure(image=background)
     label_background.image = background
     label_background.place(x=0,y=0,width=longueur, height=largeur)
+
+    bouton_abandon = StringVar()
+    bouton_abandon=Button(jeu_multi, text='Abandonner', command=abandon, font=police1 ,bg = 'gray89')
+    bouton_abandon.place(x=1204,y=740,width=200, height=50)
 
     textBoxReponse = Entry(jeu_multi, textvariable=var_reponse, width=40, font=police1, bg = 'yellow')
     textBoxReponse.place(x=924,y=590,width=250, height=70)
@@ -376,7 +427,7 @@ def page8(): #page du jeu en mode multijoueur
     update_temps()
 
 
-def page9(): # page qui s'affiche lorsqu'une personne gagne en multijoueur
+def page11(): # page qui s'affiche lorsqu'une personne gagne en multijoueur
     global gagne_multi
     global temps_0, temps_1
 
@@ -397,27 +448,8 @@ def page9(): # page qui s'affiche lorsqu'une personne gagne en multijoueur
     label_q1.place(x=670,y=650,width=500, height=70)
 
     bouton_retour = StringVar()
-    bouton_retour=Button(gagne_multi, text='Retour au lobby', command=page7, font=police1)
+    bouton_retour=Button(gagne_multi, text='Retour au lobby', command=page9, font=police1)
     bouton_retour.place(x=740,y=730,width=350, height=50)
-
-    print(creation_questions.infos())
-
-def page10(): #page des regles
-    global menu_regle
-    reset()
-    menu_regle.place(x=0, y=0)
-    
-    label_background = Label(menu_regle, image="")
-    file_background="images/regles.png"
-    background = PhotoImage(file=file_background)
-    label_background.configure(image=background)
-    label_background.image = background
-    label_background.place(x=0,y=0,width=longueur, height=largeur)
-    
-    bouton_retour = StringVar()
-    bouton_retour=Button(menu_regle, text='Retour', command=retour, font=police1 ,bg = 'gray89')
-    bouton_retour.place(x=1215,y=740,width=200, height=50)
-
 
 
 
@@ -435,13 +467,19 @@ def crea_question():
     else : # si la personne joue en multi, récupere la seed envoyé par le serveur
         #print('la seed est :'+seed_serveur.get())
         liste_attributs, liste_valeurs, liste_reponses = creation_questions.lancer_tirage(seed_serveur.get())
-        print('Psssst : Monsieur, la réponse est : '+str(liste_reponses[4]))
 
     liste_questions=nommer_questions(liste_attributs,liste_valeurs) #permet de nommer les questions (ex: La capitale est Paris) avec la liste des attributs (ex: capitale) et la liste des valeurs (ex : Paris)
 
     question1.set(liste_questions[0]) # defini le premiere question
 
-    
+    value_label_nom.set(liste_reponses[4])
+    value_label_capitale.set(liste_reponses[4])
+    value_label_continent.set(liste_reponses[4])
+    value_label_population.set(liste_reponses[4])
+    value_label_superficie.set(liste_reponses[4])
+    value_label_perimetre.set(liste_reponses[4])
+    value_label_langue.set(liste_reponses[4])
+
 
 
 
@@ -501,9 +539,9 @@ def test_reponse(): # teste si la réponse entré est juste (à chaque touche du
                     label_q5.configure(background ='lightgreen')
 
                     if is_multi.get() == 0 : #si le joueur joue en solo, envoi vers l'écran de victoire solo
-                        page3()
+                        page4()
                     else : # si en multi, envoi vers l'écran de victoire multi
-                        page9()
+                        page11()
                     
                 var_reponse.set('')
     except:None
@@ -532,7 +570,7 @@ def update_temps(): # met à jour le timer toutes les secondes
 def lancer_serveur(): #lorsque que le bouton hebergé est cliqué, le programme serveur est lancé et la page rejoindre serveur en localhost aussi
     os.startfile("multi_serveur.py")
     recherche_ip.set("localhost")
-    page6()
+    page7()
 
 def connexion_serveur(): #fonction qui essaye de connecter le client au serveur en en voyant l'ip et le pseudo au serveur, si il existe
     pseudo=recherche_pseudo.get()
@@ -540,17 +578,17 @@ def connexion_serveur(): #fonction qui essaye de connecter le client au serveur 
     etat_multi.set(connexion_client_multi(pseudo,ip)) # la variable etat multi contient l'esnsemble des donnees transmises par/pour le serveur
     
     if etat_multi.get()=="aucun_serveur_accessible":
-        page5()
+        page8()
     else:
         discussion_serveur()
-    page7()
+    page9()
     
 
 def discussion_serveur(): # fonction répété chaque seconde pour essayer de connecter le client au serveur et de détecter les ordres comme le lancement de la partie ...
 
     if is_multi.get()==1: # si le joueur est en multi
         if "aucun_serveur_accessible" in etat_multi.get(): # si il n'y a pas de serveur
-            page5()
+            page8()
         else :
             pseudo=recherche_pseudo.get()
             ip=recherche_ip.get()
@@ -560,7 +598,7 @@ def discussion_serveur(): # fonction répété chaque seconde pour essayer de co
             etat_multi.set(str(etat_multi.get()).replace("lancement_partie",""))
             etat_multi.set(str(etat_multi.get()).replace("en_attente",""))
             seed_serveur.set(int(etat_multi.get())) #récupere la seed apres avoir enlevé les ordres dans la variables
-            page8() #lance la page de jeu multi
+            page10() #lance la page de jeu multi
 
         #print('update toutes les secondes ...')
         fenetre.after(1000,discussion_serveur)
@@ -581,33 +619,40 @@ def quitter_multi(): # fonction qui permet de quitter proprement le multijoueur 
 
 
 def reset(): # permet de supprimer tout ce qu'il y a dans la fenetre tkinter afin de créer une nouvelle page
-    global menu,jeu_solo,jeu_multi,gagne_solo,gagne_multi,lobby_multi,selec_jeu,choix_multi,recherche_multi,menu_regle # appel global de chaque page
+    global menu,jeu_solo,jeu_multi,gagne_solo,gagne_multi,lobby_multi,selec_jeu,choix_multi,recherche_multi,menu_regle,perd_solo # appel global de chaque page
     global label_r1,label_r2,label_r3,label_r4,label_r5 # appel global des labels réponses
     global nombre_personne
 
     # destruction de toute les pages
     menu.destroy()
-    jeu_solo.destroy()
-    jeu_multi.destroy()
-    gagne_solo.destroy()
-    gagne_multi.destroy()
-    lobby_multi.destroy()
-    selec_jeu.destroy()
-    choix_multi.destroy()
-    recherche_multi.destroy()
     menu_regle.destroy()
+    jeu_solo.destroy()
+    gagne_solo.destroy()
+    perd_solo.destroy()
+    selec_jeu.destroy()
+    recherche_multi.destroy()
+    choix_multi.destroy()
+    lobby_multi.destroy()
+    jeu_multi.destroy()
+    gagne_multi.destroy()
+
+
+    
     
     # definition de toutes les pages (au cas ou)
     menu = Canvas(fenetre, width=longueur, height=largeur)
+    menu_regle = Canvas(fenetre,width=longueur, height=largeur)
     jeu_solo = Canvas(fenetre, width=longueur, height=largeur)
     gagne_solo = Canvas(fenetre, width=longueur, height=largeur)
+    perd_solo = Canvas(fenetre, width=longueur, height=largeur)
     selec_jeu = Canvas(fenetre, width=longueur, height=largeur)
-    choix_multi = Canvas(fenetre, width=longueur, height=largeur)
-    jeu_multi = Canvas(fenetre, width=longueur, height=largeur)
-    lobby_multi = Canvas(fenetre, width=longueur, height=largeur)
-    gagne_multi = Canvas(fenetre, width=longueur, height=largeur)
     recherche_multi = Canvas(fenetre, width=longueur, height=largeur)
-    menu_regle = Canvas(fenetre,width=longueur, height=largeur)
+    choix_multi = Canvas(fenetre, width=longueur, height=largeur)
+    lobby_multi = Canvas(fenetre, width=longueur, height=largeur)
+    jeu_multi = Canvas(fenetre, width=longueur, height=largeur)
+    gagne_multi = Canvas(fenetre, width=longueur, height=largeur)
+
+
 
     #reset de chaque valeur entree
     reponse_entree1.set('')
@@ -666,15 +711,16 @@ police1=tkFont.Font(family="MV Boli",size=20)
 police2=tkFont.Font(family="MV Boli",size=16)
 
 menu = Canvas(fenetre, width=longueur, height=largeur)
+menu_regle = Canvas(fenetre,width=longueur, height=largeur)
 jeu_solo = Canvas(fenetre, width=longueur, height=largeur)
 gagne_solo = Canvas(fenetre, width=longueur, height=largeur)
+perd_solo = Canvas(fenetre, width=longueur, height=largeur)
 selec_jeu = Canvas(fenetre, width=longueur, height=largeur)
-choix_multi = Canvas(fenetre, width=longueur, height=largeur)
-jeu_multi = Canvas(fenetre, width=longueur, height=largeur)
-lobby_multi = Canvas(fenetre, width=longueur, height=largeur)
-gagne_multi = Canvas(fenetre, width=longueur, height=largeur)
 recherche_multi = Canvas(fenetre, width=longueur, height=largeur)
-menu_regle = Canvas(fenetre,width=longueur, height=largeur)
+choix_multi = Canvas(fenetre, width=longueur, height=largeur)
+lobby_multi = Canvas(fenetre, width=longueur, height=largeur)
+jeu_multi = Canvas(fenetre, width=longueur, height=largeur)
+gagne_multi = Canvas(fenetre, width=longueur, height=largeur)
 
 
 # permet d'associer la touche d'une touche du clavier à une fonction :
@@ -709,6 +755,14 @@ question2=StringVar()
 question3=StringVar()
 question4=StringVar()
 question5=StringVar()
+
+value_label_nom = StringVar()
+value_label_capitale = StringVar()
+value_label_continent = StringVar()
+value_label_population = StringVar()
+value_label_superficie = StringVar()
+value_label_perimetre = StringVar()
+value_label_langue = StringVar()
 
 local_ip=StringVar()
 
