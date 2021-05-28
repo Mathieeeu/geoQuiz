@@ -1,9 +1,36 @@
 Pour lancer le programme, il suffit de lancer main
 - explication client serveur
 - explication génération liste mot
-- explication database
-- explication LA FEUILLE  ?
+- explication database      (mathieu)
+- explication LA FEUILLE  ? (mathieu)
 - explication de chaque programme
-
-
 lancer_partie-->creation question--> les questions --> message a tous renvoi au client
+
+********* COMMENT JOUER ??? ***********************************************************
+
+
+********* CLIENT SERVEUR ***********************************************************
+
+
+********* GENERATION LISTE MOT (pas compris?) ***********************************************************
+
+
+********* BASE DE DONNEES ***********************************************************
+La base de données est composée d'une seule table, elle meme composée de nombreuses statistiques comme les noms/capitales/superficies...
+Il y a trois types de valeurs : - Des valeurs numériques (superficie, population, perimetre...)
+				- Des mots (nom, capitale, langue...)
+				- Des booléens (antarctique et accès à la mer)
+La colonne 'frontieres' contient les noms de tous les pays frontaliers du pays
+
+Le programme creation_questions crée un objet 'pays' avec toutes les caractéristiques de la base de données
+
+
+********* APPARITIONS DES QUESTIONS ***********************************************************
+Les questions fonctionnent grace à 5 listes (correspondant aux 5 questions de la serie)
+Chaque liste contient une selection d'attributs afin de ne pas avoir de questions précises trop tot pour qu'un résultat puisse etre trouvé en exactement 5 questions
+
+Un attribut est tiré au hasard dans chaque liste et chaque attribut séléctionné fait disparaitre ceux du meme type dans les listes suivantes pour ne pas avoir deux questions identiques
+
+
+
+********* PROGRAMMES ***********************************************************
