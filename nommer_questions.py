@@ -9,11 +9,11 @@ def nommer_questions(liste_attributs,liste_valeurs): # la fonction permet de nom
             liste_questions.append("Ce pays fait entre " + str(nb1) + " et " + str(nb2) + " km²")
 
         elif liste_attributs[i]=="superficie_sup":
-            nb1=espace_zero(int(liste_valeurs[i][0]))
+            nb1=espace_zero(int(liste_valeurs[i]))
             liste_questions.append("Ce pays fait plus de " + str(nb1) + " km²")
 
         elif liste_attributs[i]=="superficie_inf":
-            nb1=espace_zero(int(liste_valeurs[i][0]))
+            nb1=espace_zero(int(liste_valeurs[i]))
             liste_questions.append("Ce pays fait moins de " + str(nb1) + " km²")
 
         elif liste_attributs[i]=="population_entre":
@@ -21,11 +21,11 @@ def nommer_questions(liste_attributs,liste_valeurs): # la fonction permet de nom
             liste_questions.append("Ce pays possède entre " + str(nb1) + " et " + str(nb2) + " d'habitants")
 
         elif liste_attributs[i]=="population_sup":
-            nb1=espace_zero(int(liste_valeurs[i][0]))
+            nb1=espace_zero(int(liste_valeurs[i]))
             liste_questions.append("Ce pays possède plus de " + str(nb1) + " habitants")
 
         elif liste_attributs[i]=="population_inf":
-            nb1=espace_zero(int(liste_valeurs[i][0]))
+            nb1=espace_zero(int(liste_valeurs[i]))
             liste_questions.append("Ce pays possède moins de " + str(nb1) + " habitants")
 
         elif liste_attributs[i] == "initiale_nom" :
@@ -90,6 +90,41 @@ def nommer_questions(liste_attributs,liste_valeurs): # la fonction permet de nom
             else :
                 liste_questions.append("Le fond du drapeau de ce pays est composé de "+str(liste_valeurs[i])+" couleurs")
 
+        elif liste_attributs[i]=="longueur_frontieres_entre":
+            nb1,nb2=espace_zero(int(liste_valeurs[i][0])),espace_zero(int(liste_valeurs[i][1]))
+            liste_questions.append("Ce pays a entre " + str(nb1) + " et " + str(nb2) + " km de frontieres terrestres")
+
+        elif liste_attributs[i]=="longueur_frontieres_sup":
+            nb1=espace_zero(int(liste_valeurs[i]))
+            liste_questions.append("Ce pays a plus de " + str(nb1) + " km de frontieres terrestres")
+
+        elif liste_attributs[i]=="longueur_frontieres_inf":
+            nb1=espace_zero(int(liste_valeurs[i]))
+            liste_questions.append("Ce pays a moins de " + str(nb1) + " km de frontieres terrestres")
+
+        elif liste_attributs[i]=="longueur_cotes_entre":
+            nb1,nb2=espace_zero(int(liste_valeurs[i][0])),espace_zero(int(liste_valeurs[i][1]))
+            liste_questions.append("Ce pays a entre " + str(nb1) + " et " + str(nb2) + " km de cotes")
+
+        elif liste_attributs[i]=="longueur_cotes_sup":
+            nb1=espace_zero(int(liste_valeurs[i]))
+            liste_questions.append("Ce pays a plus de " + str(nb1) + " km de cotes")
+
+        elif liste_attributs[i]=="longueur_cotes_inf":
+            nb1=espace_zero(int(liste_valeurs[i]))
+            liste_questions.append("Ce pays a moins de " + str(nb1) + " km de cotes")
+
+        elif liste_attributs[i]=="perimetre_entre":
+            nb1,nb2=espace_zero(int(liste_valeurs[i][0])),espace_zero(int(liste_valeurs[i][1]))
+            liste_questions.append("Ce pays a entre " + str(nb1) + " et " + str(nb2) + " km de perimetre")
+
+        elif liste_attributs[i]=="perimetre_sup":
+            nb1=espace_zero(int(liste_valeurs[i]))
+            liste_questions.append("Ce pays a plus de " + str(nb1) + " km de perimetre")
+
+        elif liste_attributs[i]=="perimetre_inf":
+            nb1=espace_zero(int(liste_valeurs[i]))
+            liste_questions.append("Ce pays a moins de " + str(nb1) + " km de perimetre")
                 
     return liste_questions # renvoi la liste complete des questions à main
 

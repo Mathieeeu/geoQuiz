@@ -4,7 +4,7 @@ question=1
 
 class pays: # définition d'une classe pays pour y attribuer tout les attributs
 
-    def __init__(self,nom,capitale,population,point_culminant,superficie,frontieres,langue,continent,fuseaux,antarctique,tel,acces_mer,couleurs_drapeau,long_frontieres,long_cotes,mots):
+    def __init__(self,nom,capitale,population,point_culminant,superficie,frontieres,langue,continent,fuseaux,antarctique,tel,acces_mer,couleurs_drapeau,longueur_frontieres,longueur_cotes,mots,perimetre):
         self.nom=nom
         self.capitale=capitale
         self.population=population
@@ -18,9 +18,9 @@ class pays: # définition d'une classe pays pour y attribuer tout les attributs
         self.tel=tel#
         self.acces_mer=acces_mer#
         self.couleurs_drapeau=couleurs_drapeau
-        self.long_frontieres=long_frontieres#
-        self.long_cotes=long_cotes#
-        self.perimetre=long_cotes+long_frontieres#
+        self.longueur_frontieres=longueur_frontieres
+        self.longueur_cotes=longueur_cotes
+        self.perimetre=perimetre
         self.mots=mots
 
     def affichageinfos(self): # affcihe les informations du pays (PAS ENCORE IMPLEMENTE DANS MAIN)
@@ -69,7 +69,7 @@ def AffichezDB(nom): # donne tous les attributs du pays selctionné
     cursor.execute(sqlite_select_Query)
     #on place tout les enregistrements dans une variable record
     record = cursor.fetchall()
-    pays1 = pays(record[0][1],record[0][2],record[0][3],record[0][4],record[0][5],record[0][6],record[0][7],record[0][8],record[0][9],record[0][10],record[0][11],record[0][12],record[0][13],record[0][14],record[0][15],record[0][16],)
+    pays1 = pays(record[0][1],record[0][2],record[0][3],record[0][4],record[0][5],record[0][6],record[0][7],record[0][8],record[0][9],record[0][10],record[0][11],record[0][12],record[0][13],record[0][14],record[0][15],record[0][16],record[0][17])
     return pays1
 
 
@@ -89,7 +89,7 @@ def question(pays,attribut): # donne les valeurs des pays en fonction de l'attri
                 return(liste[i],val_min)
 
     elif attribut == "superficie_sup":
-        liste=[0,100,1000,5000,25000,50000,100000,200000,500000] # 0 100 1k 5k 25k 50k 100k 200k 500k
+        liste=[100,1000,5000,25000,50000,100000,200000,500000] # 0 100 1k 5k 25k 50k 100k 200k 500k
         random = randint(0,len(liste)-1)
         while liste[random] >= pays.superficie :
             random = randint(0,len(liste)-1)
@@ -123,7 +123,7 @@ def question(pays,attribut): # donne les valeurs des pays en fonction de l'attri
                 return(liste[i],val_min)
             
     elif attribut == "population_sup":
-        liste=[0,10000,100000,1000000,5000000,10000000,25000000] #0 10k 100k 1M 5M 10M 25M
+        liste=[10000,100000,1000000,5000000,10000000,25000000] #0 10k 100k 1M 5M 10M 25M
         random = randint(0,len(liste)-1)
         while liste[random] >= pays.population :
             random = randint(0,len(liste)-1)
@@ -237,6 +237,78 @@ def question(pays,attribut): # donne les valeurs des pays en fonction de l'attri
         return pays.couleurs_drapeau
 
 
+    elif attribut == "longueur_frontieres_entre":
+        liste=[0,1000,2500,5000,30000] 
+        for i in range(len(liste)):
+            try:
+                val_min=liste[i+1]
+            except:
+                val_min=9999999999
+            if liste[i] <= pays.longueur_frontieres and pays.longueur_frontieres <= val_min :
+                return(liste[i],val_min)
+            
+    elif attribut == "longueur_frontieres_sup":
+        liste=[100,500,1500,3000,10000] 
+        random = randint(0,len(liste)-1)
+        while liste[random] >= pays.longueur_frontieres :
+            random = randint(0,len(liste)-1)
+        return(liste[random])
+        
+    elif attribut == "longueur_frontieres_inf":
+        liste=[100,1000,3000,5000,8000]
+        random = randint(0,len(liste)-1)
+        while liste[random] <= pays.longueur_frontieres :
+            random = randint(0,len(liste)-1)
+        return(liste[random])
+
+    elif attribut == "longueur_cotes_entre":
+        liste=[0,100,2000,10000,300000] 
+        for i in range(len(liste)):
+            try:
+                val_min=liste[i+1]
+            except:
+                val_min=9999999999
+            if liste[i] <= pays.longueur_cotes and pays.longueur_cotes <= val_min :
+                return(liste[i],val_min)
+            
+    elif attribut == "longueur_cotes_sup":
+        liste=[100,1000,3000,10000]
+        random = randint(0,len(liste)-1)
+        while liste[random] >= pays.longueur_cotes :
+            random = randint(0,len(liste)-1)
+        return(liste[random])
+
+    elif attribut == "longueur_cotes_inf":
+        liste=[100,1000,3000,5000] 
+        random = randint(0,len(liste)-1)
+        while liste[random] <= pays.longueur_cotes :
+            random = randint(0,len(liste)-1)
+        return(liste[random])
+
+    elif attribut == "perimetre_entre":
+        liste=[0,100,1000,2500,5000,10000,300000] 
+        for i in range(len(liste)):
+            try:
+                val_min=liste[i+1]
+            except:
+                val_min=9999999999
+            if liste[i] <= pays.perimetre and pays.perimetre <= val_min :
+                return(liste[i],val_min)
+            
+    elif attribut == "perimetre_sup":
+        liste=[1000,2500,5000,10000,20000] 
+        random = randint(0,len(liste)-1)
+        while liste[random] >= pays.perimetre :
+            random = randint(0,len(liste)-1)
+        return(liste[random])
+        
+    elif attribut == "perimetre_inf":
+        liste=[100,1000,2500,5000,10000] 
+        random = randint(0,len(liste)-1)
+        while liste[random] <= pays.perimetre :
+            random = randint(0,len(liste)-1)
+        return(liste[random])
+
 
 
 def calcul(valeur,attribut): # fonction qui va ajouter pour chaque questions le nombre de pays qui sont possibles, à la fin il faut qu'il n'y ait que 1 réponse possible
@@ -276,7 +348,17 @@ def calcul(valeur,attribut): # fonction qui va ajouter pour chaque questions le 
         if attribut.endswith("_entre"):
             attribut=attribut.replace("_entre","")
             condition = (attribut + " > " + str(valeur[0]) + " and " + attribut + " < " + str(valeur[1]))
-    
+
+    elif attribut == "superficie_inf" or attribut == "population_inf":
+        if attribut.endswith("_inf"):
+            attribut=attribut.replace("_inf","")
+            condition = (attribut + " < " + str(valeur))
+            
+    elif attribut == "superficie_sup" or attribut == "population_sup":
+        if attribut.endswith("_sup"):
+            attribut=attribut.replace("_sup","")
+            condition = (attribut + " > " + str(valeur))
+            
     elif attribut == "antarctique":
         condition = "antarctique = '"+str(valeur)+"'"
         
@@ -298,10 +380,29 @@ def calcul(valeur,attribut): # fonction qui va ajouter pour chaque questions le 
     elif attribut == "couleurs_drapeau":
         condition = "couleurs_drapeau = "+str(valeur)
 
+    elif attribut == "longueur_frontieres_entre" or attribut == "longueur_cotes_entre" or attribut == "perimetre_entre":
+        if attribut.endswith("_entre"):
+            attribut=attribut.replace("_entre","")
+            condition = (attribut + " > " + str(valeur[0]) + " and " + attribut + " < " + str(valeur[1]))
+
+    elif attribut == "longueur_frontieres_inf" or attribut == "longueur_cotes_inf" or attribut == "perimetre_inf":
+        if attribut.endswith("_inf"):
+            attribut=attribut.replace("_inf","")
+            condition = (attribut + " < " + str(valeur))
+            
+    elif attribut == "longueur_frontieres_sup" or attribut == "longueur_cotes_sup" or attribut == "perimetre_sup":
+        if attribut.endswith("_sup"):
+            attribut=attribut.replace("_sup","")
+            condition = (attribut + " > " + str(valeur))
+    
+    
     # recherche dans la base de donnees
     
     sqliteConnection = connexion()
     cursor = sqliteConnection.cursor()
+    print("atribut",attribut)
+    print("condition",condition)
+    print(nompays)
     sqlite_select_Query = ("select nom from pays where "+ condition)
     commandeSQL += (" and "  + sqlite_select_Query.replace("select nom from pays where ",""))
 
@@ -329,13 +430,13 @@ def lancer_tirage(la_seed): # focntion qui teste si le pays et les attributs for
     tirage=True
 
     nompays=random()
-
+    
     # les attributs possibles pour chaque questions
-    listeQ0=["initiale_nom_entre","initiale_capitale_entre","continent_2","continent_1"]
-    listeQ1=["initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2","point_culminant","couleurs_drapeau"]
-    listeQ2=["superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2","fuseaux","point_culminant","mots","couleurs_drapeau"]
-    listeQ3=["frontieres_1","superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","antarctique","fuseaux","point_culminant","mots","couleurs_drapeau"]
-    listeQ4=["frontieres_1","frontieres_2","superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","antarctique","fuseaux","langue","point_culminant","mots","couleurs_drapeau"]
+    listeQ0=["initiale_nom_entre","initiale_capitale_entre","continent_2","continent_1","superficie_sup","superficie_inf","population_sup","population_inf","longueur_frontieres_sup","longueur_frontieres_inf","longueur_frontieres_entre","longueur_cotes_sup","longueur_cotes_inf","longueur_cotes_entre","perimetre_sup","perimetre_inf","perimetre_entre"]
+    listeQ1=["initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2","point_culminant","couleurs_drapeau","superficie_sup","superficie_inf","population_sup","population_inf","longueur_frontieres_sup","longueur_frontieres_inf","longueur_frontieres_entre","longueur_cotes_sup","longueur_cotes_inf","longueur_cotes_entre","perimetre_sup","perimetre_inf","perimetre_entre"]
+    listeQ2=["superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","continent_1","continent_2","fuseaux","point_culminant","mots","couleurs_drapeau","superficie_sup","superficie_inf","population_sup","population_inf","longueur_frontieres_sup","longueur_frontieres_inf","longueur_frontieres_entre","longueur_cotes_sup","longueur_cotes_inf","longueur_cotes_entre","perimetre_sup","perimetre_inf","perimetre_entre"]
+    listeQ3=["frontieres_1","superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","antarctique","fuseaux","point_culminant","mots","couleurs_drapeau","superficie_sup","superficie_inf","population_sup","population_inf","longueur_frontieres_sup","longueur_frontieres_inf","longueur_frontieres_entre","longueur_cotes_sup","longueur_cotes_inf","longueur_cotes_entre","perimetre_sup","perimetre_inf","perimetre_entre"]
+    listeQ4=["frontieres_1","frontieres_2","superficie_entre","initiale_nom","initiale_capitale","population_entre","initiale_nom_entre","initiale_capitale_entre","antarctique","fuseaux","langue","point_culminant","mots","couleurs_drapeau","superficie_sup","superficie_inf","population_sup","population_inf","longueur_frontieres_sup","longueur_frontieres_inf","longueur_frontieres_entre","longueur_cotes_sup","longueur_cotes_inf","longueur_cotes_entre","perimetre_sup","perimetre_inf","perimetre_entre"]
 
     listeQbackup=[]
     listeQbackup.append(listeQ0)
@@ -427,7 +528,21 @@ def lancer_tirage(la_seed): # focntion qui teste si le pays et les attributs for
                     for i in chaqueliste:
                         if i == "couleurs_drapeau":
                             chaqueliste.pop(chaqueliste.index(i))
-
+            elif attribut.startswith("longueur_frontieres"):
+                for chaqueliste in listeQ:
+                     for i in chaqueliste:
+                        if i.startswith("longueur_frontieres"):
+                            chaqueliste.pop(chaqueliste.index(i))
+            elif attribut.startswith("longueur_cotes"):
+                for chaqueliste in listeQ:
+                     for i in chaqueliste:
+                        if i.startswith("longueur_cotes"):
+                            chaqueliste.pop(chaqueliste.index(i))
+            elif attribut.startswith("perimetre"):
+                for chaqueliste in listeQ:
+                     for i in chaqueliste:
+                        if i.startswith("perimetre"):
+                            chaqueliste.pop(chaqueliste.index(i))
                             
             valeur = question(pays1,attribut)
             issues = calcul(valeur,attribut)
