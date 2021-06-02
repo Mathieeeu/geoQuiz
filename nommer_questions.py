@@ -86,9 +86,9 @@ def nommer_questions(liste_attributs,liste_valeurs): # la fonction permet de nom
 
         elif liste_attributs[i] == ("couleurs_drapeau"):
             if int(liste_valeurs[i]) == 1:
-                liste_questions.append("Le fond du drapeau de ce pays est composé d'une seule couleur")
+                liste_questions.append("Le drapeau de ce pays est composé d'une seule couleur")
             else :
-                liste_questions.append("Le fond du drapeau de ce pays est composé de "+str(liste_valeurs[i])+" couleurs")
+                liste_questions.append("Le drapeau de ce pays est composé de "+str(liste_valeurs[i])+" couleurs")
 
                 
     return liste_questions # renvoi la liste complete des questions à main
