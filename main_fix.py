@@ -10,6 +10,37 @@ import os
 import socket
 import ast
 
+#06.01.2022 : ajout de la création d'un shortcut sur le bureau lorsqu'on lance le jeu pour la première fois
+def check_installed(pkg):
+    try:
+        __import__(pkg)
+        return(True)
+    except ModuleNotFoundError:
+        return(False)
+
+def install(package):
+    import subprocess
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+if not check_installed('winshell'):
+    install('winshell')
+import winshell
+
+from win32com.client import Dispatch
+
+desktop = winshell.desktop()
+path=os.path.join(desktop, "GéoQuiz.lnk")
+target=os.path.join(os.path.dirname(os.path.abspath(__file__)), "main_fix.py")
+wDir = desktop
+icon=os.path.join(os.path.dirname(os.path.abspath(__file__)), "geoquiz.ico")
+shell=Dispatch('WScript.shell')
+
+shortcut=shell.CreateShortCut(path)
+shortcut.Targetpath=target
+shortcut.WorkingDirectory=wDir
+shortcut.IconLocation=icon
+shortcut.save()
+
 #XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX Initialisation des pages XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 
