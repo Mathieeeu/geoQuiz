@@ -5,10 +5,7 @@ import creation_questions
 from nommer_questions import nommer_questions,espace_zero
 from multi_client import connexion_client_multi,boucle_client_multi, deconnexion_multi
 from random import *
-import time
-import os
-import socket
-import ast
+import time,os,socket,ast
 
 #06.01.2022 : ajout de la création d'un shortcut sur le bureau lorsqu'on lance le jeu pour la première fois
 def check_installed(pkg):
@@ -22,24 +19,32 @@ def install(package):
     import subprocess
     subprocess.check_call([sys.executable, "-m", "pip", "install", package])
 
-if not check_installed('winshell'):
-    install('winshell')
-import winshell
+geoquiz_location_path = os.getcwd()
 
 from win32com.client import Dispatch
 
-desktop = winshell.desktop()
-path=os.path.join(desktop, "GéoQuiz.lnk")
-target=os.path.join(os.path.dirname(os.path.abspath(__file__)), "main_fix.py")
-wDir = desktop
-icon=os.path.join(os.path.dirname(os.path.abspath(__file__)), "geoquiz.ico")
-shell=Dispatch('WScript.shell')
+if os.path.isfile(geoquiz_location_path+"\main_fix.py"):
+    if not check_installed('winshell'):
+        install('winshell')
+    import winshell
 
-shortcut=shell.CreateShortCut(path)
-shortcut.Targetpath=target
-shortcut.WorkingDirectory=wDir
-shortcut.IconLocation=icon
-shortcut.save()
+    desktop = winshell.desktop()
+    path=os.path.join(desktop, "GéoQuiz.lnk")
+    target=os.path.join(os.path.dirname(os.path.abspath(__file__)), "main_fix.py")
+    wDir = desktop
+    icon=os.path.join(os.path.dirname(os.path.abspath(__file__)), "geoquiz.ico")
+    shell=Dispatch('WScript.shell')
+
+    shortcut=shell.CreateShortCut(path)
+    shortcut.Targetpath=target
+    shortcut.WorkingDirectory=wDir
+    shortcut.IconLocation=icon
+    shortcut.save()
+    geoquiz_location_path=''
+else:
+    shell = Dispatch("WScript.Shell")
+    shortcut = shell.CreateShortCut("GéoQuiz.lnk")
+    geoquiz_location_path=''.join((shortcut.Targetpath).rsplit('\\', 1)[0])+'\\'
 
 #XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX Initialisation des pages XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
@@ -50,7 +55,7 @@ def page1(): # la page menu où l'on peut cliquer sur jouer, regle ou quitter
     menu.place(x=0, y=0)
 
     label_background = Label(menu, image="")
-    file_background="images/menu.png"
+    file_background=geoquiz_location_path+"images/menu.png"
     background = PhotoImage(file=file_background)
     label_background.configure(image=background)
     label_background.image = background
@@ -59,7 +64,7 @@ def page1(): # la page menu où l'on peut cliquer sur jouer, regle ou quitter
     bouton_jouer = StringVar()
     bouton_jouer=Button(menu,command=page6, font=police1,relief=FLAT)
     bouton_jouer.place(x=505,y=289,width=429, height=97)
-    file_bouton_jouer="images/boutons/bouton_jouer.png"
+    file_bouton_jouer=geoquiz_location_path+"images/boutons/bouton_jouer.png"
     image_bouton_jouer = PhotoImage(file=file_bouton_jouer)
     bouton_jouer.configure(image=image_bouton_jouer)
     bouton_jouer.image = image_bouton_jouer
@@ -67,7 +72,7 @@ def page1(): # la page menu où l'on peut cliquer sur jouer, regle ou quitter
     bouton_regles = StringVar()
     bouton_regles=Button(menu,command=page2, font=police1,relief=FLAT)
     bouton_regles.place(x=506,y=422,width=429, height=97)
-    file_bouton_regles="images/boutons/bouton_regles.png"
+    file_bouton_regles=geoquiz_location_path+"images/boutons/bouton_regles.png"
     image_bouton_regles = PhotoImage(file=file_bouton_regles)
     bouton_regles.configure(image=image_bouton_regles)
     bouton_regles.image = image_bouton_regles
@@ -75,7 +80,7 @@ def page1(): # la page menu où l'on peut cliquer sur jouer, regle ou quitter
     bouton_quitter = StringVar()
     bouton_quitter=Button(menu,command=quitter, font=police1,relief=FLAT)
     bouton_quitter.place(x=506,y=548,width=429, height=97)
-    file_bouton_quitter="images/boutons/bouton_quitter.png"
+    file_bouton_quitter=geoquiz_location_path+"images/boutons/bouton_quitter.png"
     image_bouton_quitter = PhotoImage(file=file_bouton_quitter)
     bouton_quitter.configure(image=image_bouton_quitter)
     bouton_quitter.image = image_bouton_quitter
@@ -88,14 +93,14 @@ def page2(): #page des regles
     menu_regle.place(x=0, y=0)
     
     label_background = Label(menu_regle, image="")
-    file_background="images/regles.png"
+    file_background=geoquiz_location_path+"images/regles.png"
     background = PhotoImage(file=file_background)
     label_background.configure(image=background)
     label_background.image = background
     label_background.place(x=0,y=0,width=longueur, height=largeur)
     
     bouton_retour = StringVar()
-    bouton_retour=Button(menu_regle, text='Retour', command=retour, font=police1 ,bg = 'gray89')
+    bouton_retour=Button(menu_regle, text='Retour', command=retour, font=police1 ,bg = 'gray89', fg='black')
     bouton_retour.place(x=1215,y=740,width=200, height=50)
 
 
@@ -111,7 +116,7 @@ def page3(): #la page de jeu en solo
     jeu_solo.place(x=0, y=0)
 
     label_background = Label(jeu_solo, image="")
-    file_background="images/fond_jeu.png"
+    file_background=geoquiz_location_path+"images/fond_jeu.png"
     background = PhotoImage(file=file_background)
     label_background.configure(image=background)
     label_background.image = background
@@ -177,7 +182,7 @@ def page4(): # la page qui s'ouvre lorsque une partie est gagné en solo
     reset()
 
     label_background = Label(gagne_solo, image="")
-    file_background="images/fin_solo_victoire.png"
+    file_background=geoquiz_location_path+"images/fin_solo_victoire.png"
     background = PhotoImage(file=file_background)
     label_background.configure(image=background)
     label_background.image = background
@@ -233,7 +238,7 @@ def page5(): # page qui s'affiche lorsqu'une personne abandonne en solo
     perd_solo.place(x=0, y=0)
 
     label_background = Label(perd_solo, image="")
-    file_background="images/fin_solo_abandon.png"
+    file_background=geoquiz_location_path+"images/fin_solo_abandon.png"
     background = PhotoImage(file=file_background)
     label_background.configure(image=background)
     label_background.image = background
@@ -284,7 +289,7 @@ def page6(): # la page de séléction entre le jeu solo et le jeu multi
     selec_jeu.place(x=0, y=0)
 
     label_background = Label(selec_jeu, image="")
-    file_background="images/menu_jouer.png"
+    file_background=geoquiz_location_path+"images/menu_jouer.png"
     background = PhotoImage(file=file_background)
     label_background.configure(image=background)
     label_background.image = background
@@ -293,7 +298,7 @@ def page6(): # la page de séléction entre le jeu solo et le jeu multi
     bouton_solo = StringVar()
     bouton_solo=Button(selec_jeu,command=page3, font=police1,relief=FLAT, fg = 'black')
     bouton_solo.place(x=506,y=360,width=429, height=97)
-    file_bouton_solo="images/boutons/bouton_un_joueur.png"
+    file_bouton_solo=geoquiz_location_path+"images/boutons/bouton_un_joueur.png"
     image_bouton_solo = PhotoImage(file=file_bouton_solo)
     bouton_solo.configure(image=image_bouton_solo)
     bouton_solo.image = image_bouton_solo
@@ -301,7 +306,7 @@ def page6(): # la page de séléction entre le jeu solo et le jeu multi
     bouton_multi = StringVar()
     bouton_multi=Button(selec_jeu,command=page8, font=police1,relief=FLAT, fg = 'black')
     bouton_multi.place(x=506,y=491,width=429, height=97)
-    file_bouton_multi="images/boutons/bouton_multi.png"
+    file_bouton_multi=geoquiz_location_path+"images/boutons/bouton_multi.png"
     image_bouton_multi = PhotoImage(file=file_bouton_multi)
     bouton_multi.configure(image=image_bouton_multi)
     bouton_multi.image = image_bouton_multi
@@ -309,7 +314,7 @@ def page6(): # la page de séléction entre le jeu solo et le jeu multi
     bouton_retour = StringVar()
     bouton_retour=Button(selec_jeu,command=retour, font=police1,relief=FLAT, fg = 'black')
     bouton_retour.place(x=507,y=619,width=429, height=97)
-    file_bouton_retour="images/boutons/bouton_retour.png"
+    file_bouton_retour=geoquiz_location_path+"images/boutons/bouton_retour.png"
     image_bouton_retour = PhotoImage(file=file_bouton_retour)
     bouton_retour.configure(image=image_bouton_retour)
     bouton_retour.image = image_bouton_retour
@@ -323,7 +328,7 @@ def page7(): # la page qui permet de rejoindre un serveur multi
     recherche_multi.place(x=0, y=0)
 
     label_background = Label(recherche_multi, image="")
-    file_background="images/menu_jouer_multi_rejoindre.png"
+    file_background=geoquiz_location_path+"images/menu_jouer_multi_rejoindre.png"
     background = PhotoImage(file=file_background)
     label_background.configure(image=background)
     label_background.image = background
@@ -344,7 +349,7 @@ def page7(): # la page qui permet de rejoindre un serveur multi
     bouton_rejoindre = StringVar()
     bouton_rejoindre=Button(recherche_multi,command=connexion_serveur, font=police1,relief=FLAT, fg = 'black')
     bouton_rejoindre.place(x=507,y=619,width=429, height=97)
-    file_bouton_rejoindre="images/boutons/bouton_rejoindre.png"
+    file_bouton_rejoindre=geoquiz_location_path+"images/boutons/bouton_rejoindre.png"
     image_bouton_rejoindre = PhotoImage(file=file_bouton_rejoindre)
     bouton_rejoindre.configure(image=image_bouton_rejoindre)
     bouton_rejoindre.image = image_bouton_rejoindre
@@ -359,7 +364,7 @@ def page8(): #la page de choix entre héberger et rejoindre une parti en multi
     is_multi.set(1) # défini que le joueur est en multi
 
     label_background = Label(choix_multi, image="")
-    file_background="images/menu_jouer_multi.png"
+    file_background=geoquiz_location_path+"images/menu_jouer_multi.png"
     background = PhotoImage(file=file_background)
     label_background.configure(image=background)
     label_background.image = background
@@ -368,7 +373,7 @@ def page8(): #la page de choix entre héberger et rejoindre une parti en multi
     bouton_solo = StringVar()
     bouton_solo=Button(choix_multi,command=lancer_serveur, font=police1,relief=FLAT, fg = 'black')
     bouton_solo.place(x=506,y=360,width=429, height=97)
-    file_bouton_solo="images/boutons/bouton_heberger.png"
+    file_bouton_solo=geoquiz_location_path+"images/boutons/bouton_heberger.png"
     image_bouton_solo = PhotoImage(file=file_bouton_solo)
     bouton_solo.configure(image=image_bouton_solo)
     bouton_solo.image = image_bouton_solo
@@ -376,7 +381,7 @@ def page8(): #la page de choix entre héberger et rejoindre une parti en multi
     bouton_multi = StringVar()
     bouton_multi=Button(choix_multi,command=page7, font=police1,relief=FLAT, fg = 'black')
     bouton_multi.place(x=506,y=492,width=429, height=97)
-    file_bouton_multi="images/boutons/bouton_rejoindre.png"
+    file_bouton_multi=geoquiz_location_path+"images/boutons/bouton_rejoindre.png"
     image_bouton_multi = PhotoImage(file=file_bouton_multi)
     bouton_multi.configure(image=image_bouton_multi)
     bouton_multi.image = image_bouton_multi
@@ -384,7 +389,7 @@ def page8(): #la page de choix entre héberger et rejoindre une parti en multi
     bouton_retour = StringVar()
     bouton_retour=Button(choix_multi,command=retour, font=police1,relief=FLAT, fg = 'black')
     bouton_retour.place(x=507,y=619,width=429, height=97)
-    file_bouton_retour="images/boutons/bouton_retour.png"
+    file_bouton_retour=geoquiz_location_path+"images/boutons/bouton_retour.png"
     image_bouton_retour = PhotoImage(file=file_bouton_retour)
     bouton_retour.configure(image=image_bouton_retour)
     bouton_retour.image = image_bouton_retour
@@ -400,7 +405,7 @@ def page9(): # page qui s'affiche lorsqu'on est connecté au serveur en attendan
     local_ip.set(socket.gethostbyname(hostname)) #permet d'afficher son ip
 
     label_background = Label(lobby_multi, image="")
-    file_background="images/lobby_multi_client.png"
+    file_background=geoquiz_location_path+"images/lobby_multi_client.png"
     background = PhotoImage(file=file_background)
     label_background.configure(image=background)
     label_background.image = background
@@ -429,7 +434,7 @@ def page10(): #page du jeu en mode multijoueur
     temps_timer.set(0)
 
     label_background = Label(jeu_multi, image="")
-    file_background="images/fond_jeu.png"
+    file_background=geoquiz_location_path+"images/fond_jeu.png"
     background = PhotoImage(file=file_background)
     label_background.configure(image=background)
     label_background.image = background
@@ -490,7 +495,7 @@ def page11(): # page qui s'affiche lorsqu'une personne gagne en multijoueur
     gagne_multi.place(x=0, y=0)
 
     label_background = Label(gagne_multi, image="")
-    file_background="images/fin_multi.png"
+    file_background=geoquiz_location_path+"images/fin_multi.png"
     background = PhotoImage(file=file_background)
     label_background.configure(image=background)
     label_background.image = background
@@ -639,7 +644,8 @@ def update_temps(): # met à jour le timer toutes les secondes
 
 
 def lancer_serveur(): #lorsque que le bouton hebergé est cliqué, le programme serveur est lancé et la page rejoindre serveur en localhost aussi
-    os.startfile("multi_serveur.py")
+    print(geoquiz_location_path+"multi_serveur.py")
+    os.startfile(geoquiz_location_path+"multi_serveur.py")
     recherche_ip.set("localhost")
     page7()
 

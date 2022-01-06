@@ -2,6 +2,23 @@ from tkinter import *
 import tkinter.font as tkFont
 import socket
 import os
+
+#06.01.2022 : pour le raccourci sur le bureau----------------------
+
+geoquiz_location_path = os.getcwd()
+
+if os.path.isfile(geoquiz_location_path+"\main_fix.py"):
+    geoquiz_location_path=''
+else:
+    import sys
+    from win32com.client import Dispatch
+    shell = Dispatch("WScript.Shell")
+    shortcut = shell.CreateShortCut("GéoQuiz.lnk")
+    geoquiz_location_path=''.join((shortcut.Targetpath).rsplit('\\', 1)[0])+'\\'
+    sys.path.insert(1, geoquiz_location_path)
+
+#------------------------------------------------------------------
+
 from _thread import *
 import creation_questions
 from random import *
@@ -136,19 +153,19 @@ def page_menu(): # la seule page pour l'instant où le serveur peut lancer la pa
     local_ip.set(socket.gethostbyname(hostname))
     
     bouton_lancer = StringVar()
-    bouton_lancer=Button(menu, text='Lancer la partie',command=lancer_partie, font=police2, background = 'green')
+    bouton_lancer=Button(menu, text='Lancer la partie',command=lancer_partie, font=police2, background = 'green', fg='black')
     bouton_lancer.place(x=487,y=660,width=200, height=80)
 
-    label_ip = Label(menu, textvariable=local_ip, font=police2, background = 'lightgrey', anchor='center')
+    label_ip = Label(menu, textvariable=local_ip, font=police2, background = 'lightgrey', anchor='center', fg='black')
     label_ip.place(x=37,y=68,width=232, height=35)
 
-    textBoxTemps = Entry(menu,width=20,bg = 'gray89')
+    textBoxTemps = Entry(menu,width=20,bg = 'gray89', fg='black')
     textBoxTemps.place(x=455,y=352,width=50, height=30)
 
     bouton_mode_geoquiz = StringVar()
     bouton_mode_geoquiz=Button(menu,command=wip, font=police1,relief=FLAT)
     bouton_mode_geoquiz.place(x=768,y=212,width=198, height=148)
-    file_bouton_mode_geoquiz="images/boutons/bouton_mode_geoquiz.png"
+    file_bouton_mode_geoquiz=geoquiz_location_path+"images/boutons/bouton_mode_geoquiz.png"
     image_bouton_mode_geoquiz = PhotoImage(file=file_bouton_mode_geoquiz)
     bouton_mode_geoquiz.configure(image=image_bouton_mode_geoquiz)
     bouton_mode_geoquiz.image = image_bouton_mode_geoquiz
@@ -156,7 +173,7 @@ def page_menu(): # la seule page pour l'instant où le serveur peut lancer la pa
     bouton_mode_aveugle = StringVar()
     bouton_mode_aveugle=Button(menu,command=wip, font=police1,relief=FLAT)
     bouton_mode_aveugle.place(x=974,y=212,width=198, height=148)
-    file_bouton_mode_aveugle="images/boutons/bouton_mode_aveugle.png"
+    file_bouton_mode_aveugle=geoquiz_location_path+"images/boutons/bouton_mode_aveugle.png"
     image_bouton_mode_aveugle = PhotoImage(file=file_bouton_mode_aveugle)
     bouton_mode_aveugle.configure(image=image_bouton_mode_aveugle)
     bouton_mode_aveugle.image = image_bouton_mode_aveugle
@@ -164,7 +181,7 @@ def page_menu(): # la seule page pour l'instant où le serveur peut lancer la pa
     bouton_mode_chrono = StringVar()
     bouton_mode_chrono=Button(menu,command=wip, font=police1,relief=FLAT)
     bouton_mode_chrono.place(x=1180,y=212,width=198, height=148)
-    file_bouton_mode_chrono="images/boutons/bouton_mode_chrono.png"
+    file_bouton_mode_chrono=geoquiz_location_path+"images/boutons/bouton_mode_chrono.png"
     image_bouton_mode_chrono = PhotoImage(file=file_bouton_mode_chrono)
     bouton_mode_chrono.configure(image=image_bouton_mode_chrono)
     bouton_mode_chrono.image = image_bouton_mode_chrono
@@ -172,7 +189,7 @@ def page_menu(): # la seule page pour l'instant où le serveur peut lancer la pa
     bouton_mode_br = StringVar()
     bouton_mode_br=Button(menu,command=wip, font=police1,relief=FLAT)
     bouton_mode_br.place(x=768,y=455,width=198, height=148)
-    file_bouton_mode_br="images/boutons/bouton_mode_br.png"
+    file_bouton_mode_br=geoquiz_location_path+"images/boutons/bouton_mode_br.png"
     image_bouton_mode_br = PhotoImage(file=file_bouton_mode_br)
     bouton_mode_br.configure(image=image_bouton_mode_br)
     bouton_mode_br.image = image_bouton_mode_br
@@ -180,7 +197,7 @@ def page_menu(): # la seule page pour l'instant où le serveur peut lancer la pa
     bouton_mode_blitz = StringVar()
     bouton_mode_blitz=Button(menu,command=wip, font=police1,relief=FLAT)
     bouton_mode_blitz.place(x=974,y=455,width=198, height=148)
-    file_bouton_mode_blitz="images/boutons/bouton_mode_blitz.png"
+    file_bouton_mode_blitz=geoquiz_location_path+"images/boutons/bouton_mode_blitz.png"
     image_bouton_mode_blitz = PhotoImage(file=file_bouton_mode_blitz)
     bouton_mode_blitz.configure(image=image_bouton_mode_blitz)
     bouton_mode_blitz.image = image_bouton_mode_blitz
@@ -201,7 +218,7 @@ police2=tkFont.Font(family="MV Boli",size=16)
 menu = Canvas(fenetre, width=longueur, height=largeur)
 
 label_background = Label(menu, image="")
-file_background="images/lobby_multi_serveur.png"
+file_background=geoquiz_location_path+"images/lobby_multi_serveur.png"
 background = PhotoImage(file=file_background)
 label_background.configure(image=background)
 label_background.place(x=0,y=0,width=longueur, height=largeur)

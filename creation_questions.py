@@ -27,12 +27,28 @@ class pays: # définition d'une classe pays pour y attribuer tout les attributs
         infos=[self.nom,self.capitale,self.population,self.point_culminant,self.superficie,self.frontieres,self.langue,self.continent,self.fuseaux]
         return infos
 
+#06.01.2022 : pour le raccourci sur le bureau----------------------
 
+import os
+
+geoquiz_location_path = os.getcwd()
+
+if os.path.isfile(geoquiz_location_path+"\main_fix.py"):
+    geoquiz_location_path=''
+else:
+    import sys
+    from win32com.client import Dispatch
+    shell = Dispatch("WScript.Shell")
+    shortcut = shell.CreateShortCut("GéoQuiz.lnk")
+    geoquiz_location_path=''.join((shortcut.Targetpath).rsplit('\\', 1)[0])+'\\'
+    sys.path.insert(1, geoquiz_location_path)
+
+#------------------------------------------------------------------
 
 def connexion(): # connexion à la base de données pays
     try:
         #connexion à la bdd
-        sqliteConnection = sqlite3.connect('pays.db')
+        sqliteConnection = sqlite3.connect(geoquiz_location_path+'pays.db')
         return sqliteConnection
     except sqlite3.Error as error:
         print("Error while connecting to sqlite : ", error)
