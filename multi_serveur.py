@@ -1,9 +1,10 @@
 from tkinter import *
 import tkinter.font as tkFont
 import socket
-import os
 
 #06.01.2022 : pour le raccourci sur le bureau----------------------
+
+import os
 
 geoquiz_location_path = os.getcwd()
 
